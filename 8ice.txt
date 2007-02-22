@@ -1,0 +1,125 @@
+MVZOR # N1 VB Rdo-1 C= Z. N2 Z.K			(# výstava potrvá do 15 . kvìtna .K)
+    SVZOR X,2,0,2,6,4,3,0	   5	100 %
+MVZOR # NY1 N1 Z, N1 N2 N1 Z:K			(# jiøí kubíèek , mana¾er sigmy olomouc :K)
+    SVZOR X,2,3,0,3,4,5,0	   5	100 %
+MVZOR # VB P1ten Rz-1 N2 A2 A2 N2			(# vyplývá to z údajù ropné informaèní slu¾by)
+    SVZOR X,0,1,1,3,7,7,4	   5	100 %
+MVZOR # Vp P4ten Dvèera A1 N1 NY1 N1			(# oznámil to vèera prezidentùv mluvèí ladislav ¹paèek)
+    SVZOR X,0,1,1,5,7,7,1	   5	100 %
+MVZOR A2 Z, A2 Z, A2 J^ A2 N2			(dopravních , energetických , ekologických a dal¹ích vazeb)
+    SVZOR 5,5,5,5,5,7,5,X	   5	100 %
+MVZOR J^ NN N1 N2 A2 Rz-1 N2 NN			(buï r pata kolmice spu¹tìné z bodu r)
+    SVZOR X,0,0,2,3,4,5,6	   5	100 %
+MVZOR N1 A1 Rdo-1 P2tento N2 Z- A1 Ro-1			(pøíspìvek zaøazený do této rubriky - pojednávající o)
+    SVZOR X,0,1,4,2,6,0,6	   5	100 %
+MVZOR N1 N2 NY1 N1 Z( NN Z) Vp			(ministr spravedlnosti jiøí novák ( ods ) øekl)
+    SVZOR 3,0,3,7,3,3,3,X	   5	100 %
+MVZOR N1 Z, NY1 N1 Z, NY1 N1 J^			(gott , karel hála , jiøí korn a)
+    SVZOR 7,7,3,7,7,6,7,X	   5	100 %
+MVZOR N2 Z, A2 N2 J^ A2 A2 N2			(partnerù , nových zdrojù a nových odbytových cest)
+    SVZOR 4,4,3,4,X,7,7,4	   5	100 %
+MVZOR N2 Z, N2 Z, A2 J^ A2 N2			(evropy , ameriky , støedního a dálného východu)
+    SVZOR 3,3,3,X,5,7,5,3	   5	100 %
+MVZOR P1co¾-1 Vje Ro-1 C= N2 Dvíce J, Rv-1			(co¾ je o 21 procent více ne¾ v)
+    SVZOR 1,X,5,2,3,1,5,6	   5	100 %
+MVZOR Ro-1 C= N2 Dvíce J, Rv-1 A6 N6			(o 1.1 procenta více ne¾ v pøedchozím roce)
+    SVZOR 3,0,1,X,3,4,7,5	   5	100 %
+MVZOR Rv-1 C= Z. N6 Z, Dkdy N1 Vp			(v 7 . minutì , kdy horák poslal)
+    SVZOR X,3,1,0,7,7,7,3	   5	100 %
+MVZOR VB Rod-1 C= Z. Rdo-1 C= Z. N2			(uskuteèní od 12 . do 16 . února)
+    SVZOR X,0,1,2,0,7,5,4	   5	100 %
+MVZOR VB Z, J¾e A1 N1 VB Vf N4			(pøedpokládáme , ¾e veøejná soutì¾ mù¾e sní¾it cenu)
+    SVZOR X,2,0,4,5,2,5,6	   5	100 %
+MVZOR Z, N2 Z, A2 N2 J^ A2 N2			(, vinaøství , skladovacích staveb a vinaøské techniky)
+    SVZOR 5,5,5,4,5,X,7,5	   5	100 %
+MVZOR Z: N1 C= NN Z, N1 C= NN			(: cukr 17.30 kès , káva 14.50 kès)
+    SVZOR 4,4,4,2,X,4,4,6	   5	100 %
+MVZOR # N1 N2 NY1 N1 Vp Z, J¾e			(# vùdce ligy umberto bossi prohlásil , ¾e)
+    SVZOR X,4,1,4,5,0,7,5	   6	100 %
+MVZOR # N1 Rnad-1 N7 Z( N1 Z) Z-K			(# ústí nad orlicí ( jop ) -K)
+    SVZOR X,0,1,2,0,0,0,0	   6	100 %
+MVZOR # N1 Z: A1 J^ Dg A1 N1			(# kontakt : advokátní a komerènì právní kanceláø)
+    SVZOR X,2,0,4,7,6,4,2	   6	100 %
+MVZOR # Z( N1 C= Z. C= Z. C=			(# ( nln 4 . 2 . 1995)
+    SVZOR X,0,0,5,3,2,5,5	   6	100 %
+MVZOR A2 N2 Rpro-1 A4 N4 Z( NN Z)			(mezinárodní komise pro atomovou energii ( maae ))
+    SVZOR 1,5,1,4,2,X,5,5	   6	100 %
+MVZOR N1 A2 N2 NY1 N1 Z( NN Z)			(pøedseda zahranièního výboru jiøí payne ( ods ))
+    SVZOR 4,2,0,4,X,4,4,4	   6	100 %
+MVZOR N1 Z( NN Z) Z, N1 A2 N2			(èerný ( ods ) , pøedseda zemìdìlského výboru)
+    SVZOR 4,0,0,0,X,4,7,5	   6	100 %
+MVZOR Z, A1 C= Z, C= C= N1 N2			(, habrmanova 19 , 500 02 hradec králové)
+    SVZOR 1,6,1,4,6,4,X,6	   6	100 %
+MVZOR Z, N2 Z, N2 Z, N2 J^ N2			(, ostravy , ¾ïáru , olomouce a pardubic)
+    SVZOR 6,6,6,6,6,6,X,6	   6	100 %
+MVZOR # A1 N1 A1 Rv-1 P6tento N6 VB			(# podnikatelské nápady zveøejnìné v této rubrice odmìòujeme)
+    SVZOR X,2,7,2,3,6,4,0	   7	100 %
+MVZOR # Vbude Dtaké Vs Rdo-1 A2 N2 Ro-1			(# bude také zaøazen do ètvrtletního slosování o)
+    SVZOR X,3,3,0,3,6,4,6	   7	100 %
+MVZOR # Vp P4ten Dvèera N1 N2 NY1 N1			(# uvedl to vèera místopøedseda strany jan kasal)
+    SVZOR X,0,1,1,7,4,7,1	   7	100 %
+MVZOR A1 N1 A1 Rv-1 P6tento N6 VB Rvedle-1			(podnikatelské nápady zveøejnìné v této rubrice odmìòujeme vedle)
+    SVZOR 1,6,1,2,5,3,X,6	   7	100 %
+MVZOR Dtaké Vs Rdo-1 A2 N2 Ro-1 C= N2			(také zaøazen do ètvrtletního slosování o 3000 korun)
+    SVZOR 1,X,1,4,2,4,5,6	   7	100 %
+MVZOR N2 Z. J^ N1 Z: Z( C= Z)			(tel . a fax : ( 02 ))
+    SVZOR 2,0,X,2,6,6,2,6	   7	100 %
+MVZOR P4jaký N4 Vjste Pse Rpøi-1 N6 Vp J^			(jaké chyby jste se pøi podnikání dopustili a)
+    SVZOR 1,6,6,6,6,4,7,X	   7	100 %
+MVZOR Vbude Dtaké Vs Rdo-1 A2 N2 Ro-1 C=			(bude také zaøazen do ètvrtletního slosování o 3000)
+    SVZOR 2,2,X,2,5,3,5,6	   7	100 %
+MVZOR Z, P1co¾-1 Vje Ro-1 C= N2 Dvíce J,			(, co¾ je o 500 korun více ne¾)
+    SVZOR X,2,0,6,3,4,2,6	   7	100 %
+MVZOR C= C= Z, C= C= Z, C= C=			(326 12 , 301 53 , 469 63)
+    SVZOR 5,0,5,5,3,X,5,6	   8	100 %
+MVZOR N1 N2 A2 Rz-1 N2 NN Rna-1 N4			(pata kolmice spu¹tìné z bodu r na pøímku)
+    SVZOR X,0,1,2,3,4,2,6	   8	100 %
+MVZOR N2 A2 Rz-1 N2 NN Rna-1 N4 NN			(kolmice spu¹tìné z bodu r na pøímku p)
+    SVZOR X,0,1,2,3,1,5,6	   8	100 %
+MVZOR N2 NYN NYN Z. N2 AA NN Rof-1			(knihy mary e . whiteové the greening of)
+    SVZOR X,4,4,2,0,6,0,6	   8	100 %
+MVZOR NYN Z. N1 Z, NYN Z. N1 J^			(v . klaus , j . kalvoda a)
+    SVZOR 2,0,7,7,6,4,7,X	   8	100 %
+MVZOR Rv-1 C} Z. N2 Vje C= N2 Rpo-1			(ve iii . poøadí je 31 výher po)
+    SVZOR 4,3,1,0,X,4,5,6	   8	100 %
+MVZOR Rz-1 N2 NYN NYN Z. N2 AA NN			(z knihy mary e . whiteové the greening)
+    SVZOR X,0,5,5,3,1,7,1	   8	100 %
+MVZOR Z, NYN Z. N1 J^ NYN Z. N1			(, j . kalvoda a j . skalický)
+    SVZOR 4,3,1,4,X,7,5,4	   8	100 %
+MVZOR # Z( N1 Z) Z( NN C= Z-			(# ( pz ) ( èt 2 -)
+    SVZOR X,0,0,0,7,7,5,0	   9	100 %
+MVZOR NN Z. NN Z. NY1 N1 Z, NN			(doc . mudr . jiøí nevoral , csc)
+    SVZOR 5,0,5,2,5,X,7,5	   9	100 %
+MVZOR NY1 N1 Z, NY1 N1 J^ NY1 N1			(jan dole¾al , bohuslav fire¹ a marie míková)
+    SVZOR 1,5,5,4,5,X,7,5	   9	100 %
+MVZOR # NY1 N1 Z( NN Z) Z, N1			(# jan èerný ( ods ) , pøedseda)
+    SVZOR X,2,6,2,2,2,0,6	  10	100 %
+MVZOR A1 N1 Z, A1 N1 J^ A1 N1			(komerèní banka , investièní banka a èeská spoøitelna)
+    SVZOR 1,5,5,4,5,X,7,5	  11	 91 %
+    SVZOR 1,2,X,4,5,2,7,5	   1	  8 %
+MVZOR C= Z. C= Z. Z- C= Z. C=			(30 . 8 . - 2 . 9)
+    SVZOR 2,0,4,2,X,7,5,4	  11	100 %
+MVZOR Z, N4 C= Z: C= Z, C= N2			(, skóre 40 : 18 , 32 bodù)
+    SVZOR 5,5,3,1,3,X,5,6	  13	100 %
+MVZOR # NN Z. NY1 N1 Z, NN Z.K			(# rndr . jiøí grygar , csc .K)
+    SVZOR X,4,1,4,0,6,4,0	  14	100 %
+MVZOR N2 Z, N2 Z, N2 Z, N2 J^			(mana¾era , mistra , sváøeèe , zedníka a)
+    SVZOR 7,7,7,7,7,7,7,X	  18	100 %
+MVZOR Z, N2 C= Z, C= C= N1 C=			(, pavlíkova 601 , 142 00 praha 4)
+    SVZOR 1,6,1,4,6,4,X,6	  18	100 %
+MVZOR # N1 Z: N1 Z, NN Z. NN			(# kontakt : kredo , s . r)
+    SVZOR X,2,0,2,5,3,5,5	  21	 91 %
+    SVZOR X,2,0,2,3,3,5,5	   1	  4 %
+    SVZOR X,2,0,4,2,4,5,5	   1	  4 %
+MVZOR N1 Z: N1 Z, NN Z. NN Z.			(kontakt : kredo , s . r .)
+    SVZOR 1,X,1,4,2,4,4,6	  21	 91 %
+    SVZOR 1,X,3,1,3,4,4,6	   1	  4 %
+    SVZOR 1,X,1,2,2,4,4,6	   1	  4 %
+MVZOR Z: N1 Z, NN Z. NN Z. A7			(: kredo , s . r . o)
+    SVZOR X,0,3,1,3,3,5,5	  21	 91 %
+    SVZOR X,2,0,2,3,3,5,5	   1	  4 %
+    SVZOR X,0,1,1,3,3,5,5	   1	  4 %
+MVZOR N2 Z. Z/ N1 Z: Z( C= Z)			(tel . / fax : ( 05 ))
+    SVZOR 2,0,X,2,6,6,2,6	  23	 92 %
+    SVZOR 2,0,X,2,6,6,3,6	   1	  4 %
+    SVZOR 2,0,X,2,3,6,2,6	   1	  4 %

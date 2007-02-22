@@ -1,0 +1,3503 @@
+MVZOR C1 Vf			(tolik líbit)
+    SVZOR 1,X	   5	100 %
+MVZOR Cv Ddennì			(tøikrát dennì)
+    SVZOR X,0	   5	100 %
+MVZOR Cv Droènì			(jedenkrát roènì)
+    SVZOR X,0	   5	100 %
+MVZOR Dalespoò Db			(alespoò namátkou)
+    SVZOR 1,X	   5	100 %
+MVZOR Ddobøe A7			(dobøe promy¹lenými)
+    SVZOR 1,X	   5	100 %
+MVZOR Ddobøe AC			(dobøe známy)
+    SVZOR 1,X	   5	100 %
+MVZOR Ddost N1			(dost práce)
+    SVZOR X,0	   5	100 %
+MVZOR Dhlavnì N3			(hlavnì dovozu)
+    SVZOR 1,X	   5	100 %
+MVZOR Dhned Vp			(hned rozkøiklo)
+    SVZOR 1,X	   5	100 %
+MVZOR Dje¹tì Dlépe			(je¹tì lépe)
+    SVZOR 1,X	   5	100 %
+MVZOR Djinak A4			(jinak upravenou)
+    SVZOR 1,X	   5	100 %
+MVZOR Dji¾ A3			(ji¾ pouèenému)
+    SVZOR 1,X	   5	100 %
+MVZOR Dji¾ Dnikdy			(ji¾ nikdy)
+    SVZOR 1,X	   5	100 %
+MVZOR Dji¾ Dteï			(ji¾ teï)
+    SVZOR 1,X	   5	100 %
+MVZOR Dji¾ Dvèera			(ji¾ vèera)
+    SVZOR 1,X	   5	100 %
+MVZOR Dkam Vp			(kam smìøovalo)
+    SVZOR 1,X	   5	100 %
+MVZOR Dmnohem A2			(mnohem nebezpeènìj¹ího)
+    SVZOR 1,X	   5	100 %
+MVZOR Dmnohem Dlépe			(mnohem lépe)
+    SVZOR 1,X	   5	100 %
+MVZOR Dmo¾ná Vje			(mo¾ná je)
+    SVZOR 1,X	   5	100 %
+MVZOR Dnedávno A2			(nedávno uzavøeného)
+    SVZOR 1,X	   5	100 %
+MVZOR Dnejvíce A1			(nejvíce cenìné)
+    SVZOR 1,X	   5	100 %
+MVZOR Dpodstatnì A7			(podstatnì vy¹¹í)
+    SVZOR 1,X	   5	100 %
+MVZOR Dpotom Vje			(potom je)
+    SVZOR 1,X	   5	100 %
+MVZOR Dpouze Dtehdy			(pouze tehdy)
+    SVZOR 1,X	   5	100 %
+MVZOR Dprávì N2			(právì oprav)
+    SVZOR 1,X	   5	100 %
+MVZOR Dprávì N3			(právì horníkùm)
+    SVZOR 1,X	   5	100 %
+MVZOR Dpøedev¹ím Vje			(pøedev¹ím je)
+    SVZOR 1,X	   5	100 %
+MVZOR Dpøedev¹ím Vp			(pøedev¹ím informovala)
+    SVZOR 1,X	   5	100 %
+MVZOR Dpøesnì A7			(pøesnì vymezeným)
+    SVZOR 1,X	   5	100 %
+MVZOR Dpøibli¾nì N1			(pøibli¾nì tisíc)
+    SVZOR 1,X	   5	100 %
+MVZOR Dpøímo Vp			(pøímo urèovaly)
+    SVZOR 1,X	   5	100 %
+MVZOR Drozhodnì A1			(rozhodnì lep¹í)
+    SVZOR 1,X	   5	100 %
+MVZOR Dspí¹ Vp			(spí¹ znechutila)
+    SVZOR 1,X	   5	100 %
+MVZOR Dstejnì A6			(stejnì vyspìlých)
+    SVZOR 1,X	   5	100 %
+MVZOR Dstejnì Drychle			(stejnì rychle)
+    SVZOR 1,X	   5	100 %
+MVZOR Dtak Ve			(tak øíkajíc)
+    SVZOR 1,X	   5	100 %
+MVZOR Dtaké N3			(také podmínkám)
+    SVZOR 1,X	   5	100 %
+MVZOR Dtu Vje			(tu je)
+    SVZOR 1,X	   5	100 %
+MVZOR Dvelice Vp			(velice zalíbil)
+    SVZOR 1,X	   5	100 %
+MVZOR Dvelmi A3			(velmi prodejným)
+    SVZOR 1,X	   5	100 %
+MVZOR Dvìt¹inou Vjsou			(vìt¹inou nejsou)
+    SVZOR 1,X	   5	100 %
+MVZOR Dzcela AC			(zcela zdráv)
+    SVZOR 1,X	   5	100 %
+MVZOR Dzcela Db			(zcela zdarma)
+    SVZOR 1,X	   5	100 %
+MVZOR Dzhruba Dstejnì			(zhruba stejnì)
+    SVZOR 1,X	   5	100 %
+MVZOR Dzhruba N1			(zhruba sto)
+    SVZOR 1,X	   5	100 %
+MVZOR Dúplnì Db			(úplnì namìkko)
+    SVZOR 1,X	   5	100 %
+MVZOR Dúplnì P4v¹echen			(úplnì v¹echna)
+    SVZOR 1,X	   5	100 %
+MVZOR N2 P2samý			(ruska samého)
+    SVZOR X,0	   5	100 %
+MVZOR N3 Rkolem-1			(kampani kolem)
+    SVZOR X,0	   5	100 %
+MVZOR N4 II			(ètvr» basta)
+    SVZOR X,0	   5	100 %
+MVZOR N4 Rpost-2			(pøímku p)
+    SVZOR X,0	   5	100 %
+MVZOR NY1 N6			(arpád abonyi)
+    SVZOR 1,X	   5	100 %
+MVZOR P1jen¾ N3			(jeho¾ výrobì)
+    SVZOR 1,X	   5	100 %
+MVZOR P1já P1v¹echen			(my v¹ichni)
+    SVZOR X,0	   5	100 %
+MVZOR P1tenhle Vje			(tohle je)
+    SVZOR 1,X	   5	100 %
+MVZOR P2ten P2v¹echen			(toho v¹eho)
+    SVZOR X,0	   5	100 %
+MVZOR P2tento N6			(tohoto bøemene)
+    SVZOR 1,X	   5	100 %
+MVZOR P2¾ádný Rz-1			(¾ádného z)
+    SVZOR X,0	   5	100 %
+MVZOR P3který N3			(kterému soudu)
+    SVZOR 1,X	   5	100 %
+MVZOR P4cokoliv A2			(cokoli spoleèného)
+    SVZOR X,0	   5	100 %
+MVZOR P4jen¾ N2			(jeho¾ resortu)
+    SVZOR 1,X	   5	100 %
+MVZOR P4sám N4			(samu hranici)
+    SVZOR 1,X	   5	100 %
+MVZOR P6takovýto N6			(takovémto zpùsobu)
+    SVZOR 1,X	   5	100 %
+MVZOR P7nìkterý Rz-1			(nìkterou z)
+    SVZOR X,0	   5	100 %
+MVZOR P7ten Dvíce			(tím více)
+    SVZOR 1,X	   5	100 %
+MVZOR P7ve¹kerý N7			(ve¹kerým majetkem)
+    SVZOR 1,X	   5	100 %
+MVZOR P7v¹echen Db			(v¹ím v¹udy)
+    SVZOR X,0	   5	100 %
+MVZOR Pjakási N1			(jakási lanovka)
+    SVZOR 1,X	   5	100 %
+MVZOR Pjakýmsi N7			(jakýmsi slabikáøem)
+    SVZOR 1,X	   5	100 %
+MVZOR Rbez-1 N1			(bez vnímání)
+    SVZOR X,0	   5	100 %
+MVZOR Rdo-1 N3			(do pùlnoci)
+    SVZOR X,0	   5	100 %
+MVZOR Rk-1 Xx			(k hdp)
+    SVZOR X,0	   5	100 %
+MVZOR Rkontra N1			(kontra podnikatel)
+    SVZOR X,0	   5	100 %
+MVZOR Rmezi-1 P4jen¾			(mezi nì¾)
+    SVZOR X,0	   5	100 %
+MVZOR Rmimo-1 A1			(mimo jiné)
+    SVZOR X,0	   5	100 %
+MVZOR Rmimo-1 P4on-1			(mimo nìj)
+    SVZOR X,0	   5	100 %
+MVZOR Rna-1 P4nic			(na nic)
+    SVZOR X,0	   5	100 %
+MVZOR Rnamísto-2 N2			(namísto rublù)
+    SVZOR X,0	   5	100 %
+MVZOR Rod-1 Xx			(od èsob)
+    SVZOR X,0	   5	100 %
+MVZOR Roproti P3ten			(oproti tomu)
+    SVZOR X,0	   5	100 %
+MVZOR Rpo-1 Z-			(po -)
+    SVZOR 1,X	   5	100 %
+MVZOR Rpro-1 N7			(pro automobilisty)
+    SVZOR X,0	   5	100 %
+MVZOR Rpro-1 P4nìkdo			(pro nìkoho)
+    SVZOR X,0	   5	100 %
+MVZOR Rpøed-1 N1			(pøed soud)
+    SVZOR X,0	   5	100 %
+MVZOR Rpøed-1 P7já			(pøed námi)
+    SVZOR X,0	   5	100 %
+MVZOR Rs-1 P7nìco			(s nìèím)
+    SVZOR X,0	   5	100 %
+MVZOR Rvon-2 N2			(von plenera)
+    SVZOR 1,X	   5	100 %
+MVZOR Rvùèi P3on-1			(vùèi ní)
+    SVZOR X,0	   5	100 %
+MVZOR Rvùèi Xx			(vùèi ecu)
+    SVZOR X,0	   5	100 %
+MVZOR Rz-1 P2ty			(z vás)
+    SVZOR X,0	   5	100 %
+MVZOR Rz-1 Psebe			(ze sebe)
+    SVZOR X,0	   5	100 %
+MVZOR Rza-1 P2který			(za kterých)
+    SVZOR X,0	   5	100 %
+MVZOR Rza-1 P2on-1			(za nìho)
+    SVZOR X,0	   5	100 %
+MVZOR Rza-1 P4já			(za nás)
+    SVZOR X,0	   5	100 %
+MVZOR TT Dpozdìji			(a¾ pozdìji)
+    SVZOR 1,X	   5	100 %
+MVZOR TT Dtam			(jen tam)
+    SVZOR 1,X	   5	100 %
+MVZOR VB Rkvùli			(pøipomínám kvùli)
+    SVZOR X,0	   5	100 %
+MVZOR VB Rvstøíc			(vychází vstøíc)
+    SVZOR X,0	   5	100 %
+MVZOR Vbude Ddál			(bude dál)
+    SVZOR X,0	   5	100 %
+MVZOR Vbudou Rk-1			(budou k)
+    SVZOR X,0	   5	100 %
+MVZOR Vf Dpostupnì			(provádìt postupnì)
+    SVZOR X,0	   5	100 %
+MVZOR Vi Dnyní			(udìlejte nyní)
+    SVZOR X,0	   5	100 %
+MVZOR Vi Rdo-1			(investujte do)
+    SVZOR X,0	   5	100 %
+MVZOR Vi Ro-1			(sna¾me o)
+    SVZOR X,0	   5	100 %
+MVZOR Vj Z.			(j .)
+    SVZOR X,0	   5	100 %
+MVZOR Vje Dprostì			(je prostì)
+    SVZOR X,0	   5	100 %
+MVZOR Vje P1kdo			(je kdo)
+    SVZOR X,0	   5	100 %
+MVZOR Vjsou Rbez-1			(jsou bez)
+    SVZOR X,0	   5	100 %
+MVZOR Vní Ddosud			(není dosud)
+    SVZOR X,0	   5	100 %
+MVZOR Vní Dpøece			(není pøece)
+    SVZOR X,0	   5	100 %
+MVZOR Vní Dtøeba			(není tøeba)
+    SVZOR X,0	   5	100 %
+MVZOR Vp Ddlouho			(nosila dlouho)
+    SVZOR X,0	   5	100 %
+MVZOR Vp Dmo¾ná			(uva¾ovali mo¾ná)
+    SVZOR X,0	   5	100 %
+MVZOR Vp Dpøece			(vznikla pøece)
+    SVZOR X,0	   5	100 %
+MVZOR Z&amp; Rs-1			(&amp; s)
+    SVZOR X,0	   5	100 %
+MVZOR Z, Dapod			(, apod)
+    SVZOR X,0	   5	100 %
+MVZOR AC P2ten			(vìdom toho)
+    SVZOR X,0	   6	100 %
+MVZOR AC Vbyl			(pøítomni byli)
+    SVZOR 1,X	   6	100 %
+MVZOR C4 Z:			(jedno :)
+    SVZOR 1,X	   6	100 %
+MVZOR Dalespoò Vp			(alespoò vyznìlo)
+    SVZOR 1,X	   6	100 %
+MVZOR Db P3ten			(navzdory tomu)
+    SVZOR X,0	   6	100 %
+MVZOR Dco A6			(co nejkrat¹í)
+    SVZOR 1,X	   6	100 %
+MVZOR Dco Dnejménì			(co nejménì)
+    SVZOR 1,X	   6	100 %
+MVZOR Ddobøe A4			(dobøe známá)
+    SVZOR 1,X	   6	100 %
+MVZOR Ddost Ddobøe			(dost dobøe)
+    SVZOR 1,X	   6	100 %
+MVZOR Ddost Dèasto			(dost èasto)
+    SVZOR 1,X	   6	100 %
+MVZOR Ddost Vp			(dost li¹ily)
+    SVZOR 1,X	   6	100 %
+MVZOR Dg Vi			(pìknì pla»)
+    SVZOR 1,X	   6	100 %
+MVZOR Djak Dèasto			(jak èasto)
+    SVZOR 1,X	   6	100 %
+MVZOR Dje¹tì Dvèera			(je¹tì vèera)
+    SVZOR 1,X	   6	100 %
+MVZOR Dje¹tì Dvíc			(je¹tì víc)
+    SVZOR 1,X	   6	100 %
+MVZOR Djinak Vje			(jinak je)
+    SVZOR 1,X	   6	100 %
+MVZOR Dji¾ Dloni			(ji¾ loni)
+    SVZOR 1,X	   6	100 %
+MVZOR Dkam Vf			(kam zapoèítat)
+    SVZOR 1,X	   6	100 %
+MVZOR Dkde Vf			(kde najít)
+    SVZOR 1,X	   6	100 %
+MVZOR Dnaprosto A7			(naprosto zásadní)
+    SVZOR 1,X	   6	100 %
+MVZOR Dnikoli N4			(nikoli cenu)
+    SVZOR 1,X	   6	100 %
+MVZOR Dnovì A7			(novì vzniklými)
+    SVZOR 1,X	   6	100 %
+MVZOR Dpodstatnì Dménì			(podstatnì ménì)
+    SVZOR 1,X	   6	100 %
+MVZOR Dpomìrnì A2			(pomìrnì pøekvapivého)
+    SVZOR 1,X	   6	100 %
+MVZOR Dpomìrnì Ddost			(pomìrnì dost)
+    SVZOR 1,X	   6	100 %
+MVZOR Dpouze N2			(pouze rekonstrukcí)
+    SVZOR 1,X	   6	100 %
+MVZOR Dprávì Dtehdy			(právì tehdy)
+    SVZOR 1,X	   6	100 %
+MVZOR Dprávì Dzde			(právì zde)
+    SVZOR 1,X	   6	100 %
+MVZOR Dpøesnì Vp			(pøesnì hájil)
+    SVZOR 1,X	   6	100 %
+MVZOR Dpøíli¹ C4			(pøíli¹ mnoho)
+    SVZOR 1,X	   6	100 %
+MVZOR Dpøímo J^			(pøímo a)
+    SVZOR 1,X	   6	100 %
+MVZOR Dspí¹e Vp			(spí¹e oèekávali)
+    SVZOR 1,X	   6	100 %
+MVZOR Dtady Vjsou			(tady jsou)
+    SVZOR 1,X	   6	100 %
+MVZOR Dtak Ddále			(tak dále)
+    SVZOR 1,X	   6	100 %
+MVZOR Dteprve Dpak			(teprve pak)
+    SVZOR 1,X	   6	100 %
+MVZOR Dteprve Dpotom			(teprve potom)
+    SVZOR 1,X	   6	100 %
+MVZOR Dteprve Vp			(teprve zaèínala)
+    SVZOR 1,X	   6	100 %
+MVZOR Dtrochu Djinak			(trochu jinak)
+    SVZOR 1,X	   6	100 %
+MVZOR Dtu Vjsou			(tu jsou)
+    SVZOR 1,X	   6	100 %
+MVZOR Dtì¾ko A4			(tì¾ko pochopitelné)
+    SVZOR 1,X	   6	100 %
+MVZOR Dtì¾ko Vp			(tì¾ko mohl)
+    SVZOR 1,X	   6	100 %
+MVZOR Du¾ Co			(u¾ nìkolikrát)
+    SVZOR 1,X	   6	100 %
+MVZOR Du¾ Dtehdy			(u¾ tehdy)
+    SVZOR 1,X	   6	100 %
+MVZOR Dvelice Dèasto			(velice èasto)
+    SVZOR 1,X	   6	100 %
+MVZOR Dvelmi C1			(velmi málo)
+    SVZOR 1,X	   6	100 %
+MVZOR Dvelmi Dtì¾ko			(velmi tì¾ko)
+    SVZOR 1,X	   6	100 %
+MVZOR Dveèer VB			(veèer zavolám)
+    SVZOR 1,X	   6	100 %
+MVZOR Dvíce Vs			(více vázán)
+    SVZOR 1,X	   6	100 %
+MVZOR Dvùbec TT			(vùbec ne)
+    SVZOR 1,X	   6	100 %
+MVZOR Dzcela A3			(zcela privilegovanému)
+    SVZOR 1,X	   6	100 %
+MVZOR Dzcela Djistì			(zcela jistì)
+    SVZOR 1,X	   6	100 %
+MVZOR Dzde Vní			(zde není)
+    SVZOR 1,X	   6	100 %
+MVZOR Dzároveò Vs			(zároveò natáèen)
+    SVZOR 1,X	   6	100 %
+MVZOR Dèasto A2			(èasto prázdných)
+    SVZOR 1,X	   6	100 %
+MVZOR Dúplnì Djinak			(úplnì jinak)
+    SVZOR 1,X	   6	100 %
+MVZOR J, Dobvykle			(ne¾ obvykle)
+    SVZOR X,0	   6	100 %
+MVZOR NY4 Rz-1			(johanku z)
+    SVZOR X,0	   6	100 %
+MVZOR P1co¾-1 Vjsou			(co¾ jsou)
+    SVZOR 1,X	   6	100 %
+MVZOR P1jaký Vbude			(jaký bude)
+    SVZOR 1,X	   6	100 %
+MVZOR P1nìkterý N2			(nìkterá odvìtví)
+    SVZOR 1,X	   6	100 %
+MVZOR P1on-1 Vjsou			(ony jsou)
+    SVZOR 1,X	   6	100 %
+MVZOR P1takový N4			(takové zbo¾í)
+    SVZOR 1,X	   6	100 %
+MVZOR P2mùj J^			(na¹ich i)
+    SVZOR 1,X	   6	100 %
+MVZOR P2nìjaký C4			(nìjakých dvacet)
+    SVZOR 1,X	   6	100 %
+MVZOR P3jakýkoliv N3			(jakémukoli øe¹ení)
+    SVZOR 1,X	   6	100 %
+MVZOR P3nìkdo A3			(nìkomu jinému)
+    SVZOR X,0	   6	100 %
+MVZOR P4co-1 Vjsou			(co jsou)
+    SVZOR 1,X	   6	100 %
+MVZOR P4jeho N1			(její rozpoèet)
+    SVZOR 1,X	   6	100 %
+MVZOR P4nikdo Vf			(nikoho pøekvapit)
+    SVZOR 1,X	   6	100 %
+MVZOR P4nìco J,			(nìco jako)
+    SVZOR X,0	   6	100 %
+MVZOR P4nìco P2takový			(nìco takového)
+    SVZOR X,0	   6	100 %
+MVZOR Pjakousi N4			(jakousi rezervaci)
+    SVZOR 1,X	   6	100 %
+MVZOR Pjakýsi N4			(jakýsi den)
+    SVZOR 1,X	   6	100 %
+MVZOR Rbez-1 P2ten			(bez toho)
+    SVZOR X,0	   6	100 %
+MVZOR Rde N7			(de klerkem)
+    SVZOR 1,X	   6	100 %
+MVZOR Rk-1 N6			(k dani)
+    SVZOR X,0	   6	100 %
+MVZOR Rkvùli P3jen¾			(kvùli nim¾)
+    SVZOR X,0	   6	100 %
+MVZOR Rmimo-1 P4ten			(mimo to)
+    SVZOR X,0	   6	100 %
+MVZOR Rna-1 P6ty			(na vás)
+    SVZOR X,0	   6	100 %
+MVZOR Rnarozdíl Rod-1			(narozdíl od)
+    SVZOR 1,X	   6	100 %
+MVZOR Ro-1 P4já			(o mne)
+    SVZOR X,0	   6	100 %
+MVZOR Rpodle-2 P2co-1			(podle èeho)
+    SVZOR X,0	   6	100 %
+MVZOR Rpodél N2			(podél silnice)
+    SVZOR X,0	   6	100 %
+MVZOR Rpost-2 Z.			(p .)
+    SVZOR X,0	   6	100 %
+MVZOR Rproti-1 Xx			(proti mns)
+    SVZOR X,0	   6	100 %
+MVZOR Rskrz N4			(skrze finance)
+    SVZOR X,0	   6	100 %
+MVZOR Rv-1 P7Osvìtim			(v osvìtimi)
+    SVZOR X,0	   6	100 %
+MVZOR Rvedle-1 P2on-1			(vedle nìho)
+    SVZOR X,0	   6	100 %
+MVZOR Rversus N1			(versus bratislava)
+    SVZOR X,0	   6	100 %
+MVZOR Rza-1 P7jen¾			(za ním¾)
+    SVZOR X,0	   6	100 %
+MVZOR TT Dpoté			(a¾ poté)
+    SVZOR 1,X	   6	100 %
+MVZOR TT P1málokdo			(jen málokdo)
+    SVZOR 1,X	   6	100 %
+MVZOR VB Dnakonec			(nastoupí nakonec)
+    SVZOR X,0	   6	100 %
+MVZOR VB Rpomocí			(chová pomocí)
+    SVZOR X,0	   6	100 %
+MVZOR Vf Rkvùli			(odejít kvùli)
+    SVZOR X,0	   6	100 %
+MVZOR Vi P3on-1			(øíkejme jim)
+    SVZOR X,0	   6	100 %
+MVZOR Vi Rv-1			(sáhnìte ve)
+    SVZOR X,0	   6	100 %
+MVZOR Vje Rkromì			(je kromì)
+    SVZOR X,0	   6	100 %
+MVZOR Vjsi Vp			(jsi dìlal)
+    SVZOR 1,X	   6	100 %
+MVZOR Vjsou N2			(jsou danì)
+    SVZOR X,0	   6	100 %
+MVZOR Vjsou Rproti-1			(jsou proti)
+    SVZOR X,0	   6	100 %
+MVZOR Vjste AC			(jste schopni)
+    SVZOR X,0	   6	100 %
+MVZOR Vp Co			(psal nìkolikrát)
+    SVZOR X,0	   6	100 %
+MVZOR Vp Dsouèasnì			(zareagovali souèasnì)
+    SVZOR X,0	   6	100 %
+MVZOR Vp Dvìt¹inou			(bankrotovaly vìt¹inou)
+    SVZOR X,0	   6	100 %
+MVZOR Vp P1já			(dr¾el já)
+    SVZOR X,0	   6	100 %
+MVZOR Vp P1nìkdo			(dal nìkdo)
+    SVZOR X,0	   6	100 %
+MVZOR Vp P4ty			(potrápil vás)
+    SVZOR X,0	   6	100 %
+MVZOR Vs Dproto			(zvolen proto)
+    SVZOR X,0	   6	100 %
+MVZOR Xx Z&amp;			(at &amp;)
+    SVZOR 1,X	   6	100 %
+MVZOR Z&amp; A1			(&amp; malý)
+    SVZOR X,0	   6	100 %
+MVZOR Z&ast; Jtak¾e			(&ast; tak¾e)
+    SVZOR 1,X	   6	100 %
+MVZOR Z&ast; Vje			(&ast; je)
+    SVZOR 1,X	   6	100 %
+MVZOR Z( Dpodobnì			(( podobnì)
+    SVZOR 1,X	   6	100 %
+MVZOR Ddaleko Dvíc			(daleko víc)
+    SVZOR 1,X	   7	100 %
+MVZOR Ddoma VB			(doma oblékne)
+    SVZOR 1,X	   7	100 %
+MVZOR Dg Drychle			(dostateènì rychle)
+    SVZOR 1,X	   7	100 %
+MVZOR Dhned VB			(hned vidí)
+    SVZOR 1,X	   7	100 %
+MVZOR Dje¹tì Ddál			(je¹tì dál)
+    SVZOR 1,X	   7	100 %
+MVZOR Dje¹tì Dnedávno			(je¹tì nedávno)
+    SVZOR 1,X	   7	100 %
+MVZOR Dje¹tì Vjsou			(je¹tì nejsou)
+    SVZOR 1,X	   7	100 %
+MVZOR Dji¾ NN			(ji¾ r)
+    SVZOR 1,X	   7	100 %
+MVZOR Dkam TT			(kam a¾)
+    SVZOR X,0	   7	100 %
+MVZOR Dkrátce Vs			(krátce øeèeno)
+    SVZOR 1,X	   7	100 %
+MVZOR Dlépe VB			(lépe vypadá)
+    SVZOR 1,X	   7	100 %
+MVZOR Dmnohem Dvíc			(mnohem víc)
+    SVZOR 1,X	   7	100 %
+MVZOR Dnaprosto VB			(naprosto nevyhovuje)
+    SVZOR 1,X	   7	100 %
+MVZOR Dnejménì Cv			(nejménì jedenkrát)
+    SVZOR 1,X	   7	100 %
+MVZOR Dnikoliv N1			(nikoliv píce)
+    SVZOR 1,X	   7	100 %
+MVZOR Dnovì A3			(novì vznikajícím)
+    SVZOR 1,X	   7	100 %
+MVZOR Dnovì Vf			(novì vybudovat)
+    SVZOR 1,X	   7	100 %
+MVZOR Dpomìrnì A6			(pomìrnì krátké)
+    SVZOR 1,X	   7	100 %
+MVZOR Dprávì Dnyní			(právì nyní)
+    SVZOR 1,X	   7	100 %
+MVZOR Dpøedem A2			(pøedem známých)
+    SVZOR 1,X	   7	100 %
+MVZOR Dpøedev¹ím Dproto			(pøedev¹ím proto)
+    SVZOR 1,X	   7	100 %
+MVZOR Dspolu Pse			(spolu se)
+    SVZOR 1,X	   7	100 %
+MVZOR Dstejnì A2			(stejnì tvrdé)
+    SVZOR 1,X	   7	100 %
+MVZOR Dtak Ddaleko			(tak daleko)
+    SVZOR 1,X	   7	100 %
+MVZOR Dteprve Dnyní			(teprve nyní)
+    SVZOR 1,X	   7	100 %
+MVZOR Dteprve Vf			(teprve navazovat)
+    SVZOR 1,X	   7	100 %
+MVZOR Dtrochu A7			(trochu liknavìj¹ím)
+    SVZOR 1,X	   7	100 %
+MVZOR Du¾ Dproto			(u¾ proto)
+    SVZOR 1,X	   7	100 %
+MVZOR Dvelice VB			(velice mrzí)
+    SVZOR 1,X	   7	100 %
+MVZOR Dvelmi A6			(velmi nekorektním)
+    SVZOR 1,X	   7	100 %
+MVZOR Dvelmi Vs			(velmi cenìna)
+    SVZOR 1,X	   7	100 %
+MVZOR Dvíc Vf			(víc dát)
+    SVZOR 1,X	   7	100 %
+MVZOR Dzejména J,			(zejména pokud)
+    SVZOR 1,X	   7	100 %
+MVZOR Dúplnì A2			(úplnì stejného)
+    SVZOR 1,X	   7	100 %
+MVZOR Jjestli¾e Vje			(jestli¾e je)
+    SVZOR X,0	   7	100 %
+MVZOR NY6 N2			(zoøe valchaøové)
+    SVZOR 1,X	   7	100 %
+MVZOR P1takový N2			(takové vlny)
+    SVZOR 1,X	   7	100 %
+MVZOR P1ty VB			(ty mají)
+    SVZOR 1,X	   7	100 %
+MVZOR P3mùj N2			(na¹í spoleènosti)
+    SVZOR 1,X	   7	100 %
+MVZOR P3nìco P3takový			(nìèemu takovému)
+    SVZOR X,0	   7	100 %
+MVZOR P3¾ádný N3			(¾ádnému výrobci)
+    SVZOR 1,X	   7	100 %
+MVZOR P4jaký Vje			(jakou je)
+    SVZOR 1,X	   7	100 %
+MVZOR Rdíky Rza-1			(díky za)
+    SVZOR X,0	   7	100 %
+MVZOR Ro-1 P6co¾-1			(o èem¾)
+    SVZOR X,0	   7	100 %
+MVZOR Roproti N2			(oproti roku)
+    SVZOR X,0	   7	100 %
+MVZOR Rpo-1 P6se			(po sobì)
+    SVZOR X,0	   7	100 %
+MVZOR Rs-1 P7kdo			(s kým)
+    SVZOR X,0	   7	100 %
+MVZOR Rs-1 P7nìkdo			(s nìkým)
+    SVZOR X,0	   7	100 %
+MVZOR Rv-1 P4který			(ve které)
+    SVZOR X,0	   7	100 %
+MVZOR Rv-1 P6nic			(v nièem)
+    SVZOR X,0	   7	100 %
+MVZOR Rz-1 P2co¾-1			(z èeho¾)
+    SVZOR X,0	   7	100 %
+MVZOR VB P1nikdo			(nemù¾e nikdo)
+    SVZOR X,0	   7	100 %
+MVZOR VB Rvùèi			(projevuje vùèi)
+    SVZOR X,0	   7	100 %
+MVZOR Vbudeme AC			(budeme schopni)
+    SVZOR X,0	   7	100 %
+MVZOR Vbyl Dtu			(byly tu)
+    SVZOR X,0	   7	100 %
+MVZOR Ve Ro-1			(nemluvì o)
+    SVZOR X,0	   7	100 %
+MVZOR Vf Rkromì			(dát kromì)
+    SVZOR X,0	   7	100 %
+MVZOR Vf Rvùèi			(uplatnit vùèi)
+    SVZOR X,0	   7	100 %
+MVZOR Vf Vbudeme			(sni¾ovat budeme)
+    SVZOR X,0	   7	100 %
+MVZOR Vje Dopìt			(je opìt)
+    SVZOR X,0	   7	100 %
+MVZOR Vje Dpravdìpodobnì			(je pravdìpodobnì)
+    SVZOR X,0	   7	100 %
+MVZOR Vje Dzase			(je zase)
+    SVZOR X,0	   7	100 %
+MVZOR Vjsou Dvlastnì			(jsou vlastnì)
+    SVZOR X,0	   7	100 %
+MVZOR Vní Dzatím			(není zatím)
+    SVZOR X,0	   7	100 %
+MVZOR Vní N4			(není stanovisko)
+    SVZOR X,0	   7	100 %
+MVZOR Vp Dnejvíce			(podra¾ilo nejvíce)
+    SVZOR X,0	   7	100 %
+MVZOR Vp Dpak			(vedly pak)
+    SVZOR X,0	   7	100 %
+MVZOR Vp Dproto			(zamítla proto)
+    SVZOR X,0	   7	100 %
+MVZOR Vs Vbudou			(pozváni budou)
+    SVZOR X,0	   7	100 %
+MVZOR Cv Rod-1			(poprvé od)
+    SVZOR X,0	   8	100 %
+MVZOR Ddost A4			(dost tì¾ká)
+    SVZOR 1,X	   8	100 %
+MVZOR Dje¹tì Ddøíve			(je¹tì døíve)
+    SVZOR 1,X	   8	100 %
+MVZOR Dmoc Vf			(moc vybírat)
+    SVZOR 1,X	   8	100 %
+MVZOR Dnovì A4			(novì uzavírané)
+    SVZOR 1,X	   8	100 %
+MVZOR Dnovì VB			(novì navrhují)
+    SVZOR 1,X	   8	100 %
+MVZOR Dprávì Dnaopak			(právì naopak)
+    SVZOR 1,X	   8	100 %
+MVZOR Dprávì N7			(právì pracemi)
+    SVZOR 1,X	   8	100 %
+MVZOR Dpøíli¹ Vs			(pøíli¹ zamìøena)
+    SVZOR 1,X	   8	100 %
+MVZOR Drozhodnì Vní			(rozhodnì není)
+    SVZOR 1,X	   8	100 %
+MVZOR Dskuteènì Vf			(skuteènì pøekonat)
+    SVZOR 1,X	   8	100 %
+MVZOR Dspoleènì Vp			(spoleènì ocenili)
+    SVZOR 1,X	   8	100 %
+MVZOR Dtak Drychle			(tak rychle)
+    SVZOR 1,X	   8	100 %
+MVZOR Dtehdy A4			(tehdy jedinou)
+    SVZOR 1,X	   8	100 %
+MVZOR Dtémìø VB			(témìø shodují)
+    SVZOR 1,X	   8	100 %
+MVZOR Du¾ Ddlouho			(u¾ dlouho)
+    SVZOR 1,X	   8	100 %
+MVZOR Du¾ Dloni			(u¾ loni)
+    SVZOR 1,X	   8	100 %
+MVZOR Du¾ Dnikdy			(u¾ nikdy)
+    SVZOR 1,X	   8	100 %
+MVZOR Dvelmi Db			(velmi pomalu)
+    SVZOR 1,X	   8	100 %
+MVZOR Dvùbec Cv			(vùbec poprvé)
+    SVZOR 1,X	   8	100 %
+MVZOR Dvýraznì A4			(výraznì brzdící)
+    SVZOR 1,X	   8	100 %
+MVZOR Dzase Vf			(zase investovat)
+    SVZOR 1,X	   8	100 %
+MVZOR Dzatím Vjsou			(zatím nejsou)
+    SVZOR 1,X	   8	100 %
+MVZOR Dzcela Vf			(zcela vypoøádat)
+    SVZOR 1,X	   8	100 %
+MVZOR P1co¾-1 Vní			(co¾ není)
+    SVZOR 1,X	   8	100 %
+MVZOR P1nìkterý Vp			(nìkteøí zahynuli)
+    SVZOR 1,X	   8	100 %
+MVZOR P1tentý¾ VB			(toté¾ platí)
+    SVZOR 1,X	   8	100 %
+MVZOR P3nìjaký N3			(nìjakému pohybu)
+    SVZOR 1,X	   8	100 %
+MVZOR P4takový N2			(takové vý¹e)
+    SVZOR 1,X	   8	100 %
+MVZOR P4takovýto N4			(takovéto náboje)
+    SVZOR 1,X	   8	100 %
+MVZOR P4tenhle N4			(tohle dilema)
+    SVZOR 1,X	   8	100 %
+MVZOR Pjakési N1			(jakési nauèení)
+    SVZOR 1,X	   8	100 %
+MVZOR Psi Vi			(si v¹imnìte)
+    SVZOR 1,X	   8	100 %
+MVZOR Rna-1 Rmísto-2			(na místo)
+    SVZOR X,0	   8	100 %
+MVZOR Ro-1 P6nic			(o nièem)
+    SVZOR X,0	   8	100 %
+MVZOR Rpo-1 P6já			(po mnì)
+    SVZOR X,0	   8	100 %
+MVZOR Rpodle-2 Xx			(podle hdp)
+    SVZOR X,0	   8	100 %
+MVZOR Rs-1 P7ty			(s vámi)
+    SVZOR X,0	   8	100 %
+MVZOR Ru-1 P2který			(u kterého)
+    SVZOR X,0	   8	100 %
+MVZOR Rz-1 N3			(z rabacu)
+    SVZOR X,0	   8	100 %
+MVZOR Rza-1 P4co-1			(za co)
+    SVZOR X,0	   8	100 %
+MVZOR Rza-1 P4nìco			(za nìco)
+    SVZOR X,0	   8	100 %
+MVZOR Rza-1 P4ty			(za vás)
+    SVZOR X,0	   8	100 %
+MVZOR VB Dmo¾ná			(pøedstavuje mo¾ná)
+    SVZOR X,0	   8	100 %
+MVZOR VB P1nìkdo			(musí nìkdo)
+    SVZOR X,0	   8	100 %
+MVZOR Vbyl Rpod-1			(byli pod)
+    SVZOR X,0	   8	100 %
+MVZOR Ve N7			(poèínaje vyhledáváním)
+    SVZOR X,0	   8	100 %
+MVZOR Vje Dletos			(je letos)
+    SVZOR X,0	   8	100 %
+MVZOR Vje Rkolem-1			(je kolem)
+    SVZOR X,0	   8	100 %
+MVZOR Vní Vf			(není sly¹et)
+    SVZOR X,0	   8	100 %
+MVZOR Vp Dtam			(spadlo tam)
+    SVZOR X,0	   8	100 %
+MVZOR # Jjenom¾e			(# jenom¾e)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR A3 NN			(vytvoøenému oh)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X,0	   1	 10 %
+MVZOR A3 Rz-1			(dal¹ím ze)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR C1 Vjsou			(tøetina jsou)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Co Vs			(mnohokrát vykradena)
+    SVZOR 1,X	   9	100 %
+MVZOR Cv VB			(nejednou pøistupují)
+    SVZOR 1,X	   9	100 %
+MVZOR Ddobøe Vs			(dobøe dolo¾eny)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Ddosud A4			(dosud nezakoupené)
+    SVZOR 1,X	   9	100 %
+MVZOR Ddosud A6			(dosud neexistující)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Ddosud Vní			(dosud není)
+    SVZOR 1,X	   9	100 %
+MVZOR Ddál VB			(dál provozuje)
+    SVZOR 1,X	   9	100 %
+MVZOR Dhodnì Dg			(hodnì hluboko)
+    SVZOR 1,X	   9	100 %
+MVZOR Dje¹tì Ddnes			(je¹tì dnes)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Djinak Vp			(jinak stalo)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Dnavíc Vje			(navíc je)
+    SVZOR 1,X	   9	100 %
+MVZOR Dokam¾itì Vs			(okam¾itì oznaèeny)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Dpomìrnì A7			(pomìrnì vysokým)
+    SVZOR 1,X	   9	100 %
+MVZOR Dponìkud VB			(ponìkud pokulhává)
+    SVZOR 1,X	   9	100 %
+MVZOR Dpostupnì Vs			(postupnì obnoven)
+    SVZOR 1,X	   9	100 %
+MVZOR Dpoté VB			(poté rozdìlí)
+    SVZOR 1,X	   9	100 %
+MVZOR Dprakticky Vs			(prakticky vyvezeny)
+    SVZOR 1,X	   9	100 %
+MVZOR Dpravdìpodobnì Vp			(pravdìpodobnì musely)
+    SVZOR 1,X	   9	100 %
+MVZOR Dproè Vf			(proè vydávat)
+    SVZOR 1,X	   9	100 %
+MVZOR Dpøedem VB			(pøedem propoète)
+    SVZOR 1,X	   9	100 %
+MVZOR Dpøímo Vs			(pøímo zaji¹»ovány)
+    SVZOR 1,X	   9	100 %
+MVZOR Dtady Vje			(tady je)
+    SVZOR 1,X	   9	100 %
+MVZOR Dtak Ddobøe			(tak dobøe)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X,0	   1	 10 %
+MVZOR Dtakto Vp			(takto omezil)
+    SVZOR 1,X	   9	100 %
+MVZOR Dtaké Dproto			(také proto)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Dtedy Vní			(tedy není)
+    SVZOR 1,X	   9	100 %
+MVZOR Dtrochu A4			(trochu hodnovìrný)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Du¾ Dteï			(u¾ teï)
+    SVZOR 1,X	   9	100 %
+MVZOR J, C6			(a¾ tøech)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR P1jaký N4			(jaký vliv)
+    SVZOR 1,X	   9	100 %
+MVZOR P1nìkdo Rz-1			(nìkdo z)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR P3nikdo VB			(nikomu nelezu)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR P4tý¾ N4			(tý¾ den)
+    SVZOR 1,X	   9	100 %
+MVZOR P6tenhle N6			(téhle bran¾i)
+    SVZOR 1,X	   9	100 %
+MVZOR P7nikdo Vs			(nikým neru¹en)
+    SVZOR 1,X	   9	100 %
+MVZOR P7ten Dspí¹e			(tím spí¹e)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X,0	   1	 10 %
+MVZOR Rna-1 P6co-1			(na èem)
+    SVZOR X,0	   9	100 %
+MVZOR Rnad-1 P7on-1			(nad nimi)
+    SVZOR X,0	   9	100 %
+MVZOR Ro-1 P6nìco			(o nìèem)
+    SVZOR X,0	   9	100 %
+MVZOR Rpo-1 P4který			(po kterou)
+    SVZOR X,0	   9	100 %
+MVZOR Rpod-1 N2			(pod loga)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Rv-1 P6nìco			(v nìèem)
+    SVZOR X,0	   9	100 %
+MVZOR Rvèetnì-2 NN			(vèetnì usa)
+    SVZOR X,0	   9	100 %
+MVZOR Rz-1 N4			(z umístìní)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR VB Dprostì			(zùstává prostì)
+    SVZOR X,0	   9	100 %
+MVZOR VB Dteï			(doporuèujete teï)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR VB Rbìhem			(plánuje bìhem)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR VB Rdíky			(má díky)
+    SVZOR X,0	   9	100 %
+MVZOR Vf Dlépe			(cítit lépe)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Vf P3ten			(zabránit tomu)
+    SVZOR X,0	   9	100 %
+MVZOR Vi Vf			(nezapomeòte investovat)
+    SVZOR X,0	   9	100 %
+MVZOR Vje P1nìco			(je nìco)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Vje Rmimo-1			(je mimo)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Vje Rproti-1			(je proti)
+    SVZOR X,0	   9	100 %
+MVZOR Vjsou Dtam			(jsou tam)
+    SVZOR X,0	   9	100 %
+MVZOR Vní Rbez-1			(není bez)
+    SVZOR X,0	   9	100 %
+MVZOR Vp Ddoma			(zùstalo doma)
+    SVZOR X,0	   9	100 %
+MVZOR Vp Dménì			(dostali ménì)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Vp Dpùvodnì			(vytvoøil pùvodnì)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Vp P3ten			(polo¾il tomu)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Vs Rbez-1			(pøijat beze)
+    SVZOR X,0	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR Z, Jtøeba¾e			(, tøeba¾e)
+    SVZOR 1,X	   9	100 %
+MVZOR Z- Rvèetnì-2			(- vèetnì)
+    SVZOR 1,X	   9	 90 %
+    SVZOR X	   1	 10 %
+MVZOR # Rad			(# ad)
+    SVZOR X,0	  10	100 %
+MVZOR # Z.K			(# .K)
+    SVZOR X,0	  10	100 %
+MVZOR A1 Rpod-1			(vedená pod)
+    SVZOR X,0	  10	100 %
+MVZOR A1 Rvùèi			(odolnìj¹í vùèi)
+    SVZOR X,0	  10	100 %
+MVZOR C7 N4			(tøemi roky)
+    SVZOR 1,X	  10	100 %
+MVZOR Cv Dvíce			(dvanáctkrát více)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dalespoò C=			(alespoò 5)
+    SVZOR 1,X	  10	100 %
+MVZOR Dco Rdo-1			(co do)
+    SVZOR 1,X	  10	100 %
+MVZOR Ddaleko Dg			(daleko peèlivìji)
+    SVZOR 1,X	  10	100 %
+MVZOR Ddál Vf			(dál dìlat)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dje¹tì Ddlouho			(je¹tì dlouho)
+    SVZOR 1,X	  10	100 %
+MVZOR Dji¾ Dtehdy			(ji¾ tehdy)
+    SVZOR 1,X	  10	100 %
+MVZOR Dménì A6			(ménì lidnatém)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dnikoli N1			(nikoli dùvody)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dpøedem Vf			(pøedem informovat)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dpøedem Vp			(pøedem pøipravil)
+    SVZOR 1,X	  10	100 %
+MVZOR Dpøesnì A1			(pøesnì vymezené)
+    SVZOR 1,X	  10	100 %
+MVZOR Dspolu Vp			(spolu rozprávìly)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dstejnì A4			(stejnì placenou)
+    SVZOR 1,X	  10	100 %
+MVZOR Dtady Vp			(tady zaèaly)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dtakto A6			(takto posti¾ených)
+    SVZOR 1,X	  10	100 %
+MVZOR Dtrochu Vf			(trochu odpoèinout)
+    SVZOR 1,X	  10	100 %
+MVZOR Du¾ Dnyní			(u¾ nyní)
+    SVZOR 1,X	  10	100 %
+MVZOR Dveèer Vp			(veèer za¾ila)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dvýraznì Vf			(výraznì li¹it)
+    SVZOR 1,X	  10	100 %
+MVZOR Dzatím Vje			(zatím je)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dzcela A6			(zcela novém)
+    SVZOR 1,X	  10	100 %
+MVZOR Dzejména N2			(zejména slu¾eb)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dzejména N4			(zejména texty)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Dúplnì Vp			(úplnì zapomnìli)
+    SVZOR 1,X	  10	100 %
+MVZOR Jpøesto¾e Vje			(pøesto¾e je)
+    SVZOR X,0	  10	100 %
+MVZOR N7 Rvùèi			(loajalitou vùèi)
+    SVZOR X,0	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR P1co-1 P1v¹echen			(co v¹echno)
+    SVZOR X,0	  10	100 %
+MVZOR P1jen¾ Vjsou			(je¾ jsou)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR P1kdo Vjsou			(kdo jsou)
+    SVZOR 1,X	  10	100 %
+MVZOR P1který P1sám			(která sama)
+    SVZOR X,0	  10	100 %
+MVZOR P1nic P2takový			(nic takového)
+    SVZOR X,0	  10	100 %
+MVZOR P1tento N2			(toto zbo¾í)
+    SVZOR 1,X	  10	100 %
+MVZOR P2¾ádný N2			(¾ádné zku¹enosti)
+    SVZOR 1,X	  10	100 %
+MVZOR P6tento N2			(této souvislosti)
+    SVZOR 1,X	  10	100 %
+MVZOR P7jaký Vjsou			(jakými jsou)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR P7jakýkoliv N7			(jakoukoliv prohrou)
+    SVZOR 1,X	  10	100 %
+MVZOR P7ten Dvíc			(tím víc)
+    SVZOR 1,X	  10	100 %
+MVZOR Pjakýsi N1			(jakýsi mezièlánek)
+    SVZOR 1,X	  10	100 %
+MVZOR Rbìhem P2jen¾			(bìhem ní¾)
+    SVZOR X,0	  10	100 %
+MVZOR Rkolem-1 Psebe			(kolem sebe)
+    SVZOR X,0	  10	100 %
+MVZOR Rmezi-1 P7jen¾			(mezi nimi¾)
+    SVZOR X,0	  10	100 %
+MVZOR Ro-1 P4nic			(o nic)
+    SVZOR X,0	  10	100 %
+MVZOR Rod-1 P2jen¾			(od nìho¾)
+    SVZOR X,0	  10	100 %
+MVZOR Rpro-1 J^			(pro a)
+    SVZOR 1,X	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Rproti-1 P3já			(proti nám)
+    SVZOR X,0	  10	100 %
+MVZOR Ru-1 P2ty			(u vás)
+    SVZOR X,0	  10	100 %
+MVZOR VB Dnadále			(ponechají nadále)
+    SVZOR X,0	  10	100 %
+MVZOR VB Dpøece			(jde pøece)
+    SVZOR X,0	  10	100 %
+MVZOR Vbudete Vf			(budete muset)
+    SVZOR 1,X	  10	100 %
+MVZOR Vje Dmo¾ná			(je mo¾ná)
+    SVZOR X,0	  10	100 %
+MVZOR Vje Dtam			(je tam)
+    SVZOR X,0	  10	100 %
+MVZOR Vje Dzároveò			(je zároveò)
+    SVZOR X,0	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Vjsou Rmezi-1			(jsou mezi)
+    SVZOR X,0	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Vp Dmj			(pøinesl mj)
+    SVZOR X,0	  10	100 %
+MVZOR Vp Dnakonec			(dospìla nakonec)
+    SVZOR X,0	  10	100 %
+MVZOR Vp Dnyní			(zbyla nyní)
+    SVZOR X,0	  10	100 %
+MVZOR Vp Dtu			(na¹la tu)
+    SVZOR X,0	  10	 90 %
+    SVZOR X	   1	  9 %
+MVZOR Vp Dvlastnì			(zùstala vlastnì)
+    SVZOR X,0	  10	100 %
+MVZOR Dalespoò Vf			(alespoò vyluèovat)
+    SVZOR 1,X	  11	100 %
+MVZOR Ddaleko A4			(daleko vy¹¹í)
+    SVZOR 1,X	  11	100 %
+MVZOR Ddnes Vjsou			(dnes jsou)
+    SVZOR 1,X	  11	100 %
+MVZOR Ddoma Vp			(doma skonèil)
+    SVZOR 1,X	  11	100 %
+MVZOR Ddøíve A2			(døíve shromá¾dìných)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR Dmnohem Dménì			(mnohem ménì)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X,0	   1	  8 %
+MVZOR Dmoc A1			(moc skromná)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X,0	   1	  8 %
+MVZOR Dnaprosto A4			(naprosto odli¹ný)
+    SVZOR 1,X	  11	100 %
+MVZOR Dponìkud A2			(ponìkud výstøedního)
+    SVZOR 1,X	  11	100 %
+MVZOR Dprakticky Vp			(prakticky neexistovala)
+    SVZOR 1,X	  11	100 %
+MVZOR Dproè Vp			(proè pøi¹li)
+    SVZOR 1,X	  11	100 %
+MVZOR Dpøímo Vf			(pøímo zabývat)
+    SVZOR 1,X	  11	100 %
+MVZOR Dskuteènì A4			(skuteènì jediný)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR Dtak Vs			(tak posti¾eni)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR Dtakto A4			(takto rozèlenìný)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR Dtrochu Dg			(trochu pozdì)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR Dvùbec P1nic			(vùbec nic)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR Jpøesto¾e VB			(pøesto¾e pou¾ívá)
+    SVZOR X,0	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR N5 NN			(internationale spedition)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR NY7 A7			(marianem hlavatým)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR P2svùj-1 N4			(svého spoleèníka)
+    SVZOR 1,X	  11	100 %
+MVZOR P4mùj N1			(na¹i spoleènost)
+    SVZOR 1,X	  11	100 %
+MVZOR P7nic A7			(nièím jiným)
+    SVZOR X,0	  11	100 %
+MVZOR Rk-1 P3co-1			(k èemu)
+    SVZOR X,0	  11	100 %
+MVZOR Rk-1 P3nìco			(k nìèemu)
+    SVZOR X,0	  11	100 %
+MVZOR Rna-1 P4nìco			(na nìco)
+    SVZOR X,0	  11	100 %
+MVZOR Rna-1 P6já			(na nás)
+    SVZOR X,0	  11	100 %
+MVZOR Ro-1 P6já			(o nás)
+    SVZOR X,0	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR Rpoblí¾-2 N2			(poblí¾ tiskárny)
+    SVZOR X,0	  11	100 %
+MVZOR Rvan-2 N1			(van den)
+    SVZOR 1,X	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR Rz-1 P2co-1			(z èeho)
+    SVZOR X,0	  11	100 %
+MVZOR TT Dv¾dy			(ne v¾dy)
+    SVZOR 1,X	  11	100 %
+MVZOR VB Djinak			(nemohu jinak)
+    SVZOR X,0	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR VB Dpravdìpodobnì			(dozná pravdìpodobnì)
+    SVZOR X,0	  11	100 %
+MVZOR Vf Dv¾dy			(vy¾adovat v¾dy)
+    SVZOR X,0	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR Vf P4nic			(doporuèit nic)
+    SVZOR X,0	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR Vp Dsnad			(mohl snad)
+    SVZOR X,0	  11	 91 %
+    SVZOR X	   1	  8 %
+MVZOR A6 Rz-1			(postavených z)
+    SVZOR X,0	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR C2 N4			(jednoho obyvatele)
+    SVZOR 1,X	  12	 92 %
+    SVZOR X,0	   1	  7 %
+MVZOR Ddaleko Dvíce			(daleko více)
+    SVZOR 1,X	  12	100 %
+MVZOR Djinak VB			(jinak chceme)
+    SVZOR 1,X	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Dji¾ Ddlouho			(ji¾ dlouho)
+    SVZOR 1,X	  12	100 %
+MVZOR Dji¾ Vní			(ji¾ není)
+    SVZOR 1,X	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Dlépe Vs			(lépe øeèeno)
+    SVZOR 1,X	  12	100 %
+MVZOR Dpodstatnì VB			(podstatnì zvý¹í)
+    SVZOR 1,X	  12	100 %
+MVZOR Dpodstatnì Vf			(podstatnì zvý¹it)
+    SVZOR 1,X	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Dpøedem A1			(pøedem nastavitelná)
+    SVZOR 1,X	  12	100 %
+MVZOR Dpøíli¹ C1			(pøíli¹ mnoho)
+    SVZOR 1,X	  12	100 %
+MVZOR Dtak Ddlouho			(tak dlouho)
+    SVZOR 1,X	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Dtam Vje			(tam je)
+    SVZOR 1,X	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Dtrochu VB			(trochu dá)
+    SVZOR 1,X	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Dvíce Djak			(více jak)
+    SVZOR X,0	  12	100 %
+MVZOR Dzejména Dproto			(zejména proto)
+    SVZOR 1,X	  12	100 %
+MVZOR Dzároveò Vf			(zároveò dosahovat)
+    SVZOR 1,X	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR J^ C}			(a igi)
+    SVZOR X,0	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR NN Z&amp;			(j &amp;)
+    SVZOR 1,X	  12	100 %
+MVZOR P1jeho N4			(její èleny)
+    SVZOR 1,X	  12	100 %
+MVZOR P1já Vp			(my zùstali)
+    SVZOR 1,X	  12	100 %
+MVZOR P1nic Vf			(nic ubrat)
+    SVZOR 1,X	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR P1nìco P2takový			(nìco takového)
+    SVZOR X,0	  12	100 %
+MVZOR P1takovýto N1			(takovýto text)
+    SVZOR 1,X	  12	100 %
+MVZOR P1tentý¾ N1			(tyté¾ firmy)
+    SVZOR 1,X	  12	100 %
+MVZOR P4tento N2			(toto zbo¾í)
+    SVZOR 1,X	  12	100 %
+MVZOR P4tentý¾ N4			(tentý¾ výsledek)
+    SVZOR 1,X	  12	100 %
+MVZOR Rk-1 P2jen¾			(k ní¾)
+    SVZOR X,0	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Rkolem-1 P2on-1			(kolem nich)
+    SVZOR X,0	  12	100 %
+MVZOR Rpro-1 P4ty			(pro vás)
+    SVZOR X,0	  12	100 %
+MVZOR Rproti-1 P3se			(proti sobì)
+    SVZOR X,0	  12	100 %
+MVZOR Rs-1 P7co-1			(s èím)
+    SVZOR X,0	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Rza-1 Dvíce			(za více)
+    SVZOR X,0	  12	100 %
+MVZOR VB P1nìco			(tvrdí nìco)
+    SVZOR X,0	  12	100 %
+MVZOR Vp Dnedávno			(probìhl nedávno)
+    SVZOR X,0	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Vp Dzde			(zaèali zde)
+    SVZOR X,0	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Vp Dúdajnì			(sehráli údajnì)
+    SVZOR X,0	  12	 92 %
+    SVZOR X	   1	  7 %
+MVZOR A1 N5			(mikrovlnný troubo)
+    SVZOR 1,X	  13	100 %
+MVZOR C7 J^			(tøemi a¾)
+    SVZOR 1,X	  13	100 %
+MVZOR Dco A1			(co nejrychlej¹í)
+    SVZOR 1,X	  13	100 %
+MVZOR Dji¾ Co			(ji¾ mnohokrát)
+    SVZOR 1,X	  13	100 %
+MVZOR Dkdy Z-			(kdy -)
+    SVZOR 1,X	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Dmoc Vp			(moc nezajímala)
+    SVZOR 1,X	  13	100 %
+MVZOR Dnadále Vp			(nadále skrýval)
+    SVZOR 1,X	  13	100 %
+MVZOR Dpotom Vp			(potom mohl)
+    SVZOR 1,X	  13	100 %
+MVZOR Dprostì Vp			(prostì nereagovali)
+    SVZOR 1,X	  13	100 %
+MVZOR Dspí¹ VB			(spí¹ vyplývá)
+    SVZOR 1,X	  13	100 %
+MVZOR Dtì¾ko A1			(tì¾ko myslitelný)
+    SVZOR 1,X	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Du¾ Cv			(u¾ podruhé)
+    SVZOR 1,X	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Du¾ Ddøíve			(u¾ døíve)
+    SVZOR 1,X	  13	100 %
+MVZOR Dvelice A4			(velice kladný)
+    SVZOR 1,X	  13	100 %
+MVZOR Dvelmi AC			(velmi spokojeni)
+    SVZOR 1,X	  13	100 %
+MVZOR Dvelmi Dèasto			(velmi èasto)
+    SVZOR 1,X	  13	100 %
+MVZOR Dvelmi Vp			(velmi osvìdèilo)
+    SVZOR 1,X	  13	100 %
+MVZOR Dzcela A7			(zcela primitivními)
+    SVZOR 1,X	  13	100 %
+MVZOR Dzde Vje			(zde je)
+    SVZOR 1,X	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR J^ Dsice			(a sice)
+    SVZOR 1,X	  13	100 %
+MVZOR P2který N2			(kterého sloupce)
+    SVZOR 1,X	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR P7nìkterý N7			(nìkterými novinkami)
+    SVZOR 1,X	  13	100 %
+MVZOR Rdo-1 Xx			(do fiba)
+    SVZOR X,0	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Ru-1 Z.			(u .)
+    SVZOR X,0	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Rv-1 P6já			(v mnì)
+    SVZOR X,0	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR VB Dpak			(musím pak)
+    SVZOR X,0	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR VB Dzároveò			(pøedstavuje zároveò)
+    SVZOR X,0	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR VB P4ty			(trápí vás)
+    SVZOR X,0	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Vbychom Vbyl			(bychom byli)
+    SVZOR 1,X	  13	100 %
+MVZOR Vbyl Vjsme			(byli jsme)
+    SVZOR X,0	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Vf P4cokoliv			(obléci cokoli)
+    SVZOR X,0	  13	100 %
+MVZOR Vje Dtady			(je tady)
+    SVZOR X,0	  13	100 %
+MVZOR Vje Dteï			(je teï)
+    SVZOR X,0	  13	100 %
+MVZOR Vje Rpod-1			(je pod)
+    SVZOR X,0	  13	100 %
+MVZOR Vjsou Ddnes			(jsou dnes)
+    SVZOR X,0	  13	100 %
+MVZOR Vp Dzøejmì			(mìl zøejmì)
+    SVZOR X,0	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR Vp Rkromì			(zahrnovala kromì)
+    SVZOR X,0	  13	100 %
+MVZOR Z- Dkde			(- kde)
+    SVZOR X,0	  13	 92 %
+    SVZOR X	   1	  7 %
+MVZOR A3 Rna-1			(odkázaným na)
+    SVZOR X,0	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Cv Vs			(poprvé pøekroèena)
+    SVZOR 1,X	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Ddokonce Vs			(dokonce pøedsti¾eno)
+    SVZOR 1,X	  14	100 %
+MVZOR Ddøíve J,			(døíve ne¾)
+    SVZOR X,0	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Dménì A4			(ménì kvalitní)
+    SVZOR 1,X	  14	100 %
+MVZOR Dprávì Dproto			(právì proto)
+    SVZOR 1,X	  14	100 %
+MVZOR Dtak Dtrochu			(tak trochu)
+    SVZOR 1,X	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Dtémìø Vp			(témìø kleslo)
+    SVZOR 1,X	  14	100 %
+MVZOR Dvelmi Drychle			(velmi rychle)
+    SVZOR 1,X	  14	100 %
+MVZOR Dvíce Vp			(více vydìlali)
+    SVZOR 1,X	  14	100 %
+MVZOR J, P4takový			(jako takovou)
+    SVZOR 1,X	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR P1mùj N4			(na¹e výrobky)
+    SVZOR 1,X	  14	100 %
+MVZOR P2takovýto N2			(takovýchto mana¾erù)
+    SVZOR 1,X	  14	100 %
+MVZOR P2ve¹kerý N2			(ve¹kerého materiálu)
+    SVZOR 1,X	  14	100 %
+MVZOR P6samý N6			(samém závìru)
+    SVZOR 1,X	  14	100 %
+MVZOR P6svùj-1 N2			(svých rukou)
+    SVZOR 1,X	  14	100 %
+MVZOR P7tvùj N7			(va¹í povinností)
+    SVZOR 1,X	  14	100 %
+MVZOR Rdle N2			(dle zákona)
+    SVZOR X,0	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Rk-1 P3nic			(k nièemu)
+    SVZOR X,0	  14	100 %
+MVZOR Rkvùli P3ten			(kvùli tomu)
+    SVZOR X,0	  14	100 %
+MVZOR Ro-1 P4jen¾			(o ni¾)
+    SVZOR X,0	  14	100 %
+MVZOR Rpro-1 Xx			(pro bbc)
+    SVZOR X,0	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Rpøi-1 P6on-1			(pøi nich)
+    SVZOR X,0	  14	100 %
+MVZOR Rz-1 Xx			(z èsop)
+    SVZOR X,0	  14	100 %
+MVZOR VB Ddennì			(mù¾e dennì)
+    SVZOR X,0	  14	100 %
+MVZOR VB Ddoma			(podnikají doma)
+    SVZOR X,0	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR VB Dmj			(vyvolá mj)
+    SVZOR X,0	  14	100 %
+MVZOR VB Dnejvíce			(trávíme nejvíce)
+    SVZOR X,0	  14	100 %
+MVZOR Vf Dvíc			(prokázat víc)
+    SVZOR X,0	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Vp Dpøitom			(pøipustili pøitom)
+    SVZOR X,0	  14	100 %
+MVZOR Vp Rdíky			(vzrostl díky)
+    SVZOR X,0	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Vp Rkvùli			(zvolili kvùli)
+    SVZOR X,0	  14	 93 %
+    SVZOR X	   1	  6 %
+MVZOR C3 Rz-1			(jednomu z)
+    SVZOR X,0	  15	100 %
+MVZOR Ddlouho VB			(dlouho bydlíme)
+    SVZOR 1,X	  15	100 %
+MVZOR Dhodnì VB			(hodnì cestují)
+    SVZOR 1,X	  15	100 %
+MVZOR Dje¹tì Cv			(je¹tì osmkrát)
+    SVZOR 1,X	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Dmnohem A4			(mnohem vìt¹í)
+    SVZOR 1,X	  15	100 %
+MVZOR Dnejvíce Vp			(nejvíce podílely)
+    SVZOR 1,X	  15	100 %
+MVZOR Dokam¾itì Vp			(okam¾itì varovalo)
+    SVZOR 1,X	  15	100 %
+MVZOR Dpodstatnì A4			(podstatnì vìt¹í)
+    SVZOR 1,X	  15	100 %
+MVZOR Dpodstatnì Vp			(podstatnì zvý¹il)
+    SVZOR 1,X	  15	100 %
+MVZOR Dponìkud A4			(ponìkud o¾ehavý)
+    SVZOR 1,X	  15	100 %
+MVZOR Dponìkud Dg			(ponìkud ob¹írnìji)
+    SVZOR 1,X	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Dpoté Vp			(poté zadal)
+    SVZOR 1,X	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Dpøesnì Vf			(pøesnì mìøit)
+    SVZOR 1,X	  15	100 %
+MVZOR Dpøíli¹ Vf			(pøíli¹ chválit)
+    SVZOR 1,X	  15	100 %
+MVZOR Dstále Vp			(stále neplatil)
+    SVZOR 1,X	  15	100 %
+MVZOR J^ P2onen			(èi onoho)
+    SVZOR X,0	  15	100 %
+MVZOR NY3 N2			(annì dvoøáèkové)
+    SVZOR 1,X	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR P1nìkdo A1			(nìkdo jiný)
+    SVZOR X,0	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR P1ten Vjest			(to jest)
+    SVZOR 1,X	  15	100 %
+MVZOR P6který N6			(kterých hmotnostech)
+    SVZOR 1,X	  15	100 %
+MVZOR Rkolem-1 P2já			(kolem nás)
+    SVZOR X,0	  15	100 %
+MVZOR Ro-1 P4který			(o který)
+    SVZOR X,0	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Rokolo-1 N2			(okolo silnic)
+    SVZOR X,0	  15	100 %
+MVZOR Rpo-1 P6který			(po kterém)
+    SVZOR X,0	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Rpro-1 N2			(pro turisty)
+    SVZOR X,0	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Rpøi-1 N4			(pøi investování)
+    SVZOR X,0	  15	100 %
+MVZOR Ru-1 Psebe			(u sebe)
+    SVZOR X,0	  15	100 %
+MVZOR Rza-1 P4jen¾			(za ni¾)
+    SVZOR X,0	  15	100 %
+MVZOR VB Dspí¹			(pozná spí¹)
+    SVZOR X,0	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR VB Dvlastnì			(dostane vlastnì)
+    SVZOR X,0	  15	100 %
+MVZOR Vf Djinak			(dìlat jinak)
+    SVZOR X,0	  15	100 %
+MVZOR Vf P7ten			(minimalizovat tím)
+    SVZOR X,0	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Vje Dpøitom			(je pøitom)
+    SVZOR X,0	  15	100 %
+MVZOR Vje Dsamozøejmì			(je samozøejmì)
+    SVZOR X,0	  15	 93 %
+    SVZOR X	   1	  6 %
+MVZOR Vs Vbude			(upraven bude)
+    SVZOR X,0	  15	 93 %
+    SVZOR 1,X	   1	  6 %
+MVZOR Z&amp; NN			(&amp; spol)
+    SVZOR X,0	  15	100 %
+MVZOR Ddaleko A1			(daleko pøístupnìj¹í)
+    SVZOR 1,X	  16	100 %
+MVZOR Ddost Dg			(dost brzy)
+    SVZOR 1,X	  16	100 %
+MVZOR Dje¹tì Vní			(je¹tì není)
+    SVZOR 1,X	  16	100 %
+MVZOR Dji¾ Dnyní			(ji¾ nyní)
+    SVZOR 1,X	  16	100 %
+MVZOR Dnaprosto Dg			(naprosto odli¹nì)
+    SVZOR 1,X	  16	100 %
+MVZOR Dokam¾itì VB			(okam¾itì reagujeme)
+    SVZOR 1,X	  16	100 %
+MVZOR Dponìkud Vp			(ponìkud polevili)
+    SVZOR 1,X	  16	100 %
+MVZOR Dprakticky VB			(prakticky nemají)
+    SVZOR 1,X	  16	100 %
+MVZOR Dpøesnì VB			(pøesnì známe)
+    SVZOR 1,X	  16	100 %
+MVZOR Drychle Vp			(rychle vrátili)
+    SVZOR 1,X	  16	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Dtémìø N4			(témìø sto)
+    SVZOR 1,X	  16	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Dzhruba N4			(zhruba minutu)
+    SVZOR 1,X	  16	100 %
+MVZOR P1nìkterý VB			(nìkterá mají)
+    SVZOR 1,X	  16	100 %
+MVZOR P3nìkterý N3			(nìkterým podnikùm)
+    SVZOR 1,X	  16	100 %
+MVZOR P6jaký N6			(jakých mno¾stvích)
+    SVZOR 1,X	  16	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Rdo-1 Psebe			(do sebe)
+    SVZOR X,0	  16	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Rk-1 P3se			(k sobì)
+    SVZOR X,0	  16	100 %
+MVZOR Rna-1 P6se			(na sobì)
+    SVZOR X,0	  16	100 %
+MVZOR Rpøi-1 NN			(pøi interview)
+    SVZOR X,0	  16	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Rvedle-1 Psebe			(vedle sebe)
+    SVZOR X,0	  16	100 %
+MVZOR Vbyl C7			(bylo jedním)
+    SVZOR X,0	  16	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Vf Vbudou			(chybìt budou)
+    SVZOR X,0	  16	100 %
+MVZOR Vp Dpoté			(uchýlily poté)
+    SVZOR X,0	  16	100 %
+MVZOR Vp Dtoti¾			(pøi¹li toti¾)
+    SVZOR X,0	  16	100 %
+MVZOR A1 Vní			(kupující není)
+    SVZOR 1,X	  17	 94 %
+    SVZOR X	   1	  5 %
+MVZOR A7 Rs-1			(spojenými s)
+    SVZOR X,0	  17	100 %
+MVZOR Dprávì Dtak			(právì tak)
+    SVZOR 1,X	  17	100 %
+MVZOR Drozhodnì Vp			(rozhodnì nevy¹plhala)
+    SVZOR 1,X	  17	100 %
+MVZOR Dsnad Vp			(snad mìli)
+    SVZOR 1,X	  17	100 %
+MVZOR Dspí¹e VB			(spí¹e investují)
+    SVZOR 1,X	  17	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Dstejnì Dg			(stejnì ochotnì)
+    SVZOR 1,X	  17	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Dtémìø Dg			(témìø výluènì)
+    SVZOR 1,X	  17	100 %
+MVZOR N3 Xx			(vývoji hdp)
+    SVZOR X,0	  17	 94 %
+    SVZOR X	   1	  5 %
+MVZOR P1nikdo Rz-1			(nikdo z)
+    SVZOR X,0	  17	100 %
+MVZOR P1tenhle N1			(tyhle pocity)
+    SVZOR 1,X	  17	 94 %
+    SVZOR X	   1	  5 %
+MVZOR P2nìkterý Rz-1			(nìkterých z)
+    SVZOR X,0	  17	100 %
+MVZOR P4jen¾ N7			(jeho¾ vlastníkem)
+    SVZOR 1,X	  17	100 %
+MVZOR P7¾ádný N7			(¾ádným ziskem)
+    SVZOR 1,X	  17	100 %
+MVZOR Rbez-1 P2on-1			(bez ní)
+    SVZOR X,0	  17	100 %
+MVZOR Rpodle-2 P2ty			(podle vás)
+    SVZOR X,0	  17	100 %
+MVZOR Rpøed-1 P7on-1			(pøed ním)
+    SVZOR X,0	  17	100 %
+MVZOR Rza-1 P7já			(za námi)
+    SVZOR X,0	  17	100 %
+MVZOR Vp Vbyste			(mìl byste)
+    SVZOR X,0	  17	100 %
+MVZOR AA N5			(san jose)
+    SVZOR 1,X	  18	100 %
+MVZOR Dnakonec VB			(nakonec souhlasí)
+    SVZOR 1,X	  18	100 %
+MVZOR Dpouze Vp			(pouze sdìlil)
+    SVZOR 1,X	  18	100 %
+MVZOR Dpøíli¹ Dg			(pøíli¹ brzy)
+    SVZOR 1,X	  18	100 %
+MVZOR Dsnad VB			(snad nemusím)
+    SVZOR 1,X	  18	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Dtrochu Vp			(trochu ublí¾il)
+    SVZOR 1,X	  18	100 %
+MVZOR P1on-1 VB			(on ne¾ertuje)
+    SVZOR 1,X	  18	 90 %
+    SVZOR X	   2	 10 %
+MVZOR P1onen N1			(onen motor)
+    SVZOR 1,X	  18	 90 %
+    SVZOR X	   2	 10 %
+MVZOR P2samý N2			(samého poèátku)
+    SVZOR 1,X	  18	 94 %
+    SVZOR X	   1	  5 %
+MVZOR P4svùj-1 N1			(své èíslo)
+    SVZOR 1,X	  18	100 %
+MVZOR P7ten Dménì			(tím ménì)
+    SVZOR 1,X	  18	100 %
+MVZOR Rdíky P3ten			(díky tomu)
+    SVZOR X,0	  18	100 %
+MVZOR Rkolem-1 NN			(kolem gora¾de)
+    SVZOR X,0	  18	100 %
+MVZOR Rmezi-1 P4on-1			(mezi nì)
+    SVZOR X,0	  18	100 %
+MVZOR Rvùèi NN			(vùèi èr)
+    SVZOR X,0	  18	100 %
+MVZOR Vbyl P4ten			(byly to)
+    SVZOR X,0	  18	100 %
+MVZOR Vje Rmezi-1			(je mezi)
+    SVZOR X,0	  18	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Vjsou Ru-1			(jsou u)
+    SVZOR X,0	  18	 94 %
+    SVZOR X	   1	  5 %
+MVZOR Vp Dtedy			(nemohl tedy)
+    SVZOR X,0	  18	100 %
+MVZOR Djinak J,			(jinak ne¾)
+    SVZOR X,0	  19	100 %
+MVZOR Dkoneènì Vp			(koneènì zkusil)
+    SVZOR 1,X	  19	100 %
+MVZOR Dmnohem Dvíce			(mnohem více)
+    SVZOR 1,X	  19	 95 %
+    SVZOR X	   1	  5 %
+MVZOR Dpomìrnì Dg			(pomìrnì brzy)
+    SVZOR 1,X	  19	100 %
+MVZOR Dpouze VB			(pouze pøe¾ívají)
+    SVZOR 1,X	  19	 90 %
+    SVZOR X	   2	  9 %
+MVZOR Dstejnì VB			(stejnì vypomù¾e)
+    SVZOR 1,X	  19	 90 %
+    SVZOR X	   2	  9 %
+MVZOR Dtémìø N1			(témìø stovky)
+    SVZOR 1,X	  19	 95 %
+    SVZOR X	   1	  5 %
+MVZOR NY2 C}			(pavla ii)
+    SVZOR X,0	  19	100 %
+MVZOR NY2 N4			(jana mihalièky)
+    SVZOR 1,X	  19	100 %
+MVZOR P1on-1 Vp			(on musel)
+    SVZOR 1,X	  19	 95 %
+    SVZOR X	   1	  5 %
+MVZOR Rpodle-2 P2který			(podle kterého)
+    SVZOR X,0	  19	100 %
+MVZOR Rpro-1 P4jen¾			(pro nì¾)
+    SVZOR X,0	  19	100 %
+MVZOR Vní Rpro-1			(není pro)
+    SVZOR X,0	  19	 95 %
+    SVZOR X	   1	  5 %
+MVZOR Vp P4nic			(nena¹el nic)
+    SVZOR X,0	  19	 90 %
+    SVZOR X	   2	  9 %
+MVZOR Vs Rpodle-2			(vyplnìny podle)
+    SVZOR X,0	  19	 90 %
+    SVZOR X	   2	  9 %
+MVZOR Dhodnì Vf			(hodnì uèit)
+    SVZOR 1,X	  20	100 %
+MVZOR Dhodnì Vp			(hodnì pomohla)
+    SVZOR 1,X	  20	100 %
+MVZOR Djistì Vp			(jistì neexistovali)
+    SVZOR 1,X	  20	100 %
+MVZOR Dji¾ Ddnes			(ji¾ dnes)
+    SVZOR 1,X	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Dmnohem Dg			(mnohem agresivnìji)
+    SVZOR 1,X	  20	 90 %
+    SVZOR X	   2	  9 %
+MVZOR Dpostupnì Vf			(postupnì vyhasínat)
+    SVZOR 1,X	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Dpouze Vf			(pouze proplácet)
+    SVZOR 1,X	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Dpravdìpodobnì VB			(pravdìpodobnì projedou)
+    SVZOR 1,X	  20	100 %
+MVZOR Dprávì VB			(právì kontaktujeme)
+    SVZOR 1,X	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Du¾ Vní			(u¾ není)
+    SVZOR 1,X	  20	100 %
+MVZOR Dèasto Vp			(èasto opakovali)
+    SVZOR 1,X	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Dúplnì A1			(úplnì nejdùle¾itìj¹í)
+    SVZOR 1,X	  20	100 %
+MVZOR N3 Rproti-1			(operacím proti)
+    SVZOR X,0	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR P1on-1 P1sám			(on sám)
+    SVZOR X,0	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR P4svùj-1 N2			(své odpovìdnosti)
+    SVZOR 1,X	  20	100 %
+MVZOR Rk-1 Z.			(k .)
+    SVZOR X,0	  20	100 %
+MVZOR Rnad-1 Z.			(n .)
+    SVZOR X,0	  20	100 %
+MVZOR Rod-1 Psebe			(od sebe)
+    SVZOR X,0	  20	100 %
+MVZOR Rpo-1 P6jen¾			(po ní¾)
+    SVZOR X,0	  20	100 %
+MVZOR VB Dopìt			(jde opìt)
+    SVZOR X,0	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR VB Dzøejmì			(má zøejmì)
+    SVZOR X,0	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR VB Rokolo-1			(pohybuje okolo)
+    SVZOR X,0	  20	100 %
+MVZOR VB Rvedle-1			(objevují vedle)
+    SVZOR X,0	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Vf Rmezi-1			(volit mezi)
+    SVZOR X,0	  20	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Vf Rnad-1			(zamyslet nad)
+    SVZOR X,0	  20	 90 %
+    SVZOR X	   2	  9 %
+MVZOR Vi P3já			(pi¹te nám)
+    SVZOR X,0	  20	100 %
+MVZOR Vní P1nic			(není nic)
+    SVZOR X,0	  20	100 %
+MVZOR Dji¾ Cv			(ji¾ nejednou)
+    SVZOR 1,X	  21	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Dlépe J,			(lépe ne¾)
+    SVZOR X,0	  21	100 %
+MVZOR Dproè VB			(proè preferujeme)
+    SVZOR 1,X	  21	100 %
+MVZOR Dvelmi Ddobøe			(velmi dobøe)
+    SVZOR 1,X	  21	100 %
+MVZOR Dzcela Vp			(zcela zavrhla)
+    SVZOR 1,X	  21	100 %
+MVZOR N3 Rmezi-1			(darování mezi)
+    SVZOR X,0	  21	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Rmísto-2 P2ten			(místo toho)
+    SVZOR X,0	  21	100 %
+MVZOR Rpøed-1 P7ten			(pøed tím)
+    SVZOR X,0	  21	100 %
+MVZOR Rpøi-1 P6který			(pøi které)
+    SVZOR X,0	  21	100 %
+MVZOR Rs-1 Psebou			(s sebou)
+    SVZOR X,0	  21	100 %
+MVZOR Vbyste Vp			(byste zvítìzili)
+    SVZOR 1,X	  21	100 %
+MVZOR Vjsou Dtu			(jsou tu)
+    SVZOR X,0	  21	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Z( Rvèetnì-2			(( vèetnì)
+    SVZOR 1,X	  21	 91 %
+    SVZOR X	   2	  8 %
+MVZOR Ddokonce N1			(dokonce motýlek)
+    SVZOR 1,X	  22	 91 %
+    SVZOR X	   2	  8 %
+MVZOR Dpomìrnì A4			(pomìrnì vysokou)
+    SVZOR 1,X	  22	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Dpøíli¹ A4			(pøíli¹ rù¾ové)
+    SVZOR 1,X	  22	100 %
+MVZOR Dpøímo VB			(pøímo nepotápí)
+    SVZOR 1,X	  22	100 %
+MVZOR Dsouèasnì Vp			(souèasnì stoupl)
+    SVZOR 1,X	  22	100 %
+MVZOR Dvelmi VB			(velmi mìní)
+    SVZOR 1,X	  22	100 %
+MVZOR P2jakýkoliv N2			(jakékoliv podmínky)
+    SVZOR 1,X	  22	 95 %
+    SVZOR X	   1	  4 %
+MVZOR P4nìkterý Rz-1			(nìkteré z)
+    SVZOR X,0	  22	100 %
+MVZOR P7jen¾ N7			(jejím¾ nástupem)
+    SVZOR 1,X	  22	100 %
+MVZOR Rde N2			(de klerka)
+    SVZOR 1,X	  22	 91 %
+    SVZOR X	   2	  8 %
+MVZOR Ro-1 Dvíce			(o více)
+    SVZOR X,0	  22	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Rpo-1 NN			(po usa)
+    SVZOR X,0	  22	100 %
+MVZOR TT Dtì¾ko			(jen tì¾ko)
+    SVZOR 1,X	  22	100 %
+MVZOR Vje Dvlastnì			(je vlastnì)
+    SVZOR X,0	  22	 91 %
+    SVZOR X	   2	  8 %
+MVZOR Vp Dspí¹e			(soustøedili spí¹e)
+    SVZOR X,0	  22	 91 %
+    SVZOR X	   2	  8 %
+MVZOR C1 C2			(patnáct tisíc)
+    SVZOR X,0	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR C2 J,			(dvou a¾)
+    SVZOR 1,X	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Dje¹tì Dletos			(je¹tì letos)
+    SVZOR 1,X	  23	100 %
+MVZOR Dji¾ Ddøíve			(ji¾ døíve)
+    SVZOR 1,X	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Dmoc VB			(moc neví)
+    SVZOR 1,X	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Dnapøíklad Vp			(napøíklad zaplatila)
+    SVZOR 1,X	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Dpouze N4			(pouze náklady)
+    SVZOR 1,X	  23	100 %
+MVZOR Dvlastnì Vp			(vlastnì skonèila)
+    SVZOR 1,X	  23	100 %
+MVZOR Dzcela VB			(zcela vyhovuje)
+    SVZOR 1,X	  23	100 %
+MVZOR P1nic Vp			(nic nemìlo)
+    SVZOR 1,X	  23	100 %
+MVZOR P1nìco VB			(nìco udìlá)
+    SVZOR 1,X	  23	100 %
+MVZOR P7v¹echen N7			(v¹emi èinnostmi)
+    SVZOR 1,X	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Rpodle-2 P2já			(podle mne)
+    SVZOR X,0	  23	100 %
+MVZOR Rproti-1 P3ten			(proti tomu)
+    SVZOR X,0	  23	 92 %
+    SVZOR X	   2	  8 %
+MVZOR Rs-1 Z.			(s .)
+    SVZOR X,0	  23	100 %
+MVZOR Vf Rpod-1			(konat pod)
+    SVZOR X,0	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Vi P3ten			(dejme tomu)
+    SVZOR X,0	  23	100 %
+MVZOR Vní N2			(není divu)
+    SVZOR X,0	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Vp Dzatím			(nevymyslel zatím)
+    SVZOR X,0	  23	 92 %
+    SVZOR X	   2	  8 %
+MVZOR Vp Rkolem-1			(pohybovaly kolem)
+    SVZOR X,0	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Vp Rmimo-1			(vy¾adovalo mimo)
+    SVZOR X,0	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Z, Jjen¾e			(, jen¾e)
+    SVZOR 1,X	  23	 95 %
+    SVZOR X	   1	  4 %
+MVZOR Ddnes Vp			(dnes zùstala)
+    SVZOR 1,X	  24	 92 %
+    SVZOR X	   2	  7 %
+MVZOR Dmo¾ná VB			(mo¾ná zbude)
+    SVZOR 1,X	  24	100 %
+MVZOR Dtrochu A1			(trochu ¹ikovný)
+    SVZOR 1,X	  24	 92 %
+    SVZOR X	   2	  7 %
+MVZOR Dvíce Vf			(více v¹ímat)
+    SVZOR 1,X	  24	 92 %
+    SVZOR X	   2	  7 %
+MVZOR Dzatím Vní			(zatím není)
+    SVZOR 1,X	  24	100 %
+MVZOR Dzcela Vs			(zcela zastavena)
+    SVZOR 1,X	  24	 96 %
+    SVZOR X	   1	  4 %
+MVZOR N1 Rvùèi			(dluh vùèi)
+    SVZOR X,0	  24	 92 %
+    SVZOR X	   2	  7 %
+MVZOR P1co¾-1 Vp			(co¾ umo¾nilo)
+    SVZOR 1,X	  24	100 %
+MVZOR P3jeho N3			(jejímu o¾ivení)
+    SVZOR 1,X	  24	100 %
+MVZOR P7co-1 Ddál			(èím dál)
+    SVZOR 1,X	  24	100 %
+MVZOR Rz-1 Z.			(z .)
+    SVZOR X,0	  24	100 %
+MVZOR TT Ddosud			(a¾ dosud)
+    SVZOR 1,X	  24	 96 %
+    SVZOR X	   1	  4 %
+MVZOR VB Dvìt¹inou			(má vìt¹inou)
+    SVZOR X,0	  24	 92 %
+    SVZOR X	   2	  7 %
+MVZOR Vbýt AC			(být patrno)
+    SVZOR X,0	  24	 96 %
+    SVZOR 1,X	   1	  4 %
+MVZOR Vjsme AC			(jsme schopni)
+    SVZOR X,0	  24	 96 %
+    SVZOR X	   1	  4 %
+MVZOR P1co-1 VB			(co sleduje)
+    SVZOR 1,X	  25	100 %
+MVZOR Rdo-1 P2jen¾			(do ní¾)
+    SVZOR X,0	  25	100 %
+MVZOR Rna-1 P4co-1			(na co)
+    SVZOR X,0	  25	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Rpøed-1 N4			(pøed lidi)
+    SVZOR X,0	  25	100 %
+MVZOR Rpøed-1 Psebou			(pøed sebou)
+    SVZOR X,0	  25	100 %
+MVZOR VB Dletos			(musí letos)
+    SVZOR X,0	  25	 92 %
+    SVZOR X	   2	  7 %
+MVZOR Vp Rpøes-1			(vykázala pøes)
+    SVZOR X,0	  25	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Co Vp			(mnohokrát pouèila)
+    SVZOR 1,X	  26	100 %
+MVZOR Ddobøe A2			(dobøe èitelného)
+    SVZOR 1,X	  26	100 %
+MVZOR Dkoneènì VB			(koneènì oznaèí)
+    SVZOR 1,X	  26	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Dopravdu VB			(opravdu chtìjí)
+    SVZOR 1,X	  26	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Dtady VB			(tady mù¾e)
+    SVZOR 1,X	  26	100 %
+MVZOR Jproto¾e Vp			(proto¾e chybìl)
+    SVZOR X,0	  26	 92 %
+    SVZOR X	   2	  7 %
+MVZOR P1jakýkoliv N1			(jakákoli závada)
+    SVZOR 1,X	  26	100 %
+MVZOR P1ve¹kerý N1			(ve¹kerý zisk)
+    SVZOR 1,X	  26	 92 %
+    SVZOR X	   2	  7 %
+MVZOR P2nìjaký N2			(nìjakých dùvodù)
+    SVZOR 1,X	  26	 96 %
+    SVZOR X	   1	  3 %
+MVZOR P3takový N3			(takovým následkùm)
+    SVZOR 1,X	  26	100 %
+MVZOR P6nìjaký N6			(nìjakém detailu)
+    SVZOR 1,X	  26	100 %
+MVZOR P6tvùj N6			(va¹í nepøítomnosti)
+    SVZOR 1,X	  26	100 %
+MVZOR Rdo-1 P2který			(do kterého)
+    SVZOR X,0	  26	 92 %
+    SVZOR X	   2	  7 %
+MVZOR Rna-1 P4já			(na nás)
+    SVZOR X,0	  26	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Ro-1 P6co-1			(o èem)
+    SVZOR X,0	  26	100 %
+MVZOR VB Dpøitom			(nejde pøitom)
+    SVZOR X,0	  26	 96 %
+    SVZOR X	   1	  3 %
+MVZOR VB Dsamozøejmì			(myslíme samozøejmì)
+    SVZOR X,0	  26	100 %
+MVZOR VB Dzde			(mohou zde)
+    SVZOR X,0	  26	 92 %
+    SVZOR X	   2	  7 %
+MVZOR Z+ C=			(+ 2)
+    SVZOR X,0	  26	 96 %
+    SVZOR 1,X	   1	  3 %
+MVZOR Dco Dnejvíce			(co nejvíce)
+    SVZOR 1,X	  27	100 %
+MVZOR Dménì N2			(ménì lidí)
+    SVZOR X,0	  27	 90 %
+    SVZOR X	   3	 10 %
+MVZOR Dnapøíklad VB			(napøíklad buduje)
+    SVZOR 1,X	  27	 96 %
+    SVZOR X,0	   1	  3 %
+MVZOR Dobvykle VB			(obvykle mají)
+    SVZOR 1,X	  27	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Dpouze N7			(pouze výbìrem)
+    SVZOR 1,X	  27	 90 %
+    SVZOR X	   3	 10 %
+MVZOR Dprostì VB			(prostì vyhodím)
+    SVZOR 1,X	  27	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Dpøedev¹ím VB			(pøedev¹ím musí)
+    SVZOR 1,X	  27	 96 %
+    SVZOR X	   1	  3 %
+MVZOR P4tento N1			(tuto skuteènost)
+    SVZOR 1,X	  27	100 %
+MVZOR P6tý¾ N6			(té¾e lhùtì)
+    SVZOR 1,X	  27	100 %
+MVZOR P7nìjaký N7			(nìjakým zpùsobem)
+    SVZOR 1,X	  27	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Rproti-1 N2			(proti roku)
+    SVZOR X,0	  27	100 %
+MVZOR Rs-1 N4			(s motory)
+    SVZOR X,0	  27	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Rv-1 P6co-1			(v èem)
+    SVZOR X,0	  27	100 %
+MVZOR Vi Rna-1			(namluvte na)
+    SVZOR X,0	  27	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Vs P7ten			(zpùsobena tím)
+    SVZOR X,0	  27	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Ddobøe Vp			(dobøe dopadlo)
+    SVZOR 1,X	  28	100 %
+MVZOR Dpak Vje			(pak je)
+    SVZOR 1,X	  28	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Dvíce VB			(více závisí)
+    SVZOR 1,X	  28	 90 %
+    SVZOR X	   2	  6 %
+    SVZOR X,0	   1	  3 %
+MVZOR Dvýraznì A1			(výraznì ni¾¹í)
+    SVZOR 1,X	  28	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Rk-1 P3který			(ke kterému)
+    SVZOR X,0	  28	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Ro-1 P4co-1			(o co)
+    SVZOR X,0	  28	100 %
+MVZOR Rpro-1 P4který			(pro které)
+    SVZOR X,0	  28	100 %
+MVZOR Rza-1 P7on-1			(za jimi)
+    SVZOR X,0	  28	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Vf P3on-1			(zaplatit jim)
+    SVZOR X,0	  28	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Vjsem AC			(jsem rád)
+    SVZOR X,0	  28	 96 %
+    SVZOR 1,X	   1	  3 %
+MVZOR Ddokonce VB			(dokonce dojde)
+    SVZOR 1,X	  29	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Ddost N2			(dost èasu)
+    SVZOR X,0	  29	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Dkde Vjsou			(kde nejsou)
+    SVZOR 1,X	  29	 90 %
+    SVZOR X	   3	  9 %
+MVZOR Dpùvodnì Vp			(pùvodnì oèekávali)
+    SVZOR 1,X	  29	100 %
+MVZOR Dvelice Dg			(velice ¹patnì)
+    SVZOR 1,X	  29	 90 %
+    SVZOR X	   3	  9 %
+MVZOR J^ Jzda			(nebo zda)
+    SVZOR X,0	  29	 90 %
+    SVZOR X	   3	  9 %
+MVZOR P1jaký N1			(jaké nároky)
+    SVZOR 1,X	  29	100 %
+MVZOR P1kdo Vje			(kdo je)
+    SVZOR 1,X	  29	 90 %
+    SVZOR X	   3	  9 %
+MVZOR Rnad-1 P7ten			(nad tím)
+    SVZOR X,0	  29	100 %
+MVZOR Rv-1 P6se			(v sobì)
+    SVZOR X,0	  29	100 %
+MVZOR Djak Ddlouho			(jak dlouho)
+    SVZOR 1,X	  30	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Dje¹tì Dvíce			(je¹tì více)
+    SVZOR 1,X	  30	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Dnejvíce VB			(nejvíce postihují)
+    SVZOR 1,X	  30	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Dnovì A2			(novì emitovaných)
+    SVZOR 1,X	  30	100 %
+MVZOR Dnyní Vje			(nyní je)
+    SVZOR 1,X	  30	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Drychle VB			(rychle støídají)
+    SVZOR 1,X	  30	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Dteprve VB			(teprve blí¾í)
+    SVZOR 1,X	  30	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Dtu Vp			(tu mohli)
+    SVZOR 1,X	  30	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Rmezi-1 Psebou			(mezi sebou)
+    SVZOR X,0	  30	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Rnad-1 N4			(nad oèekávání)
+    SVZOR X,0	  30	 96 %
+    SVZOR 1,X	   1	  3 %
+MVZOR Rza-1 P4který			(za které)
+    SVZOR X,0	  30	100 %
+MVZOR Vp P7ten			(podmínil tím)
+    SVZOR X,0	  30	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Ddnes Vje			(dnes je)
+    SVZOR 1,X	  31	100 %
+MVZOR Ddøíve Vp			(døíve mìli)
+    SVZOR 1,X	  31	100 %
+MVZOR Dpøíli¹ Vp			(pøíli¹ nevìdìl)
+    SVZOR 1,X	  31	100 %
+MVZOR Dvèera Vs			(vèera uvedeno)
+    SVZOR 1,X	  31	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Dzase Vp			(zase objevili)
+    SVZOR 1,X	  31	 96 %
+    SVZOR X	   1	  3 %
+MVZOR P1¾ádný Rz-1			(¾ádná z)
+    SVZOR X,0	  31	 96 %
+    SVZOR X	   1	  3 %
+MVZOR P2jaký N2			(jakých kritérií)
+    SVZOR 1,X	  31	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Vje Dzde			(je zde)
+    SVZOR X,0	  31	 93 %
+    SVZOR X	   2	  6 %
+MVZOR Cv Rza-1			(jednou za)
+    SVZOR X,0	  32	 91 %
+    SVZOR X	   3	  8 %
+MVZOR Ddost A1			(dost citelný)
+    SVZOR 1,X	  32	 91 %
+    SVZOR X	   3	  8 %
+MVZOR Dsouèasnì VB			(souèasnì vznikne)
+    SVZOR 1,X	  32	100 %
+MVZOR Dvýraznì VB			(výraznì ovlivòuje)
+    SVZOR 1,X	  32	100 %
+MVZOR Dvýraznì Vp			(výraznì sblí¾ily)
+    SVZOR 1,X	  32	100 %
+MVZOR Jjestli¾e VB			(jestli¾e nelze)
+    SVZOR X,0	  32	 96 %
+    SVZOR X	   1	  3 %
+MVZOR N4 Rvùèi			(postoj vùèi)
+    SVZOR X,0	  32	 91 %
+    SVZOR X	   3	  8 %
+MVZOR P1co-1 Vp			(co zbylo)
+    SVZOR 1,X	  32	 91 %
+    SVZOR X	   2	  5 %
+    SVZOR X,0	   1	  2 %
+MVZOR Rod-1 P2já			(ode mne)
+    SVZOR X,0	  32	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Ru-1 P2jen¾			(u nìho¾)
+    SVZOR X,0	  32	 94 %
+    SVZOR X	   2	  5 %
+MVZOR VB Dzatím			(mù¾eme zatím)
+    SVZOR X,0	  32	 94 %
+    SVZOR X	   2	  5 %
+MVZOR Vf Vbude			(platit nebude)
+    SVZOR X,0	  32	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Vp Dletos			(mìli letos)
+    SVZOR X,0	  32	 96 %
+    SVZOR X	   1	  3 %
+MVZOR Dco A4			(co nejpøesnìj¹í)
+    SVZOR 1,X	  33	100 %
+MVZOR Ddlouho Vp			(dlouho vìnoval)
+    SVZOR 1,X	  33	 91 %
+    SVZOR X	   3	  8 %
+MVZOR Dji¾ A2			(ji¾ zru¹eného)
+    SVZOR 1,X	  33	 91 %
+    SVZOR X	   3	  8 %
+MVZOR Dnovì A1			(novì pøíchozí)
+    SVZOR 1,X	  33	100 %
+MVZOR Dpotom VB			(potom mù¾e)
+    SVZOR 1,X	  33	100 %
+MVZOR Drozhodnì VB			(rozhodnì nelze)
+    SVZOR 1,X	  33	 94 %
+    SVZOR X	   2	  5 %
+MVZOR Dv¾dy Vp			(v¾dy dokázali)
+    SVZOR 1,X	  33	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Dúdajnì VB			(údajnì poskytuje)
+    SVZOR 1,X	  33	 97 %
+    SVZOR X	   1	  2 %
+MVZOR P4nic VB			(nic nemìní)
+    SVZOR 1,X	  33	 94 %
+    SVZOR X	   2	  5 %
+MVZOR P4tvùj N4			(va¹i potøebu)
+    SVZOR 1,X	  33	100 %
+MVZOR Vf Rproti-1			(postupovat proti)
+    SVZOR X,0	  33	 91 %
+    SVZOR X	   3	  8 %
+MVZOR Dv¾dy VB			(v¾dy najde)
+    SVZOR 1,X	  34	 97 %
+    SVZOR X	   1	  2 %
+MVZOR P1tento N4			(toto zbo¾í)
+    SVZOR 1,X	  34	100 %
+MVZOR P7takový N7			(takovým léèením)
+    SVZOR 1,X	  34	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Rpo-1 P6on-1			(po ní)
+    SVZOR X,0	  34	100 %
+MVZOR Vp Drovnì¾			(chtìl rovnì¾)
+    SVZOR X,0	  34	 91 %
+    SVZOR X	   3	  8 %
+MVZOR Rk-1 NN			(k obr)
+    SVZOR X,0	  35	 92 %
+    SVZOR X	   3	  7 %
+MVZOR Ro-1 P4on-1			(o nì)
+    SVZOR X,0	  35	100 %
+MVZOR VB Rmimo-1			(jde mimo)
+    SVZOR X,0	  35	100 %
+MVZOR Vje Dtu			(je tu)
+    SVZOR X,0	  35	 94 %
+    SVZOR X	   2	  5 %
+MVZOR Dnaprosto A1			(naprosto iluzorní)
+    SVZOR 1,X	  36	 92 %
+    SVZOR X	   3	  7 %
+MVZOR Dskuteènì Vp			(skuteènì pøi¹el)
+    SVZOR 1,X	  36	 94 %
+    SVZOR X	   2	  5 %
+MVZOR Dvelmi A7			(velmi rychlým)
+    SVZOR 1,X	  36	100 %
+MVZOR Dzøejmì Vp			(zøejmì mìlo)
+    SVZOR 1,X	  36	 97 %
+    SVZOR X	   1	  2 %
+MVZOR N7 Xx			(patronací dg)
+    SVZOR X,0	  36	 92 %
+    SVZOR X	   3	  7 %
+MVZOR P2tvùj N2			(va¹í odpovìdi)
+    SVZOR 1,X	  36	100 %
+MVZOR P4jakýkoliv N4			(jakoukoli komunikaci)
+    SVZOR 1,X	  36	100 %
+MVZOR Rz-1 P2který			(ze kterých)
+    SVZOR X,0	  36	 90 %
+    SVZOR X	   4	 10 %
+MVZOR Rza-1 P4on-1			(za nì)
+    SVZOR X,0	  36	100 %
+MVZOR C1 Vp			(deset vystøídalo)
+    SVZOR 1,X	  37	 92 %
+    SVZOR X	   3	  7 %
+MVZOR Dnejvíce N2			(nejvíce èasu)
+    SVZOR X,0	  37	 94 %
+    SVZOR X	   1	  2 %
+    SVZOR 1,X	   1	  2 %
+MVZOR Dnìkdy VB			(nìkdy jiskøí)
+    SVZOR 1,X	  37	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Dponìkud A1			(ponìkud vy¹¹í)
+    SVZOR 1,X	  37	100 %
+MVZOR Dznovu VB			(znovu nedra¾í)
+    SVZOR 1,X	  37	 94 %
+    SVZOR X	   2	  5 %
+MVZOR N1 Z&amp;			(seidl &amp;)
+    SVZOR 1,X	  37	 92 %
+    SVZOR X	   2	  5 %
+    SVZOR X,0	   1	  2 %
+MVZOR NY6 N6			(zdeòku bla¾kovi)
+    SVZOR 1,X	  37	100 %
+MVZOR P1nìco A2			(nìco jiného)
+    SVZOR X,0	  37	 92 %
+    SVZOR X	   3	  7 %
+MVZOR Rna-1 P4jen¾			(na nì¾)
+    SVZOR X,0	  37	 90 %
+    SVZOR X	   4	  9 %
+MVZOR Rza-1 NN			(za b)
+    SVZOR X,0	  37	 90 %
+    SVZOR X	   4	  9 %
+MVZOR VB Rpod-1			(pracují pod)
+    SVZOR X,0	  37	 90 %
+    SVZOR X	   4	  9 %
+MVZOR C1 VB			(mnoho napoví)
+    SVZOR 1,X	  38	 90 %
+    SVZOR X	   4	  9 %
+MVZOR Ddobøe Vf			(dobøe kalkulovat)
+    SVZOR 1,X	  38	 95 %
+    SVZOR X	   2	  5 %
+MVZOR Djistì VB			(jistì vychutnají)
+    SVZOR 1,X	  38	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Dnaopak Vp			(naopak nemìl)
+    SVZOR 1,X	  38	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Dpostupnì VB			(postupnì sni¾ují)
+    SVZOR 1,X	  38	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Ro-1 P6se			(o sobì)
+    SVZOR X,0	  38	100 %
+MVZOR Rpomocí N2			(pomocí domorodcù)
+    SVZOR X,0	  38	 90 %
+    SVZOR X	   4	  9 %
+MVZOR Datd Z.			(atd .)
+    SVZOR X,0	  39	 92 %
+    SVZOR X	   3	  7 %
+MVZOR Dnikdy VB			(nikdy nechytneme)
+    SVZOR 1,X	  39	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Dopìt VB			(opìt vrátí)
+    SVZOR 1,X	  39	100 %
+MVZOR Dpozdìji Vp			(pozdìji zjistilo)
+    SVZOR 1,X	  39	 95 %
+    SVZOR X	   2	  4 %
+MVZOR P1jen¾ N2			(jeho¾ slu¾by)
+    SVZOR 1,X	  39	 90 %
+    SVZOR X	   4	  9 %
+MVZOR P3v¹echen N3			(v¹em zákazníkùm)
+    SVZOR 1,X	  39	100 %
+MVZOR Rna-1 P6který			(na kterém)
+    SVZOR X,0	  39	 95 %
+    SVZOR X	   2	  4 %
+MVZOR VB Rpøes-1			(nedovoláte pøes)
+    SVZOR X,0	  39	 95 %
+    SVZOR X	   2	  4 %
+MVZOR Vp Rnad-1			(pohybovala nad)
+    SVZOR X,0	  39	 95 %
+    SVZOR X	   2	  4 %
+MVZOR Ddosud A2			(dosud zaplaceného)
+    SVZOR 1,X	  40	 90 %
+    SVZOR X	   4	  9 %
+MVZOR Dnadále VB			(nadále pokraèuje)
+    SVZOR 1,X	  40	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Dpodstatnì A1			(podstatnì vìt¹í)
+    SVZOR 1,X	  40	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Dpøitom Vp			(pøitom nauèily)
+    SVZOR 1,X	  40	100 %
+MVZOR Dtam Vp			(tam neuspìl)
+    SVZOR 1,X	  40	 90 %
+    SVZOR X	   4	  9 %
+MVZOR Dvelmi A2			(velmi rvavých)
+    SVZOR 1,X	  40	100 %
+MVZOR Dzcela A4			(zcela pøirozené)
+    SVZOR 1,X	  40	 95 %
+    SVZOR X	   2	  4 %
+MVZOR Dzde Vp			(zde vyrobili)
+    SVZOR 1,X	  40	100 %
+MVZOR P1nic VB			(nic nevadí)
+    SVZOR 1,X	  40	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Rs-1 P7já			(s námi)
+    SVZOR X,0	  40	100 %
+MVZOR Vp Rpod-1			(uskuteènilo pod)
+    SVZOR X,0	  40	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Dnaopak VB			(naopak neskrývají)
+    SVZOR 1,X	  41	 93 %
+    SVZOR X	   3	  6 %
+MVZOR Dvìt¹inou VB			(vìt¹inou støádají)
+    SVZOR 1,X	  41	 93 %
+    SVZOR X	   3	  6 %
+MVZOR P1nic A2			(nic podobného)
+    SVZOR X,0	  41	 97 %
+    SVZOR 1,X	   1	  2 %
+MVZOR P4nìco A2			(nìco opaèného)
+    SVZOR X,0	  41	 95 %
+    SVZOR X	   2	  4 %
+MVZOR VB Dv¾dy			(urèuje v¾dy)
+    SVZOR X,0	  41	 93 %
+    SVZOR X	   3	  6 %
+MVZOR AA N6			(new yorku)
+    SVZOR 1,X	  42	 93 %
+    SVZOR X	   2	  4 %
+    SVZOR X,0	   1	  2 %
+MVZOR Dapod Z.			(apod .)
+    SVZOR X,0	  42	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Drovnì¾ VB			(rovnì¾ u¾ívá)
+    SVZOR 1,X	  42	100 %
+MVZOR Dzase VB			(zase musíte)
+    SVZOR 1,X	  42	 95 %
+    SVZOR X	   2	  4 %
+MVZOR P4ve¹kerý N4			(ve¹keré pøedmìty)
+    SVZOR 1,X	  42	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Rk-1 N4			(ke stanovení)
+    SVZOR X,0	  42	100 %
+MVZOR Rproti-1 P3on-1			(proti ní)
+    SVZOR X,0	  42	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Ru-1 P2on-1			(u nìj)
+    SVZOR X,0	  42	100 %
+MVZOR TT Dproto			(jen proto)
+    SVZOR 1,X	  42	100 %
+MVZOR Vp Rbìhem			(nakoupila bìhem)
+    SVZOR X,0	  42	 95 %
+    SVZOR X	   2	  4 %
+MVZOR Dletos Vp			(letos pøistìhovalo)
+    SVZOR 1,X	  43	100 %
+MVZOR P1jaký Vje			(jaké je)
+    SVZOR 1,X	  43	 93 %
+    SVZOR X	   3	  6 %
+MVZOR P1jen¾ N6			(jejich¾ poslech)
+    SVZOR 1,X	  43	100 %
+MVZOR P1nìkdo VB			(nìkdo vìzí)
+    SVZOR 1,X	  43	 95 %
+    SVZOR X	   2	  4 %
+MVZOR Rnaproti-1 P3ten			(naproti tomu)
+    SVZOR X,0	  43	100 %
+MVZOR Rpodle-2 P2ten			(podle toho)
+    SVZOR X,0	  43	100 %
+MVZOR Rpøi-1 P6jen¾			(pøi ní¾)
+    SVZOR X,0	  43	100 %
+MVZOR VB P7ten			(zlikviduje tím)
+    SVZOR X,0	  43	 93 %
+    SVZOR X	   3	  6 %
+MVZOR Vbudu Vf			(budu muset)
+    SVZOR 1,X	  43	100 %
+MVZOR A1 N6			(pìtiprocentní dani)
+    SVZOR 1,X	  44	 91 %
+    SVZOR X,0	   3	  6 %
+    SVZOR X	   1	  2 %
+MVZOR Dnyní Vp			(nyní ukázalo)
+    SVZOR 1,X	  44	100 %
+MVZOR Dpostupnì Vp			(postupnì prosadil)
+    SVZOR 1,X	  44	100 %
+MVZOR Rk-1 P3jen¾			(k nim¾)
+    SVZOR X,0	  44	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Vp P4já			(pojmenovala mì)
+    SVZOR X,0	  44	 93 %
+    SVZOR X	   3	  6 %
+MVZOR C1 N4			(jeden rok)
+    SVZOR 1,X	  45	 91 %
+    SVZOR X	   3	  6 %
+    SVZOR X,0	   1	  2 %
+MVZOR Ddosud VB			(dosud vede)
+    SVZOR 1,X	  45	100 %
+MVZOR P1já VB			(já doufám)
+    SVZOR 1,X	  45	 93 %
+    SVZOR X	   3	  6 %
+MVZOR P7jaký N7			(jakým výsledkem)
+    SVZOR 1,X	  45	100 %
+MVZOR P7ten N7			(tou angliètinou)
+    SVZOR 1,X	  45	 95 %
+    SVZOR X	   2	  4 %
+MVZOR Vp Dloni			(stál loni)
+    SVZOR X,0	  45	 97 %
+    SVZOR X	   1	  2 %
+MVZOR A3 N2			(telefonnímu spojení)
+    SVZOR 1,X	  46	 95 %
+    SVZOR X,0	   2	  4 %
+MVZOR Dtam VB			(tam nemù¾e)
+    SVZOR 1,X	  46	 92 %
+    SVZOR X	   4	  8 %
+MVZOR NN Z'			(c ')
+    SVZOR X,0	  46	 92 %
+    SVZOR X	   4	  8 %
+MVZOR P1nikdo Vp			(nikdo nemìl)
+    SVZOR 1,X	  46	 95 %
+    SVZOR X	   2	  4 %
+MVZOR Ro-1 P6který			(o kterém)
+    SVZOR X,0	  46	 95 %
+    SVZOR X	   2	  4 %
+MVZOR Vp Rmezi-1			(uzavøely mezi)
+    SVZOR X,0	  46	100 %
+MVZOR Xx Z.			(pøísl .)
+    SVZOR X,0	  46	 90 %
+    SVZOR X	   5	  9 %
+MVZOR Z, Jpøesto¾e			(, pøesto¾e)
+    SVZOR 1,X	  46	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Ddobøe VB			(dobøe neznáme)
+    SVZOR 1,X	  47	100 %
+MVZOR Dteï VB			(teï patøí)
+    SVZOR 1,X	  47	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Rod-1 NN			(od èr)
+    SVZOR X,0	  47	 95 %
+    SVZOR X	   2	  4 %
+MVZOR Rz-1 P2já			(z nás)
+    SVZOR X,0	  47	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Vjste Vp			(jste získali)
+    SVZOR 1,X	  47	100 %
+MVZOR C6 Rz-1			(jednom z)
+    SVZOR X,0	  48	 97 %
+    SVZOR X	   1	  2 %
+MVZOR Dvlastnì VB			(vlastnì kupuje)
+    SVZOR 1,X	  49	 96 %
+    SVZOR X	   2	  3 %
+MVZOR P4jeho N4			(její o¾ivení)
+    SVZOR 1,X	  49	100 %
+MVZOR Dskuteènì VB			(skuteènì nehrozí)
+    SVZOR 1,X	  50	100 %
+MVZOR Dúdajnì Vp			(údajnì nesplnili)
+    SVZOR 1,X	  50	 96 %
+    SVZOR X	   2	  3 %
+MVZOR P1nìkterý Rz-1			(nìkterý z)
+    SVZOR X,0	  50	100 %
+MVZOR Rod-1 P2on-1			(od nìho)
+    SVZOR X,0	  50	100 %
+MVZOR Rs-1 P7který			(se kterou)
+    SVZOR X,0	  50	100 %
+MVZOR Rza-1 Psebou			(za sebou)
+    SVZOR X,0	  50	100 %
+MVZOR Vp Vjste			(zvý¹ili jste)
+    SVZOR X,0	  50	100 %
+MVZOR Dmnohem A1			(mnohem prùraznìj¹í)
+    SVZOR 1,X	  51	 94 %
+    SVZOR X	   3	  5 %
+MVZOR Dzároveò VB			(zároveò øíkám)
+    SVZOR 1,X	  51	 98 %
+    SVZOR X	   1	  1 %
+MVZOR N1 P1sám			(vláda sama)
+    SVZOR X,0	  51	 91 %
+    SVZOR X	   5	  8 %
+MVZOR P1jen¾ N7			(její¾ podstatou)
+    SVZOR 1,X	  51	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Dkdy Vp			(kdy získala)
+    SVZOR 1,X	  52	 92 %
+    SVZOR X	   4	  7 %
+MVZOR Dletos VB			(letos má)
+    SVZOR 1,X	  52	 96 %
+    SVZOR X	   2	  3 %
+MVZOR P1jen¾ N4			(jejich¾ uvedení)
+    SVZOR 1,X	  52	 94 %
+    SVZOR X	   3	  5 %
+MVZOR P6jeho N6			(jejím sní¾ení)
+    SVZOR 1,X	  52	 96 %
+    SVZOR X	   2	  3 %
+MVZOR Dnikdy Vp			(nikdy nedotáhli)
+    SVZOR 1,X	  53	100 %
+MVZOR Dpøíli¹ VB			(pøíli¹ neuspokojíte)
+    SVZOR 1,X	  53	 96 %
+    SVZOR X	   2	  3 %
+MVZOR Drovnì¾ Vp			(rovnì¾ vsadila)
+    SVZOR 1,X	  53	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Rna-1 Psebe			(na sebe)
+    SVZOR X,0	  53	100 %
+MVZOR Ro-1 P6jen¾			(o nich¾)
+    SVZOR X,0	  53	 96 %
+    SVZOR X	   2	  3 %
+MVZOR Vje C7			(je jednou)
+    SVZOR X,0	  53	100 %
+MVZOR NY1 Rz-1			(pamela z)
+    SVZOR X,0	  54	 96 %
+    SVZOR X	   2	  3 %
+MVZOR P3mùj N3			(na¹emu ètenáøi)
+    SVZOR 1,X	  54	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Ro-1 P4nìco			(o nìco)
+    SVZOR X,0	  54	100 %
+MVZOR VB Rproti-1			(platíme proti)
+    SVZOR X,0	  54	 90 %
+    SVZOR X	   6	 10 %
+MVZOR Ddokonce Vp			(dokonce vyhrálo)
+    SVZOR 1,X	  55	100 %
+MVZOR P1ten Vní			(to není)
+    SVZOR 1,X	  55	 91 %
+    SVZOR X	   5	  8 %
+MVZOR Rk-1 P3já			(k nám)
+    SVZOR X,0	  55	100 %
+MVZOR Dpomìrnì A1			(pomìrnì malý)
+    SVZOR 1,X	  56	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Dvùbec VB			(vùbec jezdí)
+    SVZOR 1,X	  56	 91 %
+    SVZOR X	   5	  8 %
+MVZOR Dnavíc VB			(navíc pùsobí)
+    SVZOR 1,X	  57	 95 %
+    SVZOR X	   3	  5 %
+MVZOR Dnedávno Vp			(nedávno probìhla)
+    SVZOR 1,X	  57	100 %
+MVZOR Dsamozøejmì VB			(samozøejmì sni¾ují)
+    SVZOR 1,X	  57	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Dvùbec Vp			(vùbec nevyplatilo)
+    SVZOR 1,X	  57	 95 %
+    SVZOR X	   3	  5 %
+MVZOR P1tvùj N1			(va¹e situace)
+    SVZOR 1,X	  57	100 %
+MVZOR VB Rkolem-1			(pohybuje kolem)
+    SVZOR X,0	  57	 96 %
+    SVZOR X	   2	  3 %
+MVZOR # Jtak¾e			(# tak¾e)
+    SVZOR X,0	  58	 95 %
+    SVZOR X	   3	  4 %
+MVZOR Dspoleènì Rs-1			(spoleènì s)
+    SVZOR 1,X	  58	 90 %
+    SVZOR X,0	   4	  6 %
+    SVZOR X	   2	  3 %
+MVZOR Dtehdy Vp			(tehdy zdùvodnil)
+    SVZOR 1,X	  58	 98 %
+    SVZOR X	   1	  1 %
+MVZOR J^ Dpodobnì			(a podobnì)
+    SVZOR X,0	  58	 95 %
+    SVZOR X	   3	  4 %
+MVZOR P1nìjaký N1			(nìjaká rezerva)
+    SVZOR 1,X	  58	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Rna-1 P6jen¾			(na ní¾)
+    SVZOR X,0	  58	 90 %
+    SVZOR X	   6	  9 %
+MVZOR VB Dnyní			(jedná nyní)
+    SVZOR X,0	  58	100 %
+MVZOR Dkde Vp			(kde do¹lo)
+    SVZOR 1,X	  59	 96 %
+    SVZOR X	   2	  3 %
+MVZOR Dménì J,			(ménì ne¾)
+    SVZOR X,0	  59	100 %
+MVZOR Dtu VB			(tu zaèínáme)
+    SVZOR 1,X	  59	 90 %
+    SVZOR X	   6	  9 %
+MVZOR P2tý¾ N2			(té¾e vady)
+    SVZOR 1,X	  59	 96 %
+    SVZOR X	   2	  3 %
+MVZOR P7jeho N7			(jejím dnem)
+    SVZOR 1,X	  60	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Rdo-1 P2on-1			(do nìj)
+    SVZOR X,0	  60	100 %
+MVZOR Vi N4			(¹etøete peníze)
+    SVZOR X,0	  60	 90 %
+    SVZOR X	   6	  9 %
+MVZOR Vje P3ten			(je tomu)
+    SVZOR X,0	  61	 96 %
+    SVZOR X	   2	  3 %
+MVZOR Dvelice A1			(velice pesimistický)
+    SVZOR 1,X	  62	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Dzároveò Vp			(zároveò nabídl)
+    SVZOR 1,X	  62	100 %
+MVZOR P4nic A2			(nic jiného)
+    SVZOR X,0	  62	 98 %
+    SVZOR X	   1	  1 %
+MVZOR P6¾ádný N6			(¾ádné zemi)
+    SVZOR 1,X	  62	100 %
+MVZOR P1jen¾ Vp			(je¾ vyhlásila)
+    SVZOR 1,X	  63	 98 %
+    SVZOR X	   1	  1 %
+MVZOR P6nìkterý N6			(nìkterých oblastech)
+    SVZOR 1,X	  63	100 %
+MVZOR Vp P3on-1			(odvìtil mu)
+    SVZOR X,0	  63	 94 %
+    SVZOR X	   4	  5 %
+MVZOR Rpod-1 N4			(pod kresbu)
+    SVZOR X,0	  64	 96 %
+    SVZOR X	   2	  3 %
+MVZOR Vi Psi			(dávejte si)
+    SVZOR X,0	  64	 95 %
+    SVZOR X	   3	  4 %
+MVZOR Rk-1 N2			(k roku)
+    SVZOR X,0	  65	 97 %
+    SVZOR X	   2	  2 %
+MVZOR Vp Vbychom			(mìli bychom)
+    SVZOR X,0	  65	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Dpodobnì J,			(podobnì jako)
+    SVZOR X,0	  66	100 %
+MVZOR Dzøejmì VB			(zøejmì zaène)
+    SVZOR 1,X	  66	 98 %
+    SVZOR X	   1	  1 %
+MVZOR VB Rpøed-1			(odcházím pøed)
+    SVZOR X,0	  66	 97 %
+    SVZOR X	   2	  2 %
+MVZOR Vp Ru-1			(mìl u)
+    SVZOR X,0	  66	 97 %
+    SVZOR X	   2	  2 %
+MVZOR Dstejnì A1			(stejnì drahá)
+    SVZOR 1,X	  67	 95 %
+    SVZOR X	   3	  4 %
+MVZOR Dvíc J,			(víc ne¾)
+    SVZOR X,0	  67	 97 %
+    SVZOR X	   2	  2 %
+MVZOR Dznovu Vp			(znovu vdala)
+    SVZOR 1,X	  67	 98 %
+    SVZOR X	   1	  1 %
+MVZOR P6v¹echen N6			(v¹ech zemích)
+    SVZOR 1,X	  67	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Rmezi-1 P7on-1			(mezi nimi)
+    SVZOR X,0	  67	 91 %
+    SVZOR X	   6	  8 %
+MVZOR Vje Dtoti¾			(je toti¾)
+    SVZOR X,0	  67	 94 %
+    SVZOR X	   4	  5 %
+MVZOR Dprávì N1			(právì mo¾nost)
+    SVZOR 1,X	  68	 97 %
+    SVZOR X	   2	  2 %
+MVZOR Vjsou N7			(jsou motorem)
+    SVZOR X,0	  69	 90 %
+    SVZOR X	   7	  9 %
+MVZOR Dpøitom VB			(pøitom máme)
+    SVZOR 1,X	  70	 98 %
+    SVZOR X	   1	  1 %
+MVZOR A6 NN			(u¾ivatelském menu)
+    SVZOR 1,X	  71	 94 %
+    SVZOR X	   4	  5 %
+MVZOR Vjsou AC			(jsou schopni)
+    SVZOR X,0	  71	 98 %
+    SVZOR 1,X	   1	  1 %
+MVZOR Z, Rvèetnì-2			(, vèetnì)
+    SVZOR 1,X	  71	 94 %
+    SVZOR X	   4	  5 %
+MVZOR Rpodle-2 P2jen¾			(podle ní¾)
+    SVZOR X,0	  72	100 %
+MVZOR Vní P1ten			(není to)
+    SVZOR X,0	  72	 96 %
+    SVZOR X	   3	  4 %
+MVZOR Dopìt Vp			(opìt zaøadila)
+    SVZOR 1,X	  73	100 %
+MVZOR Dzcela Dg			(zcela výjimeènì)
+    SVZOR 1,X	  73	 97 %
+    SVZOR X	   2	  2 %
+MVZOR VB Dtoti¾			(servíruji toti¾)
+    SVZOR X,0	  73	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Dco Dg			(co nejdøíve)
+    SVZOR 1,X	  74	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Ddále VB			(dále pokraèuje)
+    SVZOR 1,X	  74	 94 %
+    SVZOR X	   4	  5 %
+MVZOR J^ Dtedy			(a tedy)
+    SVZOR X,0	  74	100 %
+MVZOR Rkromì P2ten			(kromì toho)
+    SVZOR X,0	  74	 97 %
+    SVZOR X	   2	  2 %
+MVZOR Dnakonec Vp			(nakonec vydal)
+    SVZOR 1,X	  75	100 %
+MVZOR P1nikdo VB			(nikdo nesejme)
+    SVZOR 1,X	  75	 97 %
+    SVZOR X	   2	  2 %
+MVZOR Rpøes-1 C=			(pøes 3)
+    SVZOR X,0	  75	 93 %
+    SVZOR X	   5	  6 %
+MVZOR Rs-1 P7jen¾			(s nimi¾)
+    SVZOR X,0	  76	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Vp Vbych			(chtìl bych)
+    SVZOR X,0	  77	100 %
+MVZOR PSjeho N3			(jeho cenì)
+    SVZOR 1,X	  78	 95 %
+    SVZOR X	   4	  4 %
+MVZOR Rna-1 P4který			(na který)
+    SVZOR X,0	  78	 95 %
+    SVZOR X	   4	  4 %
+MVZOR Dzde VB			(zde musí)
+    SVZOR 1,X	  79	 96 %
+    SVZOR X	   3	  3 %
+MVZOR VB Rpøi-1			(pøená¹í pøi)
+    SVZOR X,0	  79	 94 %
+    SVZOR X	   5	  5 %
+MVZOR # Jjen¾e			(# jen¾e)
+    SVZOR X,0	  80	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Ddosud Vp			(dosud nezru¹ili)
+    SVZOR 1,X	  80	 98 %
+    SVZOR X	   1	  1 %
+MVZOR P1co¾-1 VB			(co¾ znamená)
+    SVZOR 1,X	  80	 95 %
+    SVZOR X	   4	  4 %
+MVZOR Ddále Vp			(dále následovali)
+    SVZOR 1,X	  81	100 %
+MVZOR Rmimo-1 N4			(mimo diskuzi)
+    SVZOR X,0	  81	 94 %
+    SVZOR X	   5	  5 %
+MVZOR Djak Vf			(jak zachránit)
+    SVZOR 1,X	  82	 90 %
+    SVZOR X	   9	  9 %
+MVZOR Dvelmi Dg			(velmi jemnì)
+    SVZOR 1,X	  82	 97 %
+    SVZOR X	   2	  2 %
+MVZOR P4jaký N4			(jakou délku)
+    SVZOR 1,X	  82	100 %
+MVZOR Vi Pse			(vra»me se)
+    SVZOR X,0	  82	 96 %
+    SVZOR X	   3	  3 %
+MVZOR P6takový N6			(takovém pøípadì)
+    SVZOR 1,X	  83	100 %
+MVZOR P7mùj N7			(na¹imi subdodavateli)
+    SVZOR 1,X	  83	100 %
+MVZOR Rna-1 P6on-1			(na nich)
+    SVZOR X,0	  83	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Dloni Vp			(loni skonèila)
+    SVZOR 1,X	  84	100 %
+MVZOR Vbyl P1ten			(bylo to)
+    SVZOR X,0	  84	 92 %
+    SVZOR X	   7	  7 %
+MVZOR Dpøece TT			(pøece jenom)
+    SVZOR X,0	  85	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Dzatím Vp			(zatím nezvý¹il)
+    SVZOR 1,X	  85	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Dje¹tì Vp			(je¹tì neubìhla)
+    SVZOR 1,X	  86	100 %
+MVZOR C3 N3			(deseti letùm)
+    SVZOR 1,X	  89	 96 %
+    SVZOR X,0	   2	  2 %
+    SVZOR X	   1	  1 %
+MVZOR VB Ru-1			(nakupujete u)
+    SVZOR X,0	  89	 91 %
+    SVZOR X	   8	  8 %
+MVZOR Vní AC			(není schopen)
+    SVZOR X,0	  89	 98 %
+    SVZOR X	   1	  1 %
+MVZOR Ro-1 P6on-1			(o ní)
+    SVZOR X,0	  90	100 %
+MVZOR Vjsou P1ten			(jsou to)
+    SVZOR X,0	  90	 96 %
+    SVZOR X	   3	  3 %
+MVZOR Dpouze N1			(pouze písmo)
+    SVZOR 1,X	  92	 90 %
+    SVZOR X	  10	  9 %
+MVZOR Dèasto VB			(èasto rozhoduje)
+    SVZOR 1,X	  92	 97 %
+    SVZOR X	   2	  2 %
+MVZOR P2jeho N2			(jejího otce)
+    SVZOR 1,X	  92	100 %
+MVZOR A7 Z.			(o .)
+    SVZOR X,0	  93	 94 %
+    SVZOR X	   5	  5 %
+MVZOR C2 Rz-1			(jedné z)
+    SVZOR X,0	  96	 96 %
+    SVZOR X	   3	  3 %
+MVZOR Cv Vp			(nejednou kritizovala)
+    SVZOR 1,X	  98	100 %
+MVZOR Dji¾ VB			(ji¾ jde)
+    SVZOR 1,X	  98	 94 %
+    SVZOR X	   6	  5 %
+MVZOR Z&percnt; N2			(&percnt; mana¾erù)
+    SVZOR X,0	  98	 95 %
+    SVZOR X	   3	  2 %
+    SVZOR 1,X	   2	  1 %
+MVZOR Vs Rk-1			(pøipoèten k)
+    SVZOR X,0	  99	 96 %
+    SVZOR X	   4	  3 %
+MVZOR Vp Rpodle-2			(rozhodoval podle)
+    SVZOR X,0	 100	 91 %
+    SVZOR X	   9	  8 %
+MVZOR Dtoti¾ Vp			(toti¾ podmínil)
+    SVZOR 1,X	 101	100 %
+MVZOR Rpro-1 NN			(pro windows)
+    SVZOR X,0	 102	 94 %
+    SVZOR X	   6	  5 %
+MVZOR VB Ddnes			(má dnes)
+    SVZOR X,0	 102	 93 %
+    SVZOR X	   7	  6 %
+MVZOR Dtaké Vp			(také zvy¹ovali)
+    SVZOR 1,X	 103	 96 %
+    SVZOR X	   4	  3 %
+MVZOR Rza-1 P4ten			(za to)
+    SVZOR X,0	 103	 94 %
+    SVZOR X	   6	  5 %
+MVZOR Vbyl Vby			(bylo by)
+    SVZOR X,0	 104	 98 %
+    SVZOR X	   2	  1 %
+MVZOR Vf Psi			(udr¾et si)
+    SVZOR X,0	 106	 94 %
+    SVZOR X	   6	  5 %
+MVZOR VB Rmezi-1			(patøí mezi)
+    SVZOR X,0	 107	 97 %
+    SVZOR X	   3	  2 %
+MVZOR Dvelmi A4			(velmi jemné)
+    SVZOR 1,X	 108	 98 %
+    SVZOR X	   2	  1 %
+MVZOR Vp Rpøi-1			(osvìdèila pøi)
+    SVZOR X,0	 108	 99 %
+    SVZOR X	   1	  0 %
+MVZOR P1¾ádný N1			(¾ádná skupina)
+    SVZOR 1,X	 109	 99 %
+    SVZOR X	   1	  0 %
+MVZOR P2takový N2			(takového papíru)
+    SVZOR 1,X	 109	100 %
+MVZOR Djak Vp			(jak vznikl)
+    SVZOR 1,X	 113	 95 %
+    SVZOR X,0	   3	  2 %
+    SVZOR X	   2	  1 %
+MVZOR Dpøíli¹ A1			(pøíli¹ radostné)
+    SVZOR 1,X	 113	 94 %
+    SVZOR X	   6	  5 %
+MVZOR Dzcela A1			(zcela postaèující)
+    SVZOR 1,X	 114	 94 %
+    SVZOR X	   7	  5 %
+MVZOR P3svùj-1 N3			(svému provozu)
+    SVZOR 1,X	 114	 98 %
+    SVZOR X	   2	  1 %
+MVZOR P4nìkterý N4			(nìkteré skupiny)
+    SVZOR 1,X	 114	 97 %
+    SVZOR X	   3	  2 %
+MVZOR Dji¾ Vp			(ji¾ pro¹la)
+    SVZOR 1,X	 115	 97 %
+    SVZOR X	   3	  2 %
+MVZOR Rpro-1 P4on-1			(pro nìj)
+    SVZOR X,0	 115	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Vbudeme Vf			(budeme mít)
+    SVZOR 1,X	 115	 98 %
+    SVZOR X	   2	  1 %
+MVZOR Vbych Vp			(bych vìdìl)
+    SVZOR 1,X	 115	 98 %
+    SVZOR X	   2	  1 %
+MVZOR Vp P3já			(vìnovala mi)
+    SVZOR X,0	 116	100 %
+MVZOR Rbìhem N2			(bìhem kopírování)
+    SVZOR X,0	 117	 94 %
+    SVZOR X	   7	  5 %
+MVZOR Dmj Z.			(mj .)
+    SVZOR X,0	 118	100 %
+MVZOR Vp Rpøed-1			(nacházel pøed)
+    SVZOR X,0	 118	 96 %
+    SVZOR X	   4	  3 %
+MVZOR Dzatím VB			(zatím nevyjadøují)
+    SVZOR 1,X	 119	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Rkolem-1 N2			(kolem tisíce)
+    SVZOR X,0	 119	 95 %
+    SVZOR X	   5	  4 %
+MVZOR Vbudou Vs			(budou uvedeny)
+    SVZOR 1,X	 119	 92 %
+    SVZOR X,0	   6	  4 %
+    SVZOR X	   3	  2 %
+MVZOR Vf VB			(øíci nedá)
+    SVZOR 1,X	 119	 90 %
+    SVZOR X	  12	  9 %
+MVZOR Vp Rpro-1			(rozhodly pro)
+    SVZOR X,0	 119	 90 %
+    SVZOR X	  13	  9 %
+MVZOR P4nìjaký N4			(nìjaké závìry)
+    SVZOR 1,X	 120	 97 %
+    SVZOR X	   3	  2 %
+MVZOR C4 Rz-1			(jednu z)
+    SVZOR X,0	 121	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Dkde VB			(kde víme)
+    SVZOR 1,X	 121	 96 %
+    SVZOR X	   4	  3 %
+MVZOR Dpak Vp			(pak projevily)
+    SVZOR 1,X	 122	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Psi Vf			(si poøídit)
+    SVZOR 1,X	 122	 90 %
+    SVZOR X	  13	  9 %
+MVZOR Rk-1 P3on-1			(k nìmu)
+    SVZOR X,0	 122	100 %
+MVZOR Rpro-1 P4já			(pro nás)
+    SVZOR X,0	 122	 96 %
+    SVZOR X	   4	  3 %
+MVZOR VB Rpo-1			(mù¾e po)
+    SVZOR X,0	 123	 93 %
+    SVZOR X	   8	  6 %
+MVZOR Dje¹tì VB			(je¹tì netýká)
+    SVZOR 1,X	 124	 92 %
+    SVZOR X	  10	  7 %
+MVZOR Rv-1 P6který			(ve kterých)
+    SVZOR X,0	 124	 91 %
+    SVZOR X	  11	  8 %
+MVZOR Rvùèi N3			(vùèi dolaru)
+    SVZOR X,0	 124	 93 %
+    SVZOR X	   9	  6 %
+MVZOR P6ten N6			(té organizaci)
+    SVZOR 1,X	 127	 97 %
+    SVZOR X	   3	  2 %
+MVZOR Vje Rpodle-2			(je podle)
+    SVZOR X,0	 127	 94 %
+    SVZOR X	   8	  5 %
+MVZOR Dtaké VB			(také pou¾ívá)
+    SVZOR 1,X	 128	 93 %
+    SVZOR X	   9	  6 %
+MVZOR NY3 N3			(geraldu greenwaldovi)
+    SVZOR 1,X	 128	 97 %
+    SVZOR X	   3	  2 %
+MVZOR Du¾ VB			(u¾ nevezmeme)
+    SVZOR 1,X	 134	 91 %
+    SVZOR X	  12	  8 %
+MVZOR Du¾ Vp			(u¾ uplynula)
+    SVZOR 1,X	 134	 97 %
+    SVZOR X	   4	  2 %
+MVZOR NY4 N4			(jaroslava koháka)
+    SVZOR 1,X	 135	 97 %
+    SVZOR X,0	   2	  1 %
+    SVZOR X	   1	  0 %
+MVZOR P1kdo VB			(kdo chce)
+    SVZOR 1,X	 135	 93 %
+    SVZOR X	  10	  6 %
+MVZOR VB Rpro-1			(rozhodne pro)
+    SVZOR X,0	 136	 90 %
+    SVZOR X	  15	  9 %
+MVZOR Dtoti¾ VB			(toti¾ vyvolávají)
+    SVZOR 1,X	 138	 99 %
+    SVZOR X	   1	  0 %
+MVZOR P4takový N4			(takovou kvalitu)
+    SVZOR 1,X	 139	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Rz-1 P2jen¾			(z nìho¾)
+    SVZOR X,0	 142	 97 %
+    SVZOR X	   4	  2 %
+MVZOR P2nìkterý N2			(nìkterých nákladù)
+    SVZOR 1,X	 143	 97 %
+    SVZOR X	   4	  2 %
+MVZOR Dstále VB			(stále neexistuje)
+    SVZOR 1,X	 144	 99 %
+    SVZOR X	   1	  0 %
+MVZOR VB Rpodle-2			(obsahuje podle)
+    SVZOR X,0	 146	 96 %
+    SVZOR X	   6	  3 %
+MVZOR Vbychom Vp			(bychom identifikovali)
+    SVZOR 1,X	 147	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Vbyl AC			(nebyly ochotny)
+    SVZOR X,0	 147	 94 %
+    SVZOR 1,X	   8	  5 %
+MVZOR Rza-1 N2			(za pøedpokladu)
+    SVZOR X,0	 148	 96 %
+    SVZOR 1,X	   4	  2 %
+    SVZOR X	   2	  1 %
+MVZOR Dg A6			(objektivnì srovnatelné)
+    SVZOR 1,X	 150	 96 %
+    SVZOR X	   6	  3 %
+MVZOR Dnyní VB			(nyní musí)
+    SVZOR 1,X	 150	 98 %
+    SVZOR X	   2	  1 %
+MVZOR Vf Rza-1			(mít za)
+    SVZOR X,0	 151	 96 %
+    SVZOR X	   6	  3 %
+MVZOR Vp Rod-1			(odstoupili od)
+    SVZOR X,0	 152	 94 %
+    SVZOR X	   9	  5 %
+MVZOR P4v¹echen N4			(v¹echny závazky)
+    SVZOR 1,X	 154	 92 %
+    SVZOR X	  11	  6 %
+    SVZOR X,0	   1	  0 %
+MVZOR P3já Vp			(nám potvrdily)
+    SVZOR 1,X	 155	 90 %
+    SVZOR X	  16	  9 %
+MVZOR P4¾ádný N4			(¾ádné dùvody)
+    SVZOR 1,X	 155	 98 %
+    SVZOR X	   2	  1 %
+MVZOR Rpøes-1 N4			(pøes den)
+    SVZOR X,0	 159	 91 %
+    SVZOR X	  15	  8 %
+MVZOR Dpak VB			(pak vy¹le)
+    SVZOR 1,X	 161	 98 %
+    SVZOR X	   2	  1 %
+MVZOR Rpo-1 N4			(po zpracování)
+    SVZOR X,0	 163	 96 %
+    SVZOR X	   6	  3 %
+MVZOR Rna-1 P4on-1			(na nì)
+    SVZOR X,0	 165	 98 %
+    SVZOR X	   2	  1 %
+MVZOR Vs Rza-1			(prodán za)
+    SVZOR X,0	 165	 97 %
+    SVZOR X	   5	  2 %
+MVZOR P2ten N2			(té doby)
+    SVZOR 1,X	 167	 93 %
+    SVZOR X	  10	  5 %
+    SVZOR X,0	   1	  0 %
+MVZOR P3tento N3			(tomuto problému)
+    SVZOR 1,X	 167	100 %
+MVZOR Vf N3			(nevìøit reklamì)
+    SVZOR X,0	 168	 90 %
+    SVZOR X	  17	  9 %
+MVZOR P1v¹echen N1			(v¹echny pøístroje)
+    SVZOR 1,X	 169	 94 %
+    SVZOR X	   9	  5 %
+MVZOR Ro-1 P4ten			(o to)
+    SVZOR X,0	 169	 97 %
+    SVZOR X	   4	  2 %
+MVZOR Vs Rz-1			(zapojeny ze)
+    SVZOR X,0	 174	 91 %
+    SVZOR X	  17	  8 %
+MVZOR J^ Z.			(tj .)
+    SVZOR X,0	 177	 96 %
+    SVZOR X	   7	  3 %
+MVZOR Dstejnì J,			(stejnì jako)
+    SVZOR X,0	 178	 98 %
+    SVZOR X	   3	  1 %
+MVZOR Rna-1 NN			(na mm)
+    SVZOR X,0	 179	 93 %
+    SVZOR X	  13	  6 %
+MVZOR Vf Rz-1			(vystupovat z)
+    SVZOR X,0	 181	 90 %
+    SVZOR X	  19	  9 %
+MVZOR Rna-1 P6ten			(na tom)
+    SVZOR X,0	 185	 92 %
+    SVZOR X	  15	  7 %
+MVZOR P1co¾-1 Vje			(co¾ je)
+    SVZOR 1,X	 187	 98 %
+    SVZOR X	   3	  1 %
+MVZOR P1takový N1			(taková nabídka)
+    SVZOR 1,X	 189	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Ddnes VB			(dnes pí¹eme)
+    SVZOR 1,X	 190	 97 %
+    SVZOR X	   4	  2 %
+MVZOR Dspolu Rs-1			(spolu s)
+    SVZOR 1,X	 190	 97 %
+    SVZOR X	   3	  1 %
+    SVZOR X,0	   2	  1 %
+MVZOR P1ten Vbyl			(to byl)
+    SVZOR 1,X	 190	 91 %
+    SVZOR X	  18	  8 %
+MVZOR Rdo-1 NN			(do es)
+    SVZOR X,0	 193	 96 %
+    SVZOR X	   7	  3 %
+MVZOR VB Rod-1			(stojí od)
+    SVZOR X,0	 193	 90 %
+    SVZOR X	  21	  9 %
+MVZOR NY1 A1			(jiøí gebarowský)
+    SVZOR 1,X	 199	 95 %
+    SVZOR X	   8	  3 %
+    SVZOR X,0	   2	  0 %
+MVZOR P1nìkterý N1			(nìkteré pøístroje)
+    SVZOR 1,X	 199	 96 %
+    SVZOR X	   7	  3 %
+MVZOR NY1 N2			(václav jankù)
+    SVZOR 1,X	 201	 95 %
+    SVZOR X	   6	  2 %
+    SVZOR X,0	   4	  1 %
+MVZOR Vp Rpo-1			(do¹lo po)
+    SVZOR X,0	 204	 95 %
+    SVZOR X	   9	  4 %
+MVZOR P1ten Vp			(to stalo)
+    SVZOR 1,X	 206	 92 %
+    SVZOR X	  17	  7 %
+MVZOR Z, Jtak¾e			(, tak¾e)
+    SVZOR 1,X	 209	 99 %
+    SVZOR X	   2	  0 %
+MVZOR P2v¹echen N2			(v¹ech lékaøù)
+    SVZOR 1,X	 212	 97 %
+    SVZOR X	   5	  2 %
+MVZOR P1jeho N1			(její pohled)
+    SVZOR 1,X	 213	 98 %
+    SVZOR X	   3	  1 %
+MVZOR P4mùj N4			(na¹i pozici)
+    SVZOR 1,X	 213	 99 %
+    SVZOR X	   2	  0 %
+MVZOR P7tento N7			(touto funkcí)
+    SVZOR 1,X	 222	100 %
+MVZOR PSjeho N7			(jeho vlastností)
+    SVZOR 1,X	 222	 96 %
+    SVZOR X	   7	  3 %
+MVZOR Rpodle-2 P2on-1			(podle nich)
+    SVZOR X,0	 222	 99 %
+    SVZOR X	   1	  0 %
+MVZOR C} Z.			(v .)
+    SVZOR X,0	 224	 98 %
+    SVZOR X	   3	  1 %
+MVZOR Rvzhledem Rk-1			(vzhledem k)
+    SVZOR 1,X	 224	 98 %
+    SVZOR X,0	   3	  1 %
+MVZOR P1jen¾ N1			(její¾ cena)
+    SVZOR 1,X	 226	 94 %
+    SVZOR X	  12	  5 %
+MVZOR P6mùj N6			(na¹em trhu)
+    SVZOR 1,X	 230	 99 %
+    SVZOR X	   2	  0 %
+MVZOR Z, Dtedy			(, tedy)
+    SVZOR 1,X	 236	 92 %
+    SVZOR X	  17	  6 %
+    SVZOR X,0	   1	  0 %
+MVZOR Vf Vf			(napomoci orientovat)
+    SVZOR X,0	 239	 93 %
+    SVZOR X	  16	  6 %
+    SVZOR 1,X	   1	  0 %
+MVZOR A7 J^			(volaným a)
+    SVZOR 1,X	 244	 91 %
+    SVZOR X	  24	  8 %
+MVZOR Rs-1 P7on-1			(s nimi)
+    SVZOR X,0	 245	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Dvelmi A1			(velmi u¾iteèná)
+    SVZOR 1,X	 246	 96 %
+    SVZOR X	   9	  3 %
+MVZOR C7 Rz-1			(jedním z)
+    SVZOR X,0	 247	100 %
+MVZOR J^ J¾e			(a ¾e)
+    SVZOR X,0	 248	 97 %
+    SVZOR X	   4	  1 %
+    SVZOR 1,X	   2	  0 %
+MVZOR Vf Rk-1			(vyu¾ít k)
+    SVZOR X,0	 248	 92 %
+    SVZOR X	  19	  7 %
+MVZOR Vbude Vs			(bude navr¾ena)
+    SVZOR 1,X	 249	 91 %
+    SVZOR X,0	  17	  6 %
+    SVZOR X	   6	  2 %
+MVZOR Rna-1 P4ten			(na to)
+    SVZOR X,0	 264	 93 %
+    SVZOR X	  18	  6 %
+MVZOR Rv-1 P6on-1			(v ní)
+    SVZOR X,0	 264	100 %
+MVZOR Vp P4ten			(konstatovali to)
+    SVZOR X,0	 265	 94 %
+    SVZOR X	  15	  5 %
+MVZOR Rv-1 P6jen¾			(v nìm¾)
+    SVZOR X,0	 281	 96 %
+    SVZOR X	   9	  3 %
+MVZOR P7svùj-1 N7			(svým dílem)
+    SVZOR 1,X	 284	 97 %
+    SVZOR X	   8	  2 %
+MVZOR Rs-1 P7ten			(s tím)
+    SVZOR X,0	 291	 92 %
+    SVZOR X	  22	  7 %
+MVZOR Vf Ro-1			(dát o)
+    SVZOR X,0	 292	 90 %
+    SVZOR X	  31	  9 %
+MVZOR A1 Vje			(u¾iteèná je)
+    SVZOR 1,X	 293	 90 %
+    SVZOR X	  32	  9 %
+MVZOR Vjsem Vp			(jsem sly¹el)
+    SVZOR 1,X	 295	 97 %
+    SVZOR X	   8	  2 %
+MVZOR Vp Vjsem			(oèekával jsem)
+    SVZOR X,0	 302	 99 %
+    SVZOR X	   3	  0 %
+MVZOR NY7 N7			(geraldem greenwaldem)
+    SVZOR 1,X	 307	 98 %
+    SVZOR X	   4	  1 %
+    SVZOR X,0	   1	  0 %
+MVZOR Vp Dvèera			(informoval vèera)
+    SVZOR X,0	 307	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Rpod-1 N7			(pod heslem)
+    SVZOR X,0	 309	 94 %
+    SVZOR 1,X	  14	  4 %
+    SVZOR X	   4	  1 %
+MVZOR Vf Rs-1			(poèítat s)
+    SVZOR X,0	 309	 93 %
+    SVZOR X	  23	  6 %
+MVZOR Vp Vjsme			(upozornili jsme)
+    SVZOR X,0	 310	 98 %
+    SVZOR X	   5	  1 %
+MVZOR P1ten Vje			(to je)
+    SVZOR 1,X	 322	 92 %
+    SVZOR X	  25	  7 %
+MVZOR PSjeho N6			(jejich odstranìní)
+    SVZOR 1,X	 329	 98 %
+    SVZOR X	   6	  1 %
+MVZOR C1 Rz-1			(jeden z)
+    SVZOR X,0	 332	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Ru-1 P2já			(u nás)
+    SVZOR X,0	 333	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Vp Rza-1			(pova¾oval za)
+    SVZOR X,0	 333	 95 %
+    SVZOR X	  14	  4 %
+MVZOR Vje N7			(je vìcí)
+    SVZOR X,0	 341	 93 %
+    SVZOR X	  21	  5 %
+    SVZOR 1,X	   1	  0 %
+MVZOR Vf Rdo-1			(nahlédnout do)
+    SVZOR X,0	 344	 90 %
+    SVZOR X	  35	  9 %
+MVZOR P6svùj-1 N6			(svých dùsledcích)
+    SVZOR 1,X	 349	 98 %
+    SVZOR X	   4	  1 %
+MVZOR Vf Pse			(orientovat se)
+    SVZOR X,0	 350	 93 %
+    SVZOR X	  26	  6 %
+MVZOR Vp Vby			(nemusel by)
+    SVZOR X,0	 353	 97 %
+    SVZOR X	   8	  2 %
+MVZOR Dnapø Z.			(napø .)
+    SVZOR X,0	 362	 99 %
+    SVZOR X	   2	  0 %
+MVZOR Dg A4			(nepomìrnì men¹í)
+    SVZOR 1,X	 373	 90 %
+    SVZOR X	  37	  9 %
+MVZOR Rz-1 P2on-1			(z nich)
+    SVZOR X,0	 381	100 %
+MVZOR Vbudou Vf			(budou mít)
+    SVZOR 1,X	 384	 98 %
+    SVZOR X	   5	  1 %
+MVZOR Vjsme Vp			(jsme pøipravovali)
+    SVZOR 1,X	 392	100 %
+MVZOR Dvíce J,			(více ne¾)
+    SVZOR X,0	 395	 99 %
+    SVZOR X	   2	  0 %
+MVZOR Rk-1 P3ten			(k tomu)
+    SVZOR X,0	 395	 96 %
+    SVZOR X	  13	  3 %
+MVZOR Rnad-1 N7			(nad pomìry)
+    SVZOR X,0	 397	 95 %
+    SVZOR X	  19	  4 %
+MVZOR Dvèera Vp			(vèera oznámili)
+    SVZOR 1,X	 416	 99 %
+    SVZOR X	   1	  0 %
+MVZOR Vp N7			(oznaèili zkratkou)
+    SVZOR X,0	 420	 91 %
+    SVZOR X	  40	  8 %
+    SVZOR 1,X	   1	  0 %
+MVZOR VB Rza-1			(odpovídáte za)
+    SVZOR X,0	 428	 93 %
+    SVZOR X	  28	  6 %
+MVZOR Vje AC			(je tøeba)
+    SVZOR X,0	 432	 98 %
+    SVZOR X	   7	  1 %
+MVZOR Vp Rz-1			(vzniklo ze)
+    SVZOR X,0	 437	 92 %
+    SVZOR X	  37	  7 %
+MVZOR P1mùj N1			(mùj partner)
+    SVZOR 1,X	 444	 97 %
+    SVZOR X	  12	  2 %
+MVZOR J^ N6			(a zmìnì)
+    SVZOR X,0	 455	 91 %
+    SVZOR X	  30	  6 %
+    SVZOR 1,X	  10	  2 %
+MVZOR Rproti-1 N3			(proti prosinci)
+    SVZOR X,0	 455	 92 %
+    SVZOR X	  37	  7 %
+MVZOR Ro-1 P6ten			(o tom)
+    SVZOR X,0	 467	 98 %
+    SVZOR X	   5	  1 %
+MVZOR Dg Vs			(prokazatelnì schválena)
+    SVZOR 1,X	 473	 92 %
+    SVZOR X	  40	  7 %
+MVZOR C7 N7			(jednou náplní)
+    SVZOR 1,X	 482	 93 %
+    SVZOR X	  23	  4 %
+    SVZOR X,0	   8	  1 %
+MVZOR PSjeho N4			(jeho kvalitu)
+    SVZOR 1,X	 485	 97 %
+    SVZOR X	  10	  2 %
+MVZOR P1ten VB			(ta má)
+    SVZOR 1,X	 489	 93 %
+    SVZOR X	  32	  6 %
+MVZOR C1 N2			(nìkolik pojmù)
+    SVZOR X,0	 495	 90 %
+    SVZOR 1,X	  26	  4 %
+    SVZOR X	  26	  4 %
+MVZOR P2mùj N2			(na¹ich klientù)
+    SVZOR 1,X	 502	 97 %
+    SVZOR X	  11	  2 %
+MVZOR VB Rdo-1			(umo¾òuje do)
+    SVZOR X,0	 514	 93 %
+    SVZOR X	  34	  6 %
+MVZOR Db VB			(nijak netají)
+    SVZOR 1,X	 536	 94 %
+    SVZOR X	  30	  5 %
+    SVZOR X,0	   1	  0 %
+MVZOR Vp Rk-1			(potøebovala ke)
+    SVZOR X,0	 536	 95 %
+    SVZOR X	  27	  4 %
+MVZOR Db Vp			(zpoèátku neuva¾ovala)
+    SVZOR 1,X	 537	 95 %
+    SVZOR X	  23	  4 %
+    SVZOR X,0	   4	  0 %
+MVZOR Dg A2			(støednì velkých)
+    SVZOR 1,X	 569	 90 %
+    SVZOR X	  59	  9 %
+    SVZOR X,0	   2	  0 %
+MVZOR Vp Rdo-1			(nastoupil do)
+    SVZOR X,0	 590	 95 %
+    SVZOR X	  25	  4 %
+MVZOR Vp Ro-1			(jednal o)
+    SVZOR X,0	 597	 90 %
+    SVZOR X	  64	  9 %
+MVZOR VB Rk-1			(potøebujeme k)
+    SVZOR X,0	 602	 93 %
+    SVZOR X	  40	  6 %
+MVZOR Vp Pse			(stalo se)
+    SVZOR X,0	 643	 94 %
+    SVZOR X	  39	  5 %
+MVZOR Vje P1ten			(je to)
+    SVZOR X,0	 656	 96 %
+    SVZOR X	  22	  3 %
+MVZOR Z- TT			(- li)
+    SVZOR 1,X	 657	 94 %
+    SVZOR X	  35	  5 %
+MVZOR Z, Jproto¾e			(, proto¾e)
+    SVZOR 1,X	 658	 99 %
+    SVZOR X	   3	  0 %
+MVZOR C6 N6			(pùl roce)
+    SVZOR 1,X	 666	 95 %
+    SVZOR X	  17	  2 %
+    SVZOR X,0	  12	  1 %
+MVZOR P2svùj-1 N2			(své kanceláøe)
+    SVZOR 1,X	 684	 98 %
+    SVZOR X	  10	  1 %
+MVZOR Ru-1 N2			(u firmy)
+    SVZOR X,0	 727	 91 %
+    SVZOR X	  62	  7 %
+    SVZOR 1,X	   4	  0 %
+MVZOR Rv-1 NN			(v èr)
+    SVZOR X,0	 732	 95 %
+    SVZOR X	  35	  4 %
+MVZOR Vbude Vf			(bude pokraèovat)
+    SVZOR 1,X	 753	 97 %
+    SVZOR X,0	  10	  1 %
+    SVZOR X	   8	  1 %
+MVZOR Rpøed-1 N7			(pøed krachem)
+    SVZOR X,0	 754	 96 %
+    SVZOR X	  31	  3 %
+MVZOR C= C=			(110 00)
+    SVZOR X,0	 763	 90 %
+    SVZOR X	  78	  9 %
+MVZOR P1který Vp			(který mìl)
+    SVZOR 1,X	 765	 91 %
+    SVZOR X	  67	  8 %
+MVZOR P4tento N4			(tyto situace)
+    SVZOR 1,X	 778	 99 %
+    SVZOR X	   1	  0 %
+MVZOR AA Z.			(ès .)
+    SVZOR X,0	 797	 99 %
+    SVZOR X	   5	  0 %
+MVZOR PSjeho N2			(jejich vyøizování)
+    SVZOR 1,X	 837	 98 %
+    SVZOR X	  13	  1 %
+MVZOR P6tento N6			(tìchto pøípadech)
+    SVZOR 1,X	 847	 99 %
+    SVZOR X	   2	  0 %
+MVZOR C1 N1			(jeden formát)
+    SVZOR 1,X	 863	 94 %
+    SVZOR X	  42	  4 %
+    SVZOR X,0	  12	  1 %
+MVZOR Dg Vp			(jednoznaènì potvrdila)
+    SVZOR 1,X	 983	 95 %
+    SVZOR X	  42	  4 %
+MVZOR VB Ro-1			(jde o)
+    SVZOR X,0	1004	 91 %
+    SVZOR X	  98	  8 %
+MVZOR C4 N4			(dvì patra)
+    SVZOR 1,X	1029	 95 %
+    SVZOR X	  38	  3 %
+    SVZOR X,0	   8	  0 %
+MVZOR PSjeho N1			(jeho kolega)
+    SVZOR 1,X	1059	 98 %
+    SVZOR X	  17	  1 %
+MVZOR C4 N2			(dvacet haléøù)
+    SVZOR X,0	1120	 91 %
+    SVZOR X	  81	  6 %
+    SVZOR 1,X	  29	  2 %
+MVZOR Rv-1 N4			(ve ètvrtek)
+    SVZOR X,0	1130	 92 %
+    SVZOR X	  58	  4 %
+    SVZOR 1,X	  38	  3 %
+MVZOR P2tento N2			(tìchto pøístrojù)
+    SVZOR 1,X	1133	 99 %
+    SVZOR X	   2	  0 %
+MVZOR Rpøi-1 N6			(pøi øádkování)
+    SVZOR X,0	1152	 96 %
+    SVZOR X	  43	  3 %
+    SVZOR 1,X	   4	  0 %
+MVZOR P4svùj-1 N4			(svoji budoucnost)
+    SVZOR 1,X	1160	 97 %
+    SVZOR X	  28	  2 %
+MVZOR Dg VB			(správnì nazývá)
+    SVZOR 1,X	1171	 94 %
+    SVZOR X	  62	  5 %
+MVZOR P1tento N1			(tento parametr)
+    SVZOR 1,X	1197	 99 %
+    SVZOR X	   4	  0 %
+MVZOR Vp Rna-1			(stalo na)
+    SVZOR X,0	1256	 93 %
+    SVZOR X	  82	  6 %
+MVZOR Rod-1 N2			(od organizace)
+    SVZOR X,0	1258	 96 %
+    SVZOR X	  41	  3 %
+MVZOR NY2 N2			(karla dyby)
+    SVZOR 1,X	1312	 98 %
+    SVZOR X	  10	  0 %
+    SVZOR X,0	   5	  0 %
+MVZOR VB Rna-1			(závisí na)
+    SVZOR X,0	1330	 91 %
+    SVZOR X	 117	  8 %
+MVZOR P1který VB			(který pracuje)
+    SVZOR 1,X	1392	 91 %
+    SVZOR X	 127	  8 %
+MVZOR Rpo-1 N6			(po navázání)
+    SVZOR X,0	1422	 96 %
+    SVZOR X	  49	  3 %
+    SVZOR 1,X	   2	  0 %
+MVZOR Rza-1 N4			(za pøístroj)
+    SVZOR X,0	1482	 94 %
+    SVZOR X	  89	  5 %
+MVZOR VB Rv-1			(pracuje v)
+    SVZOR X,0	1500	 90 %
+    SVZOR X	 155	  9 %
+MVZOR Ro-1 N4			(o náhradu)
+    SVZOR X,0	1516	 93 %
+    SVZOR X	 106	  6 %
+    SVZOR 1,X	   1	  0 %
+MVZOR Z, Jaby			(, aby)
+    SVZOR 1,X	1637	 95 %
+    SVZOR X	  65	  3 %
+    SVZOR X,0	  16	  0 %
+MVZOR Vp Rv-1			(referoval v)
+    SVZOR X,0	1782	 93 %
+    SVZOR X	 133	  6 %
+MVZOR Vby Vp			(by mìla)
+    SVZOR 1,X	1841	 98 %
+    SVZOR X	  24	  1 %
+MVZOR NYN Z.			(l .)
+    SVZOR X,0	1947	 99 %
+    SVZOR X	   5	  0 %
+MVZOR NN Z.			(s .)
+    SVZOR X,0	2075	 98 %
+    SVZOR X	  24	  1 %
+MVZOR Ro-1 N6			(o nákladech)
+    SVZOR X,0	2146	 91 %
+    SVZOR X	 198	  8 %
+MVZOR Vp Vf			(zaèal vystupovat)
+    SVZOR X,0	2625	 96 %
+    SVZOR X	  99	  3 %
+MVZOR Rk-1 N3			(k neèitelnosti)
+    SVZOR X,0	2780	 96 %
+    SVZOR X	 101	  3 %
+    SVZOR 1,X	   1	  0 %
+MVZOR Rdo-1 N2			(do dokumentu)
+    SVZOR X,0	3054	 97 %
+    SVZOR X	  79	  2 %
+    SVZOR 1,X	   1	  0 %
+MVZOR Vp N4			(pøedala podklady)
+    SVZOR X,0	3228	 90 %
+    SVZOR X	 343	  9 %
+    SVZOR 1,X	  15	  0 %
+MVZOR C= Z.			(10 .)
+    SVZOR X,0	3269	 96 %
+    SVZOR X	 120	  3 %
+MVZOR A3 N3			(telekomunikaèní síti)
+    SVZOR 1,X	3355	 95 %
+    SVZOR X	 141	  4 %
+    SVZOR X,0	   5	  0 %
+MVZOR VB Vf			(lze pøená¹et)
+    SVZOR X,0	3702	 94 %
+    SVZOR X	 197	  5 %
+    SVZOR 1,X	   3	  0 %
+MVZOR Rz-1 N2			(z faxu)
+    SVZOR X,0	4070	 92 %
+    SVZOR X	 170	  3 %
+    SVZOR 1,X	 159	  3 %
+MVZOR Rna-1 N4			(na bloky)
+    SVZOR X,0	4184	 91 %
+    SVZOR X	 360	  7 %
+    SVZOR 1,X	  35	  0 %
+MVZOR Rna-1 N6			(na stránce)
+    SVZOR X,0	4491	 93 %
+    SVZOR 1,X	 215	  4 %
+    SVZOR X	  97	  2 %
+MVZOR NY1 N1			(josef ¹ulc)
+    SVZOR 1,X	4594	 97 %
+    SVZOR X	  56	  1 %
+    SVZOR X,0	  44	  0 %
+MVZOR A7 N7			(nejvy¹¹í rychlostí)
+    SVZOR 1,X	8507	 95 %
+    SVZOR X	 328	  3 %
+    SVZOR X,0	  27	  0 %
+MVZOR Z, J¾e			(, ¾e)
+    SVZOR 1,X	9037	 96 %
+    SVZOR X	 287	  3 %
+    SVZOR X,0	  54	  0 %
+MVZOR A6 N6			(pøenosové rychlosti)
+    SVZOR 1,X	12446	 97 %
+    SVZOR X	 359	  2 %
+    SVZOR X,0	  22	  0 %
+MVZOR Rv-1 N6			(ve skuteènosti)
+    SVZOR X,0	14447	 91 %
+    SVZOR X	 754	  4 %
+    SVZOR 1,X	 651	  4 %
+MVZOR A4 N4			(normalizovaný obsah)
+    SVZOR 1,X	17310	 95 %
+    SVZOR X	 707	  3 %
+    SVZOR X,0	  97	  0 %
+MVZOR A1 N1			(telefonní linky)
+    SVZOR 1,X	25878	 95 %
+    SVZOR X	1132	  4 %
+    SVZOR X,0	 121	  0 %
+MVZOR A2 N2			(èitelného textu)
+    SVZOR 1,X	31954	 95 %
+    SVZOR X	1283	  3 %
+    SVZOR X,0	  55	  0 %

@@ -1,0 +1,55 @@
+MVZOR # N1 Z( NN Z) Z: C= J* C= J*			(# rozmìry ( mm ) : 430 x 302 x)
+    SVZOR X,5,1,1,1,0,9,9,9,5	   5	100 %
+MVZOR C= Z. C= Z. Z- C= Z. C= Z. Z)			(22 . 12 . - 20 . 1 . ))
+    SVZOR 2,0,4,2,X,7,5,4,7,4	   5	100 %
+MVZOR J^ NN N1 N2 A2 Rz-1 N2 NN Rna-1 N4			(buï r pata kolmice spu¹tìné z bodu r na pøímku)
+    SVZOR X,0,0,2,3,4,5,6,4,8	   5	100 %
+MVZOR N1 A1 Rdo-1 P2tento N2 Z- A1 Ro-1 A6 N6			(pøíspìvek zaøazený do této rubriky - pojednávající o konkrétních chybách)
+    SVZOR X,0,1,4,2,6,0,6,9,7	   5	100 %
+MVZOR N1 Z( NN Z) Z: C= J* C= J* C=			(rozmìry ( mm ) : 430 x 302 x 115)
+    SVZOR 4,0,0,0,X,8,8,8,4,8	   5	100 %
+MVZOR Z( C= Z. C= Z. Z- C= Z. C= Z.			(( 22 . 12 . - 20 . 1 .)
+    SVZOR 5,3,1,5,3,X,8,6,5,8	   5	100 %
+MVZOR # NY1 N1 Z( NN Z) Z, N1 A2 N2			(# jan èerný ( ods ) , pøedseda zemìdìlského výboru)
+    SVZOR X,2,6,2,2,2,0,6,9,7	   6	100 %
+MVZOR A1 J^ Dg A1 N1 Z, A1 C= Z, N1			(advokátní a komerènì právní kanceláø , národní 25 , praha)
+    SVZOR 1,4,3,1,X,6,9,6,9,4	   6	100 %
+MVZOR J^ Dg A1 N1 Z, A1 C= Z, N1 C=			(a komerènì právní kanceláø , národní 25 , praha 1)
+    SVZOR 3,2,0,X,5,8,5,8,3,8	   6	100 %
+MVZOR N2 Z, N2 Z, N2 Z, N2 J^ A2 N2			(nástrojù , náøadí , strojù , materiálù a technického vybavení)
+    SVZOR 7,7,7,7,7,7,7,X,9,7	   6	100 %
+MVZOR # Vbude Dtaké Vs Rdo-1 A2 N2 Ro-1 C= N2			(# bude také zaøazen do ètvrtletního slosování o 3000 korun)
+    SVZOR X,3,3,0,3,6,4,6,7,8	   7	100 %
+MVZOR A1 N1 A1 Rv-1 P6tento N6 VB Rvedle-1 A2 N2			(podnikatelské nápady zveøejnìné v této rubrice odmìòujeme vedle bì¾ného honoráøe)
+    SVZOR 1,6,1,2,5,3,X,6,9,7	   7	100 %
+MVZOR C= Z) C= C= Z, C= C= Z, C= C=			(089 ) 326 12 , 301 53 , 469 63)
+    SVZOR X,0,7,2,7,7,5,0,7,8	   7	100 %
+MVZOR Pse Rpøi-1 N6 Vp J^ P1jaký Rz-1 P2ten VB N4			(se pøi podnikání dopustili a jaké z toho plyne pouèení)
+    SVZOR 3,3,1,4,X,9,8,6,4,8	   7	100 %
+MVZOR Z, N1 Z, N1 Z, N1 Z, N1 J^ N1			(, davydov , kovalenko , zubov , bucajev a vostrikov)
+    SVZOR 8,8,8,8,8,8,8,8,X,8	   7	100 %
+MVZOR # NN Z. NN Z. NY1 N1 Z, NN Z.K			(# doc . rndr . roman kotecký , drsc .K)
+    SVZOR X,6,1,6,3,6,0,8,6,0	   8	100 %
+MVZOR Rv-1 C} Z. N2 Vje C= N2 Rpo-1 C= NN			(ve iii . poøadí je 31 výher po 22134 kè)
+    SVZOR 4,3,1,0,X,4,5,6,9,7	   8	100 %
+MVZOR Rz-1 N2 NYN NYN Z. N2 AA NN Rof-1 N1			(z knihy mary e . whiteové the greening of gondwana)
+    SVZOR X,0,5,5,3,1,7,1,7,7	   8	100 %
+MVZOR # Z( N1 Z) Z( NN C= Z- C= Z)K			(# ( pz ) ( èt 2 - 10.40 )K)
+    SVZOR X,0,0,0,7,7,5,0,7,7	   9	100 %
+MVZOR Z( C= Z) C= C= Z, C= C= Z, C=			(( 089 ) 326 12 , 301 53 , 469)
+    SVZOR 1,X,1,8,3,8,8,6,1,8	   9	100 %
+MVZOR # C= Z. C= Z. A1 N1 AA Z. NN			(# 29 . 8 . valná hromada a . s)
+    SVZOR X,3,1,0,3,6,0,9,7,6	  10	100 %
+MVZOR N2 Z, N2 Z, N2 Z, N2 Z, N2 J^			(prodavaèe , mana¾era , mistra , sváøeèe , zedníka a)
+    SVZOR 9,9,9,9,9,9,9,9,9,X	  10	100 %
+MVZOR Z+ N1 Z: Z( C= Z) C= C= Z, C=			(+ fax : ( 02 ) 627 9337 , 271004)
+    SVZOR X,0,4,4,0,4,8,6,4,8	  13	 92 %
+    SVZOR X,0,1,4,0,4,8,6,4,8	   1	  7 %
+MVZOR # N1 Z: N1 Z, NN Z. NN Z. A7			(# kontakt : kredo , s . r . o)
+    SVZOR X,2,0,2,5,3,5,5,7,7	  21	 91 %
+    SVZOR X,2,0,4,2,4,5,5,7,7	   1	  4 %
+    SVZOR X,2,0,2,3,3,5,5,7,7	   1	  4 %
+MVZOR N1 Z: N1 Z, NN Z. NN Z. A7 Z.			(kontakt : kredo , s . r . o .)
+    SVZOR 1,X,1,4,2,4,4,6,6,8	  21	 91 %
+    SVZOR 1,X,3,1,3,4,4,6,6,8	   1	  4 %
+    SVZOR 1,X,1,2,2,4,4,6,6,8	   1	  4 %
