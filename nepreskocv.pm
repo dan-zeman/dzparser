@@ -1,17 +1,19 @@
-# Funkce související se subkategorizací sloves.
+# Funkce souvisejÃ­cÃ­ se subkategorizacÃ­ sloves.
 package nepreskocv;
+use utf8;
 use zakaz;
 
 
 
 #------------------------------------------------------------------------------
-# Naète seznam zákazù pøeskoèení slovesa.
+# NaÄte seznam zÃ¡kazÅ¯ pÅ™eskoÄenÃ­ slovesa.
 #------------------------------------------------------------------------------
 sub cist
 {
     my $jmeno_souboru = shift;
-    my %zakazy; # vıstupní hash; klíè: znaèkaSlovesa znaèkaØ znaèkaZ
+    my %zakazy; # vÃ½stupnÃ­ hash; klÃ­Ä: znaÄkaSlovesa znaÄkaÅ˜ znaÄkaZ
     open(ZAKAZY, $jmeno_souboru) or die("Nelze otevrit soubor $jmeno_souboru se seznamem zakazu preskoceni slovesa: $!\n");
+    binmode(ZAKAZY, ":encoding(iso-8859-2)");
     while(<ZAKAZY>)
     {
         chomp;
@@ -27,14 +29,14 @@ sub cist
 
 
 #------------------------------------------------------------------------------
-# Najde v konkrétní vìtì potenciální závislosti, které mají bıt zakázány.
-# Na základì nálezu aktualizuje seznam zakázanıch hran, kterı dostane.
+# Najde v konkrÃ©tnÃ­ vÄ›tÄ› potenciÃ¡lnÃ­ zÃ¡vislosti, kterÃ© majÃ­ bÃ½t zakÃ¡zÃ¡ny.
+# Na zÃ¡kladÄ› nÃ¡lezu aktualizuje seznam zakÃ¡zanÃ½ch hran, kterÃ½ dostane.
 #------------------------------------------------------------------------------
 sub najit_ve_vete
 {
     my $zakazy = shift; # odkaz na hash
-    my $anot = shift; # odkaz na pole hashù
-    my $zakaz = shift; # skalár s dosavadním seznamem zákazù
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $zakaz = shift; # skalÃ¡r s dosavadnÃ­m seznamem zÃ¡kazÅ¯
     for(my $i = 0; $i<=$#{$anot}; $i++)
     {
         for(my $j = 0; $j<=$#{$anot}; $j++)
@@ -56,8 +58,8 @@ sub najit_ve_vete
                 if(#$anot->[$k]{uznacka} =~ m/^V/ &&
                    exists($zakazy->{$zaznam}))
                 {
-                    # Bylo zji¹tìno, ¾e mezi i a j le¾í sloveso, které nesmí bıt pøeskoèeno.
-                    # Pøidat závislost i-j mezi zakázané.
+                    # Bylo zjiÅ¡tÄ›no, Å¾e mezi i a j leÅ¾Ã­ sloveso, kterÃ© nesmÃ­ bÃ½t pÅ™eskoÄeno.
+                    # PÅ™idat zÃ¡vislost i-j mezi zakÃ¡zanÃ©.
                     zakaz::pridat_zakaz(\$zakaz, $i, $j, "nelze preskocit $k");
                 }
             }

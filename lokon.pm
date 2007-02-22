@@ -1,32 +1,33 @@
 package lokon;
+use utf8;
 use zakaz;
-use model; # jen kvùli sub ud()
+use model; # jen kvÅ¯li sub ud()
 
 
 
 #------------------------------------------------------------------------------
-# Pokusí se vyøe¹it lokální konflikty konkurenèních zavì¹ení uzlu, a to na
-# základì kontextu. Pravdìpodobnost urèitého zavì¹ení uzlu mù¾e bıt jiná, pokud
-# víme, ¾e jeho konkurencí bylo konkrétní jiné zavì¹ení.
+# PokusÃ­ se vyÅ™eÅ¡it lokÃ¡lnÃ­ konflikty konkurenÄnÃ­ch zavÄ›Å¡enÃ­ uzlu, a to na
+# zÃ¡kladÄ› kontextu. PravdÄ›podobnost urÄitÃ©ho zavÄ›Å¡enÃ­ uzlu mÅ¯Å¾e bÃ½t jinÃ¡, pokud
+# vÃ­me, Å¾e jeho konkurencÃ­ bylo konkrÃ©tnÃ­ jinÃ© zavÄ›Å¡enÃ­.
 #
-# Vrátí odkazy na konkurenta, kterı zvítìzil (tím mù¾e bıt i pùvodní kandidát).
+# VrÃ¡tÃ­ odkazy na konkurenta, kterÃ½ zvÃ­tÄ›zil (tÃ­m mÅ¯Å¾e bÃ½t i pÅ¯vodnÃ­ kandidÃ¡t).
 #------------------------------------------------------------------------------
 sub lokalni_konflikty
 {
-    my $navrh0 = shift; # odkaz na hash se zatím nejlep¹í hranou (r, z, c, p...)
-    my $stav = shift; # odkaz na hash se stavem analızy
-    my $r = $navrh0->{r}; # index øídícího uzlu hrany, kterou navrhl pùvodní model
-    my $z = $navrh0->{z}; # index závislého uzlu hrany, kterou navrhl pùvodní model
-    my $priste = $navrh0->{priste}; # u koordinací: druhá polovina do pøí¹tího kola
-    my @povol = @{$stav->{povol}}; # seznam momentálnì povolenıch hran
-    # Zatím globální promìnné.
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $navrh0 = shift; # odkaz na hash se zatÃ­m nejlepÅ¡Ã­ hranou (r, z, c, p...)
+    my $stav = shift; # odkaz na hash se stavem analÃ½zy
+    my $r = $navrh0->{r}; # index Å™Ã­dÃ­cÃ­ho uzlu hrany, kterou navrhl pÅ¯vodnÃ­ model
+    my $z = $navrh0->{z}; # index zÃ¡vislÃ©ho uzlu hrany, kterou navrhl pÅ¯vodnÃ­ model
+    my $priste = $navrh0->{priste}; # u koordinacÃ­: druhÃ¡ polovina do pÅ™Ã­Å¡tÃ­ho kola
+    my @povol = @{$stav->{povol}}; # seznam momentÃ¡lnÄ› povolenÃ½ch hran
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
     my $rmax = $r;
     my $zmax = $z;
     my $pristemax = $priste;
     my $maxsila;
-    # Zapsat informaci o kandidátovi na øídícího zpùsobem sluèitelnım se
+    # Zapsat informaci o kandidÃ¡tovi na Å™Ã­dÃ­cÃ­ho zpÅ¯sobem sluÄitelnÃ½m se
     # statistikou o konfliktech.
     my $kandidat;
     if($priste eq "")
@@ -39,14 +40,14 @@ sub lokalni_konflikty
         $kandidat = "C $stav->{uznck}[$1]";
     }
     # Zjistit konkurenty.
-    my $nz; # kolik konkurentù jsou závislosti
-    my $nk; # kolik konkurentù jsou koordinace (nejdøív sourozenci, pak spojky)
+    my $nz; # kolik konkurentÅ¯ jsou zÃ¡vislosti
+    my $nk; # kolik konkurentÅ¯ jsou koordinace (nejdÅ™Ã­v sourozenci, pak spojky)
     my @konkurenti;
-    ($nz, $nk, @konkurenti) = zjistit_moznosti_zaveseni($z, $stav);
-    # Projít konkurenty.
+    ($nz, $nk, @konkurenti) = zjistit_moznosti_zaveseni($anot, $z, $stav);
+    # ProjÃ­t konkurenty.
     for(my $i = 0; $i<=$#konkurenti-$nk; $i++)
     {
-        # Zapsat informaci o konkurentovi zpùsobem sluèitelnım se statistikou
+        # Zapsat informaci o konkurentovi zpÅ¯sobem sluÄitelnÃ½m se statistikou
         # o konfliktech.
         my $konkurent;
         my $koordspojka = 1;
@@ -64,10 +65,10 @@ sub lokalni_konflikty
         my $sila_kandidata;
         my $sila_konkurenta;
         my $vyhral_konkurent = 0;
-        # Pokud je kandidát vlevo od závislého, zajímají nás konkurenti vpravo.
+        # Pokud je kandidÃ¡t vlevo od zÃ¡vislÃ©ho, zajÃ­majÃ­ nÃ¡s konkurenti vpravo.
         if($r<$z && $konkurenti[$i]>$z)
         {
-            # Zjistit síly kandidáta a konkurenta.
+            # Zjistit sÃ­ly kandidÃ¡ta a konkurenta.
             my $zaznam = "LOK $stav->{uznck}[$z] L $kandidat P $konkurent";
             $sila_kandidata = model::ud("$zaznam L");
             $sila_konkurenta = model::ud("$zaznam P")*$koordspojka;
@@ -84,10 +85,10 @@ sub lokalni_konflikty
                 }
             }
         }
-        # Pokud je kandidát vpravo od závislého, zajímají nás konkurenti vlevo.
+        # Pokud je kandidÃ¡t vpravo od zÃ¡vislÃ©ho, zajÃ­majÃ­ nÃ¡s konkurenti vlevo.
         elsif($r>$z && $konkurenti[$i]<$z)
         {
-            # Zjistit síly kandidáta a konkurenta.
+            # Zjistit sÃ­ly kandidÃ¡ta a konkurenta.
             my $zaznam = "LOK $stav->{uznck}[$z] L $konkurent P $kandidat";
             $sila_kandidata = model::ud("$zaznam P");
             $sila_konkurenta = model::ud("$zaznam L")*$koordspojka;
@@ -104,14 +105,14 @@ sub lokalni_konflikty
                 }
             }
         }
-        # Ostatní kombinace (vèetnì toho, ¾e konkurent je kandidát sám) nás
-        # zatím nezajímají.
+        # OstatnÃ­ kombinace (vÄetnÄ› toho, Å¾e konkurent je kandidÃ¡t sÃ¡m) nÃ¡s
+        # zatÃ­m nezajÃ­majÃ­.
         else
         {
             next;
         }
-        # Pokud je konkurent alespoò dvakrát lep¹í ne¾ kandidát, a pokud navíc
-        # jejich srovnání vychází ze vzorku alespoò 15 vıskytù, vybrat
+        # Pokud je konkurent alespoÅˆ dvakrÃ¡t lepÅ¡Ã­ neÅ¾ kandidÃ¡t, a pokud navÃ­c
+        # jejich srovnÃ¡nÃ­ vychÃ¡zÃ­ ze vzorku alespoÅˆ 15 vÃ½skytÅ¯, vybrat
         # konkurenta.
         if($vyhral_konkurent && $sila_konkurenta/($sila_konkurenta+$sila_kandidata)>$maxsila)
         {
@@ -134,22 +135,22 @@ sub lokalni_konflikty
 
 
 #------------------------------------------------------------------------------
-# Zjistí povolená zavì¹ení uzlu vèetnì koordinací.
+# ZjistÃ­ povolenÃ¡ zavÄ›Å¡enÃ­ uzlu vÄetnÄ› koordinacÃ­.
 #------------------------------------------------------------------------------
 sub zjistit_moznosti_zaveseni
 {
+    my $anot = shift; # odkaz na pole hashÅ¯
     my $z = shift;
-    my $stav = shift; # odkaz na hash se stavem analızy
+    my $stav = shift; # odkaz na hash se stavem analÃ½zy
     my $povol_z = join(",", @{$stav->{povol}}).",";
-    # Zatím globální promìnné.
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
-    # Odstranit ze seznamu povolenıch závislostí ty, které zavì¹ují jinı uzel.
+    # Odstranit ze seznamu povolenÃ½ch zÃ¡vislostÃ­ ty, kterÃ© zavÄ›Å¡ujÃ­ jinÃ½ uzel.
     $povol_z =~ s/\d+-(?!$z,)\d+,//g;
-    # Pøepsat seznam závislostí na seznam øídících uzlù.
+    # PÅ™epsat seznam zÃ¡vislostÃ­ na seznam Å™Ã­dÃ­cÃ­ch uzlÅ¯.
     $povol_z =~ s/-$z,/,/g;
     my @r = split(/,/, $povol_z);
-    # Vyøadit závislosti, které jsou na èerné listinì.
+    # VyÅ™adit zÃ¡vislosti, kterÃ© jsou na ÄernÃ© listinÄ›.
     for(my $i = 0; $i<=$#r; $i++)
     {
         if(zakaz::je_zakazana($stav->{zakaz}, $r[$i], $z))
@@ -158,40 +159,40 @@ sub zjistit_moznosti_zaveseni
             $i--;
         }
     }
-    # Uspoøádat konkurenèní závislosti podle vzdálenosti øídícího uzlu od
-    # závislého. Pokud se analyzátor rozhodne skonèit u prvního konkurenta,
-    # kterı pøedèí pùvodního kandidáta, bude zaji¹tìno, ¾e dostane nejkrat¹í
-    # takové zavì¹ení.
+    # UspoÅ™Ã¡dat konkurenÄnÃ­ zÃ¡vislosti podle vzdÃ¡lenosti Å™Ã­dÃ­cÃ­ho uzlu od
+    # zÃ¡vislÃ©ho. Pokud se analyzÃ¡tor rozhodne skonÄit u prvnÃ­ho konkurenta,
+    # kterÃ½ pÅ™edÄÃ­ pÅ¯vodnÃ­ho kandidÃ¡ta, bude zajiÅ¡tÄ›no, Å¾e dostane nejkratÅ¡Ã­
+    # takovÃ© zavÄ›Å¡enÃ­.
     $povol_z = join(",", sort{abs($a-$z)<=>abs($b-$z);}(split(/,/, $povol_z)))
     .",";
-    # Zapamatovat si poèet opravdovıch závislostí, aby je volající mohl odli¹it
-    # od koordinací.
+    # Zapamatovat si poÄet opravdovÃ½ch zÃ¡vislostÃ­, aby je volajÃ­cÃ­ mohl odliÅ¡it
+    # od koordinacÃ­.
     my $n_zavislosti = $#r+1;
-    # Projít øídící uzly a pøidat potenciální koordinace.
+    # ProjÃ­t Å™Ã­dÃ­cÃ­ uzly a pÅ™idat potenciÃ¡lnÃ­ koordinace.
     my @spojky;
     for(my $i = 0; $i<$n_zavislosti; $i++)
     {
-        # Øídící uzel musí bıt znám jako potenciální koordinaèní spojka.
+        # Å˜Ã­dÃ­cÃ­ uzel musÃ­ bÃ½t znÃ¡m jako potenciÃ¡lnÃ­ koordinaÄnÃ­ spojka.
         my $n_jako_koord = model::ud("KJJ $anot->[$r[$i]]{slovo}");
         my $n_jako_cokoli = model::ud("USS $anot->[$r[$i]]{slovo}");
-        # Koordinaèní spojka nesmí øídit nìkolik rùznıch koordinací najednou.
+        # KoordinaÄnÃ­ spojka nesmÃ­ Å™Ã­dit nÄ›kolik rÅ¯znÃ½ch koordinacÃ­ najednou.
         if($n_jako_koord>0 && !$stav->{coord}[$r[$i]])
         {
-            # Najít potenciálního sourozence v koordinaci.
+            # NajÃ­t potenciÃ¡lnÃ­ho sourozence v koordinaci.
             if($z<$r[$i])
             {
-                # Pokud u¾ spojka má rodièe, a to na té stranì, na které
-                # hledáme sourozence, spojení se sourozencem není povoleno.
+                # Pokud uÅ¾ spojka mÃ¡ rodiÄe, a to na tÃ© stranÄ›, na kterÃ©
+                # hledÃ¡me sourozence, spojenÃ­ se sourozencem nenÃ­ povoleno.
                 if($stav->{rodic}[$r[$i]]!=-1 && $stav->{rodic}[$r[$i]]>$r[$i])
                 {
                     next;
                 }
-                # Najít dosah spojky. Sourozenec se mù¾e hledat a¾ za ním.
+                # NajÃ­t dosah spojky. Sourozenec se mÅ¯Å¾e hledat aÅ¾ za nÃ­m.
                 for(my $j = $r[$i]+1; $j<=$#{$anot}; $j++)
                 {
                     if($stav->{rodic}[$j]==-1)
                     {
-                        # Nalezen potenciální sourozenec. Pøidat ho do pole.
+                        # Nalezen potenciÃ¡lnÃ­ sourozenec. PÅ™idat ho do pole.
                         push(@spojky, $r[$i]);
                         push(@r, $j);
                         last;
@@ -200,8 +201,8 @@ sub zjistit_moznosti_zaveseni
             }
             else
             {
-                # Pokud u¾ spojka má rodièe, a to na té stranì, na které
-                # hledáme sourozence, spojení se sourozencem není povoleno.
+                # Pokud uÅ¾ spojka mÃ¡ rodiÄe, a to na tÃ© stranÄ›, na kterÃ©
+                # hledÃ¡me sourozence, spojenÃ­ se sourozencem nenÃ­ povoleno.
                 if($stav->{rodic}[$r[$i]]!=-1 && $stav->{rodic}[$r[$i]]<$r[$i])
                 {
                     next;
@@ -210,7 +211,7 @@ sub zjistit_moznosti_zaveseni
                 {
                     if($stav->{rodic}[$j]==-1)
                     {
-                        # Nalezen potenciální sourozenec. Pøidat ho do pole.
+                        # Nalezen potenciÃ¡lnÃ­ sourozenec. PÅ™idat ho do pole.
                         push(@spojky, $r[$i]);
                         push(@r, $j);
                         last;
@@ -219,22 +220,22 @@ sub zjistit_moznosti_zaveseni
             }
         }
     }
-    # Vrátit poèet závislostí a poèet koordinací, následovanı polem závislostí,
-    # polem koordinací a polem spojek.
+    # VrÃ¡tit poÄet zÃ¡vislostÃ­ a poÄet koordinacÃ­, nÃ¡sledovanÃ½ polem zÃ¡vislostÃ­,
+    # polem koordinacÃ­ a polem spojek.
     return($n_zavislosti, $#r-$n_zavislosti+1, @r, @spojky);
 }
 
 
 
 #------------------------------------------------------------------------------
-# Vytvoøí hlá¹ení na základì svıch statistik. Nikam ho nevypisuje, jen ho vrátí
-# volajícímu. Je na volajícím, aby rozhodl, na kterı vıstup ho po¹le.
+# VytvoÅ™Ã­ hlÃ¡Å¡enÃ­ na zÃ¡kladÄ› svÃ½ch statistik. Nikam ho nevypisuje, jen ho vrÃ¡tÃ­
+# volajÃ­cÃ­mu. Je na volajÃ­cÃ­m, aby rozhodl, na kterÃ½ vÃ½stup ho poÅ¡le.
 #------------------------------------------------------------------------------
 sub vytvorit_hlaseni
 {
-    my $hlaseni = "------- Model lokálních konfliktù -------\n";
-    $hlaseni .= sprintf("%7d   zlep¹ení\n", $lk_zlepseni);
-    $hlaseni .= sprintf("%7d   zhor¹ení\n", $lk_zhorseni);
+    my $hlaseni = "------- Model lokÃ¡lnÃ­ch konfliktÅ¯ -------\n";
+    $hlaseni .= sprintf("%7d   zlepÅ¡enÃ­\n", $lk_zlepseni);
+    $hlaseni .= sprintf("%7d   zhorÅ¡enÃ­\n", $lk_zhorseni);
     return $hlaseni;
 }
 

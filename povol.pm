@@ -1,29 +1,30 @@
 package povol;
+use utf8;
 
 
 
 #------------------------------------------------------------------------------
-# Podle nastavené konfigurace vybere funkci, která umí k libovolnému rozpraco-
-# vanému stromu øíct, které závislosti do nìj lze v pøí¹tím kroku pøidat.
+# Podle nastavenÃ© konfigurace vybere funkci, kterÃ¡ umÃ­ k libovolnÃ©mu rozpraco-
+# vanÃ©mu stromu Å™Ã­ct, kterÃ© zÃ¡vislosti do nÄ›j lze v pÅ™Ã­Å¡tÃ­m kroku pÅ™idat.
 #------------------------------------------------------------------------------
 sub zjistit_povol
 {
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $rodic = shift;
     my $konfig = \%main::konfig;
     if($konfig->{neproj})
     {
-        my $rodic = shift;
-        my $anot = \@main::anot;
         return povolit_rematizator_za_predlozku($anot, $rodic);
     }
     else
     {
         if($konfig->{komponentove})
         {
-            return zjistit_povol_komponentove(@_);
+            return zjistit_povol_komponentove($rodic);
         }
         else
         {
-            return zjistit_povol_shora_dolu(@_);
+            return zjistit_povol_shora_dolu($rodic);
         }
     }
 }
@@ -31,23 +32,23 @@ sub zjistit_povol
 
 
 #------------------------------------------------------------------------------
-# Pro libovolnı neúplnı strom zjistí, které závislosti je do nìj mo¾né pøidat,
-# ani¾ by naru¹ily projektivitu. Strom se pøedává v parametrech jako seznam
-# odkazù na rodièe. Funkce vrací seznam povolenıch hran (pole, ne øetìzec!).
+# Pro libovolnÃ½ neÃºplnÃ½ strom zjistÃ­, kterÃ© zÃ¡vislosti je do nÄ›j moÅ¾nÃ© pÅ™idat,
+# aniÅ¾ by naruÅ¡ily projektivitu. Strom se pÅ™edÃ¡vÃ¡ v parametrech jako seznam
+# odkazÅ¯ na rodiÄe. Funkce vracÃ­ seznam povolenÃ½ch hran (pole, ne Å™etÄ›zec!).
 #------------------------------------------------------------------------------
 sub zjistit_povol_komponentove
 {
-    my $rodic = shift; # odkaz na pole indexù rodièù uzlù
-    my @povol; # vıstupní pole
-    # Pøes $i projít uzly, které lze zavìsit, proto¾e je¹tì nemají rodièe.
-    # Vynechat uzel è. 0, to bude ka¾dopádnì koøen.
+    my $rodic = shift; # odkaz na pole indexÅ¯ rodiÄÅ¯ uzlÅ¯
+    my @povol; # vÃ½stupnÃ­ pole
+    # PÅ™es $i projÃ­t uzly, kterÃ© lze zavÄ›sit, protoÅ¾e jeÅ¡tÄ› nemajÃ­ rodiÄe.
+    # Vynechat uzel Ä. 0, to bude kaÅ¾dopÃ¡dnÄ› koÅ™en.
     for(my $i = 1; $i<=$#{$rodic}; $i++)
     {
         if($rodic->[$i]==-1 || $rodic->[$i] eq "")
         {
-            # Vyhledat mezi sousedy uzlu jeho mo¾né rodièe.
-            # Sousedé vlevo.
-            # Zatím nevíme, jestli soused vlevo nezávisí na mì.
+            # Vyhledat mezi sousedy uzlu jeho moÅ¾nÃ© rodiÄe.
+            # SousedÃ© vlevo.
+            # ZatÃ­m nevÃ­me, jestli soused vlevo nezÃ¡visÃ­ na mÄ›.
             my $nejdale = $i-1;
             my @mozna_povol;
             for(my $j = $nejdale; $j!=-1 && $j ne ""; $j = $rodic->[$j])
@@ -55,17 +56,17 @@ sub zjistit_povol_komponentove
                 $nejdale = $j if($j<$nejdale);
                 if($j==$i)
                 {
-                    # Smùla. Zatím jsem se pohyboval ve svém podstromu.
+                    # SmÅ¯la. ZatÃ­m jsem se pohyboval ve svÃ©m podstromu.
                     splice(@mozna_povol);
                     $j = $nejdale-1;
                     $nejdale = $j;
                 }
                 push(@mozna_povol, "$j-$i");
             }
-            # OK, vypadli jsme na sirotkovi, teï je v @mozna_povol to, co je
+            # OK, vypadli jsme na sirotkovi, teÄ je v @mozna_povol to, co je
             # opravdu dovoleno.
             splice(@povol, $#povol+1, 0, @mozna_povol);
-            # Sousedé vpravo.
+            # SousedÃ© vpravo.
             if($i<$#{$rodic})
             {
                 $nejdale = $i+1;
@@ -75,16 +76,16 @@ sub zjistit_povol_komponentove
                     $nejdale = $j if($j>$nejdale);
                     if($j==$i)
                     {
-                        # Smùla. Zatím jsem se pohyboval ve svém podstromu.
+                        # SmÅ¯la. ZatÃ­m jsem se pohyboval ve svÃ©m podstromu.
                         splice(@mozna_povol);
                         $j = $nejdale+1;
-                        # Pozor na pravı okraj vìty!
+                        # Pozor na pravÃ½ okraj vÄ›ty!
                         last if($j>$#{$rodic});
                         $nejdale = $j;
                     }
                     push(@mozna_povol, "$j-$i");
                 }
-                # OK, vypadli jsme na sirotkovi, teï je v @mozna_povol to, co
+                # OK, vypadli jsme na sirotkovi, teÄ je v @mozna_povol to, co
                 # je opravdu dovoleno.
                 splice(@povol, $#povol+1, 0, @mozna_povol);
             }
@@ -96,16 +97,16 @@ sub zjistit_povol_komponentove
 
 
 #------------------------------------------------------------------------------
-# Zjistí, které závislosti lze pøidat do stromu, aby byl zachován postup shora
-# dolù. Pozor, na rozdíl od komponentové, tato verze nehlídá projektivitu
+# ZjistÃ­, kterÃ© zÃ¡vislosti lze pÅ™idat do stromu, aby byl zachovÃ¡n postup shora
+# dolÅ¯. Pozor, na rozdÃ­l od komponentovÃ©, tato verze nehlÃ­dÃ¡ projektivitu
 # stromu!
 #------------------------------------------------------------------------------
 sub zjistit_povol_shora_dolu
 {
-    my $rodic = shift; # odkaz na rozpracovanı strom
-    my @povol; # vıstupní pole
-    # Povolené jsou závislosti uzlù, které je¹tì ve stromu nejsou, na uzlech,
-    # které ji¾ ve stromu jsou.
+    my $rodic = shift; # odkaz na rozpracovanÃ½ strom
+    my @povol; # vÃ½stupnÃ­ pole
+    # PovolenÃ© jsou zÃ¡vislosti uzlÅ¯, kterÃ© jeÅ¡tÄ› ve stromu nejsou, na uzlech,
+    # kterÃ© jiÅ¾ ve stromu jsou.
     for(my $i = 0; $i<=$#{$rodic}; $i++)
     {
         if($i==0 || $rodic->[$i]>=0)
@@ -127,19 +128,20 @@ sub zjistit_povol_shora_dolu
 
 
 #------------------------------------------------------------------------------
-# Zjistí, zda urèitá závislost je povolená. Pokud dostane odkaz na seznam
-# povolenıch závislostí, pouze projde tento seznam. Jinak si ho nejdøív sama
-# zjistí podle globální promìnné @rodic.
+# ZjistÃ­, zda urÄitÃ¡ zÃ¡vislost je povolenÃ¡. Pokud dostane odkaz na seznam
+# povolenÃ½ch zÃ¡vislostÃ­, pouze projde tento seznam. Jinak si ho nejdÅ™Ã­v sama
+# zjistÃ­ podle globÃ¡lnÃ­ promÄ›nnÃ© @rodic.
 #------------------------------------------------------------------------------
 sub je_povoleno
 {
-    my $r = $_[0];
-    my $z = $_[1];
-    my $povolref = $_[2];
+    my $anot = shift;
+    my $r = shift;
+    my $z = shift;
+    my $povolref = shift;
     my @povol;
     if(!$povolref)
     {
-        @povol = zjistit_povol(@rodic);
+        @povol = zjistit_povol($anot, @rodic);
         $povolref = \@povol;
     }
     for(my $i = 0; $i<=$#{$povolref}; $i++)
@@ -161,12 +163,13 @@ sub je_povoleno
 
 
 #------------------------------------------------------------------------------
-# Naète seznam rematizátorù. Podle nich se dají poznat neprojektivity typu
-# rematizátor - pøedlo¾ka - slovo visící na pøedlo¾ce a øídící rematizátor.
+# NaÄte seznam rematizÃ¡torÅ¯. Podle nich se dajÃ­ poznat neprojektivity typu
+# rematizÃ¡tor - pÅ™edloÅ¾ka - slovo visÃ­cÃ­ na pÅ™edloÅ¾ce a Å™Ã­dÃ­cÃ­ rematizÃ¡tor.
 #------------------------------------------------------------------------------
 sub cist_rematizatory
 {
     open(REM, "rematizatory.txt") or die("Nelze otevrit rematizatory: $!\n");
+    binmode(REM, ":encoding(iso-8859-2)");
     while(<REM>)
     {
         if(m/^\S+ \d+ \d+ (\S+)/)
@@ -180,20 +183,20 @@ sub cist_rematizatory
 
 
 #------------------------------------------------------------------------------
-# Povolí neprojektivní závislosti rematizátorù na slovech za pøedlo¾kou nad
-# rámec toho, co dovoluje modul povol. Podmínkou je, ¾e je¹tì nebyla naru¹ena
-# situace, která neprojektivity zpùsobuje, tj. pøedev¹ím rematizátor je¹tì nemá
-# rodièe, dále pøedlo¾ka nevisí ani na rematizátoru, ani na slovì za ní.
+# PovolÃ­ neprojektivnÃ­ zÃ¡vislosti rematizÃ¡torÅ¯ na slovech za pÅ™edloÅ¾kou nad
+# rÃ¡mec toho, co dovoluje modul povol. PodmÃ­nkou je, Å¾e jeÅ¡tÄ› nebyla naruÅ¡ena
+# situace, kterÃ¡ neprojektivity zpÅ¯sobuje, tj. pÅ™edevÅ¡Ã­m rematizÃ¡tor jeÅ¡tÄ› nemÃ¡
+# rodiÄe, dÃ¡le pÅ™edloÅ¾ka nevisÃ­ ani na rematizÃ¡toru, ani na slovÄ› za nÃ­.
 #------------------------------------------------------------------------------
 sub povolit_rematizator_za_predlozku
 {
     my $anot = shift;
-    my $rodic = shift; # rozpracovanı strom
+    my $rodic = shift; # rozpracovanÃ½ strom
     my @povol = povolit_infinitivy($anot, $rodic);
     for(my $i = 0; $i<$#{$anot}; $i++)
     {
-        # Kvùli obavì z cyklù radìji po¾adovat, aby uzel za pøedlo¾kou byl
-        # pøipojen nanejvı¹ na pøedlo¾ku a pøedlo¾ka aby je¹tì rodièe nemìla vùbec.
+        # KvÅ¯li obavÄ› z cyklÅ¯ radÄ›ji poÅ¾adovat, aby uzel za pÅ™edloÅ¾kou byl
+        # pÅ™ipojen nanejvÃ½Å¡ na pÅ™edloÅ¾ku a pÅ™edloÅ¾ka aby jeÅ¡tÄ› rodiÄe nemÄ›la vÅ¯bec.
         if(exists($rematizatory{$anot->[$i]{slovo}}) &&
            $anot->[$i+1]{znacka} =~ m/^R/ &&
            $rodic->[$i] == -1 &&
@@ -209,23 +212,23 @@ sub povolit_rematizator_za_predlozku
 
 
 #------------------------------------------------------------------------------
-# Povolí neprojektivní závislosti na infinitivech, pokud infinitiv visí na svém
-# levém sousedovi a neprojektivita podlézá pouze tohoto souseda a uzly, které
-# u¾ na nìm visí (pøesnì øeèeno, povolíme, aby na infinitivu viselo navíc v¹e,
-# co mù¾e viset na jeho rodièi.
+# PovolÃ­ neprojektivnÃ­ zÃ¡vislosti na infinitivech, pokud infinitiv visÃ­ na svÃ©m
+# levÃ©m sousedovi a neprojektivita podlÃ©zÃ¡ pouze tohoto souseda a uzly, kterÃ©
+# uÅ¾ na nÄ›m visÃ­ (pÅ™esnÄ› Å™eÄeno, povolÃ­me, aby na infinitivu viselo navÃ­c vÅ¡e,
+# co mÅ¯Å¾e viset na jeho rodiÄi.
 #------------------------------------------------------------------------------
 sub povolit_infinitivy
 {
     my $anot = shift;
-    my $rodic = shift; # rozpracovanı strom
+    my $rodic = shift; # rozpracovanÃ½ strom
     my @povol = povolit_li($anot, $rodic);
     for(my $i = 1; $i<=$#{$anot}; $i++)
     {
         if($anot->[$i]{uznacka} =~ m/^Vf/ &&
            $rodic->[$i]==$i-1)
         {
-            # Povolit v¹em uzlùm, které mohou zleva viset na uzlu nalevo od
-            # infinitivu, aby visely i na infinitivu samotném.
+            # Povolit vÅ¡em uzlÅ¯m, kterÃ© mohou zleva viset na uzlu nalevo od
+            # infinitivu, aby visely i na infinitivu samotnÃ©m.
             for(my $j = 0; $j<=$#povol; $j++)
             {
                 $povol[$j] =~ m/^(\d+)-(\d+)$/;
@@ -244,12 +247,12 @@ sub povolit_infinitivy
 
 
 #------------------------------------------------------------------------------
-# Povolí neprojektivní závislosti pøes -li a v¹ak.
+# PovolÃ­ neprojektivnÃ­ zÃ¡vislosti pÅ™es -li.
 #------------------------------------------------------------------------------
 sub povolit_li
 {
     my $anot = shift;
-    my $rodic = shift; # rozpracovanı strom
+    my $rodic = shift; # rozpracovanÃ½ strom
     my @povol = zjistit_povol_komponentove($rodic);
     for(my $i = 1; $i<=$#{$anot}; $i++)
     {
@@ -257,8 +260,8 @@ sub povolit_li
            $anot->[$i-1]{slovo} eq "-" &&
            $i>2)
         {
-            # Povolit v¹em uzlùm, které mohou zprava viset na li, aby visely i
-            # na slovì pøed pomlèkou.
+            # Povolit vÅ¡em uzlÅ¯m, kterÃ© mohou zprava viset na li, aby visely i
+            # na slovÄ› pÅ™ed pomlÄkou.
             for(my $j = 0; $j<=$#povol; $j++)
             {
                 $povol[$j] =~ m/^(\d+)-(\d+)$/;
@@ -267,59 +270,6 @@ sub povolit_li
                 if($r==$i && $z>$r)
                 {
                     push(@povol, ($i-2)."-$z");
-                }
-            }
-        }
-        elsif($anot->[$i]{slovo} eq "v¹ak" && $i>1 && $i<$#{$anot})
-        {
-            # Povolit v¹em uzlùm, které mohou zleva viset na v¹ak, aby visely i
-            # na jeho pravém sousedovi, a v¹em uzlùm, které mohou na v¹ak viset
-            # zprava, aby visely i na jeho levém sousedovi.
-            for(my $j = 0; $j<=$#povol; $j++)
-            {
-                $povol[$j] =~ m/^(\d+)-(\d+)$/;
-                my $r = $1;
-                my $z = $2;
-                if($r==$i)
-                {
-                    if($z<$i)
-                    {
-                        # Pozor, mohl by vzniknout cyklus! Napø. pokud je "v¹ak" na pozici
-                        # 2 a u¾ minule bylo pøeskoèeno závislostí 3-1, nesmíme teï bezhlavì
-                        # dovolit závislost 1-3!
-                        my $ok = 1;
-                        for(my $k = $i+1; $k>0; $k = $rodic->[$k])
-                        {
-                            if($k==$z)
-                            {
-                                $ok = 0;
-                                last;
-                            }
-                        }
-                        if($ok)
-                        {
-                            push(@povol, ($i+1)."-$z");
-                        }
-                    }
-                    else
-                    {
-                        # Pozor, mohl by vzniknout cyklus! Napø. pokud je "v¹ak" na pozici
-                        # 2 a u¾ minule bylo pøeskoèeno závislostí 3-1, nesmíme teï bezhlavì
-                        # dovolit závislost 1-3!
-                        my $ok = 1;
-                        for(my $k = $i-1; $k>0; $k = $rodic->[$k])
-                        {
-                            if($k==$z)
-                            {
-                                $ok = 0;
-                                last;
-                            }
-                        }
-                        if($ok)
-                        {
-                            push(@povol, ($i-1)."-$z");
-                        }
-                    }
                 }
             }
         }

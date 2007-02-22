@@ -1,4 +1,5 @@
 package rozebrat;
+use utf8;
 use debug;
 use zakaz;
 use genstav;
@@ -9,71 +10,86 @@ use nepreskocv;
 
 
 #------------------------------------------------------------------------------
-# Vybuduje závislostní strukturu vìty.
-# Tady se sna¾ím oprostit pùvodní funkci rozebrat_vetu() od globálních promìnnıch.
+# Vybuduje zÃ¡vislostnÃ­ strukturu vÄ›ty.
+# Tady se snaÅ¾Ã­m oprostit pÅ¯vodnÃ­ funkci rozebrat_vetu() od globÃ¡lnÃ­ch promÄ›nnÃ½ch.
 #------------------------------------------------------------------------------
 sub rozebrat_vetu
 {
-    # Volitelnì lze jako parametr dodat vısledek èásteèné analızy jinımi
-    # prostøedky. V tom pøípadì funkce doplní rodièe jen tìm uzlùm, které je
-    # dosud nemají.
+    my $anot = shift; # odkaz na pole hashÅ¯
+    # VolitelnÄ› lze jako parametr dodat vÃ½sledek ÄÃ¡steÄnÃ© analÃ½zy jinÃ½mi
+    # prostÅ™edky. V tom pÅ™Ã­padÄ› funkce doplnÃ­ rodiÄe jen tÄ›m uzlÅ¯m, kterÃ© je
+    # dosud nemajÃ­.
     my $analyza0 = shift;
-    # Zatím globální promìnné.
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
-    # Zalo¾it strukturu se stavem analızy a vyplnit do ní poèáteèní hodnoty.
-    my $stav = vytvorit_pocatecni_stav($analyza0);
+    # ZaloÅ¾it strukturu se stavem analÃ½zy a vyplnit do nÃ­ poÄÃ¡teÄnÃ­ hodnoty.
+    my $stav = vytvorit_pocatecni_stav($anot, $analyza0);
     while($stav->{zbyva}>0)
     {
-        # Pro ka¾dou povolenou hranu vygenerovat stav odpovídající pøidání této hrany do stromu.
-        my $nove_stavy = genstav::generovat_stavy($stav, 0);
-        # První prvek pole je stav, kterı má zvítìzit. Zálo¾ní návrhy zatím ignorovat a zahodit.
-        $stav = $nove_stavy->[0];
+        # KvÅ¯li pokusÅ¯m s pÅ™esnostÃ­ a ÃºplnostÃ­ pÅ™Ã­padnÄ› zahrnout pro kaÅ¾dÃ© slovo i alternativnÃ­ zavÄ›Å¡enÃ­.
+        if($konfig->{nekolik_nejlepsich_zavislosti})
+        {
+            # Pro kaÅ¾dou povolenou hranu vygenerovat stav odpovÃ­dajÃ­cÃ­ pÅ™idÃ¡nÃ­ tÃ©to hrany do stromu.
+            my $nove_stavy = genstav::generovat_stavy($stav, $anot, 1);
+            # PrvnÃ­ prvek pole je stav, kterÃ½ mÃ¡ zvÃ­tÄ›zit.
+            $stav = shift(@{$nove_stavy});
+            # Ze zÃ¡loÅ¾nÃ­ch nÃ¡vrhÅ¯ vybrat ty nejlepÅ¡Ã­ a uloÅ¾it je do pole alternativ.
+            # Toto pole nÃ¡m zatÃ­m slouÅ¾Ã­ vÃ½hradnÄ› pro vyhodnocenÃ­ za bÄ›hu, alternativy se ani nevypisujÃ­
+            # do cÃ­lovÃ©ho CSTS.
+            pridat_do_stavu_alternativy($stav, $nove_stavy);
+        }
+        else
+        {
+            # Pro kaÅ¾dou povolenou hranu vygenerovat stav odpovÃ­dajÃ­cÃ­ pÅ™idÃ¡nÃ­ tÃ©to hrany do stromu.
+            my $nove_stavy = genstav::generovat_stavy($stav, $anot, 0);
+            # PrvnÃ­ prvek pole je stav, kterÃ½ mÃ¡ zvÃ­tÄ›zit. ZÃ¡loÅ¾nÃ­ nÃ¡vrhy zatÃ­m ignorovat a zahodit.
+            $stav = $nove_stavy->[0];
+        }
     }
-    # Provìøit, zda se nìco nemìlo udìlat radìji jinak.
-    $stav = backtrack($stav);
+    # ProvÄ›Å™it, zda se nÄ›co nemÄ›lo udÄ›lat radÄ›ji jinak.
+    $stav = backtrack($anot, $stav);
     return $stav;
 }
 
 
 
 #------------------------------------------------------------------------------
-# Zjistí, zda je ve stromì nìco v nepoøádku, co by si zaslou¾ilo pøehodnocení
-# analızy, a doporuèí stav, ke kterému by se analıza mìla vrátit. Pokud strom
-# vypadá dobøe, vrátí 0.
+# ZjistÃ­, zda je ve stromÄ› nÄ›co v nepoÅ™Ã¡dku, co by si zaslouÅ¾ilo pÅ™ehodnocenÃ­
+# analÃ½zy, a doporuÄÃ­ stav, ke kterÃ©mu by se analÃ½za mÄ›la vrÃ¡tit. Pokud strom
+# vypadÃ¡ dobÅ™e, vrÃ¡tÃ­ 0.
 #------------------------------------------------------------------------------
 sub backtrack
 {
-    my $stav = shift; # odkaz na hash s dosavadním stavem analızy
-    # Zatím globální promìnné.
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $stav = shift; # odkaz na hash s dosavadnÃ­m stavem analÃ½zy
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
-    ### Provìøit naplnìnost subkategorizaèních rámcù - zatím hodnì pokusné!
-    # Jestli¾e se zjistí, ¾e nìkteré sloveso nemá naplnìnı subkategorizaèní rámec,
-    # ve vìtì je materiál, kterım by mohlo jít tento rámec naplnit, a je¹tì
-    # existují nìjaké nevyzkou¹ené stavy analızy, vrátit se k tìmto stavùm.
-    if($konfig->{valence1} && subkat::najit_nenaplnene_ramce($konfig->{nacteny_subkategorizacni_slovnik}, $stav))
+    ### ProvÄ›Å™it naplnÄ›nost subkategorizaÄnÃ­ch rÃ¡mcÅ¯ - zatÃ­m hodnÄ› pokusnÃ©!
+    # JestliÅ¾e se zjistÃ­, Å¾e nÄ›kterÃ© sloveso nemÃ¡ naplnÄ›nÃ½ subkategorizaÄnÃ­ rÃ¡mec,
+    # ve vÄ›tÄ› je materiÃ¡l, kterÃ½m by mohlo jÃ­t tento rÃ¡mec naplnit, a jeÅ¡tÄ›
+    # existujÃ­ nÄ›jakÃ© nevyzkouÅ¡enÃ© stavy analÃ½zy, vrÃ¡tit se k tÄ›mto stavÅ¯m.
+    if($konfig->{valence1} && subkat::najit_nenaplnene_ramce($anot, $konfig->{nacteny_subkategorizacni_slovnik}, $stav))
     {
-        # Zatím ladìní. Zjistit, co pøesnì by nám ve vìtì mohlo pomoci s naplnìním valence.
+        # ZatÃ­m ladÄ›nÃ­. Zjistit, co pÅ™esnÄ› by nÃ¡m ve vÄ›tÄ› mohlo pomoci s naplnÄ›nÃ­m valence.
         my $evidence = subkat::najit_valencni_rezervy($anot, $stav, $konfig->{nacteny_subkategorizacni_slovnik});
         if(join("", @{$evidence}) =~ m/1/)
         {
             print("\n", join("", @{$evidence}), "\n");
-            # Tady si budeme pamatovat zpracované i zálo¾ní stavy.
+            # Tady si budeme pamatovat zpracovanÃ© i zÃ¡loÅ¾nÃ­ stavy.
             my %prehled;
-            # Nejdøív zopakovat analızu a zapamatovat si stavy, ke kterım bychom se mohli vrátit.
-            # Standardnì to nedìláme, proto¾e to zabírá moc èasu.
-            $stav = vytvorit_pocatecni_stav($analyza0);
+            # NejdÅ™Ã­v zopakovat analÃ½zu a zapamatovat si stavy, ke kterÃ½m bychom se mohli vrÃ¡tit.
+            # StandardnÄ› to nedÄ›lÃ¡me, protoÅ¾e to zabÃ­rÃ¡ moc Äasu.
+            $stav = vytvorit_pocatecni_stav($anot, $analyza0);
             while($stav->{zbyva}>0)
             {
-                # Pro ka¾dou povolenou hranu vygenerovat stav odpovídající pøidání této hrany do stromu.
-                my $nove_stavy = genstav::generovat_stavy($stav, 1);
-                # Zapamatovat si, ¾e dosavadní stav byl zpracován a vy¾dímán.
+                # Pro kaÅ¾dou povolenou hranu vygenerovat stav odpovÃ­dajÃ­cÃ­ pÅ™idÃ¡nÃ­ tÃ©to hrany do stromu.
+                my $nove_stavy = genstav::generovat_stavy($stav, $anot, 1);
+                # Zapamatovat si, Å¾e dosavadnÃ­ stav byl zpracovÃ¡n a vyÅ¾dÃ­mÃ¡n.
                 $stav->{zpracovano} = 1;
-                # Zapamatovat si odkazy na v¹echny nové stavy. Pokud nìkterı novı stav
-                # obsahuje stejnı strom jako nìkterı u¾ známı stav, neukládat strom dvakrát.
-                # Pouze se podívat, jestli novı stav neposkytuje danému stromu lep¹í váhu,
-                # vítìze schovat a pora¾eného zahodit.
+                # Zapamatovat si odkazy na vÅ¡echny novÃ© stavy. Pokud nÄ›kterÃ½ novÃ½ stav
+                # obsahuje stejnÃ½ strom jako nÄ›kterÃ½ uÅ¾ znÃ¡mÃ½ stav, neuklÃ¡dat strom dvakrÃ¡t.
+                # Pouze se podÃ­vat, jestli novÃ½ stav neposkytuje danÃ©mu stromu lepÅ¡Ã­ vÃ¡hu,
+                # vÃ­tÄ›ze schovat a poraÅ¾enÃ©ho zahodit.
                 for(my $i = 0; $i<=$#{$nove_stavy}; $i++)
                 {
                     my $hashvalue = join(",", @{$nove_stavy->[$i]{rodic}});
@@ -90,34 +106,34 @@ sub backtrack
                         $prehled{$hashvalue} = $nove_stavy->[$i];
                     }
                 }
-                # První prvek pole je stav, kterı má zvítìzit.
+                # PrvnÃ­ prvek pole je stav, kterÃ½ mÃ¡ zvÃ­tÄ›zit.
                 $stav = $nove_stavy->[0];
             }
             my $puvodni_vysledny_stav = $stav;
             my @fronta_stavu;
             my $n_navratu;
             print("\n");
-            while(subkat::najit_nenaplnene_ramce($konfig->{nacteny_subkategorizacni_slovnik}, $stav))
+            while(subkat::najit_nenaplnene_ramce($anot, $konfig->{nacteny_subkategorizacni_slovnik}, $stav))
             {
                 print("NAVRAT CISLO ", ++$n_navratu, "\n");
-                # Seøadit zálo¾ní stavy sestupnì podle váhy (pozor, odfiltrovat zpracované stavy!)
+                # SeÅ™adit zÃ¡loÅ¾nÃ­ stavy sestupnÄ› podle vÃ¡hy (pozor, odfiltrovat zpracovanÃ© stavy!)
                 @fronta_stavu = keys(%prehled);
                 my $n_stavu_celkem = $#fronta_stavu+1;
                 print("V prehledu je $n_stavu_celkem stavu.\n");
                 @fronta_stavu = grep{!$prehled{$_}{zpracovano}}(@fronta_stavu);
-                # Projít nezpracované stavy a oznaèit ty, které nám neslibují nic
-                # nového, za zpracované.
+                # ProjÃ­t nezpracovanÃ© stavy a oznaÄit ty, kterÃ© nÃ¡m neslibujÃ­ nic
+                # novÃ©ho, za zpracovanÃ©.
                 foreach my $stavstrom (@fronta_stavu)
                 {
                     my $stav = $prehled{$stavstrom};
                     if(1)
                     {
-                        # Zajímavé jsou pouze stavy tìsnì po zavì¹ení nìkterého nadìjného uzlu.
+                        # ZajÃ­mavÃ© jsou pouze stavy tÄ›snÄ› po zavÄ›Å¡enÃ­ nÄ›kterÃ©ho nadÄ›jnÃ©ho uzlu.
                         unless($evidence->[$stav->{poslz}]==1)
                         {
-                            # Kvùli úspoøe pamìti úplnì vyprázdnit zavr¾enı stav tím, ¾e zalo¾íme
-                            # novı hash, kterı bude obsahovat pouze pøíznak {zpracovano}, a odkazem
-                            # na nìj pøepí¹eme odkaz na dosavadní hash.
+                            # KvÅ¯li ÃºspoÅ™e pamÄ›ti ÃºplnÄ› vyprÃ¡zdnit zavrÅ¾enÃ½ stav tÃ­m, Å¾e zaloÅ¾Ã­me
+                            # novÃ½ hash, kterÃ½ bude obsahovat pouze pÅ™Ã­znak {zpracovano}, a odkazem
+                            # na nÄ›j pÅ™epÃ­Å¡eme odkaz na dosavadnÃ­ hash.
                             my %stav1;
                             $stav1{zpracovano} = 1;
                             $prehled{$stavstrom} = $stav = \%stav1;
@@ -128,7 +144,7 @@ sub backtrack
                         my $nalezeno = 0;
                         for(my $i = 0; $i<=$#{$evidence}; $i++)
                         {
-                            # Najít aspoò jeden uzel, kterı je veden jako nadìjnı a v tomto stavu je¹tì není zavì¹en.
+                            # NajÃ­t aspoÅˆ jeden uzel, kterÃ½ je veden jako nadÄ›jnÃ½ a v tomto stavu jeÅ¡tÄ› nenÃ­ zavÄ›Å¡en.
                             if($evidence->[$i]==1 && $stav->{rodic}[$i]==-1)
                             {
                                 $nalezeno = 1;
@@ -141,42 +157,42 @@ sub backtrack
                         }
                     }
                 }
-                # Znova vyházet z fronty zpracované stavy.
+                # Znova vyhÃ¡zet z fronty zpracovanÃ© stavy.
                 @fronta_stavu = grep{!$prehled{$_}{zpracovano}}(@fronta_stavu);
                 print("Z toho ", $#fronta_stavu+1, " jeste nebylo zpracovano.\n");
                 @fronta_stavu = sort{$prehled{$b}{vaha}<=>$prehled{$a}{vaha}}(@fronta_stavu);
-                # Jestli¾e nezbıvají ¾ádné zálo¾ní stavy a stále není splnìna valenèní podmínka, vrátit se k pùvodnímu vısledku.
-                # Toté¾ udìlat, jestli¾e jsme dosáhli maximálního povoleného poètu návratù
-                # nebo maximálního povoleného poètu nagenerovanıch stavù.
+                # JestliÅ¾e nezbÃ½vajÃ­ Å¾Ã¡dnÃ© zÃ¡loÅ¾nÃ­ stavy a stÃ¡le nenÃ­ splnÄ›na valenÄnÃ­ podmÃ­nka, vrÃ¡tit se k pÅ¯vodnÃ­mu vÃ½sledku.
+                # TotÃ©Å¾ udÄ›lat, jestliÅ¾e jsme dosÃ¡hli maximÃ¡lnÃ­ho povolenÃ©ho poÄtu nÃ¡vratÅ¯
+                # nebo maximÃ¡lnÃ­ho povolenÃ©ho poÄtu nagenerovanÃ½ch stavÅ¯.
                 if(!@fronta_stavu ||
                    $konfig->{valence1_maxnavratu} ne "" && $n_navratu>$konfig->{valence1_maxnavratu} ||
                    $konfig->{valence1_maxgenstav} ne "" && $n_stavu_celkem>$konfig->{valence1_maxgenstav})
                 {
-                    print("Buï do¹ly stavy, nebo byl pøekroèen povolenı poèet návratù.\n");
+                    print("BuÄ doÅ¡ly stavy, nebo byl pÅ™ekroÄen povolenÃ½ poÄet nÃ¡vratÅ¯.\n");
                     $stav = $puvodni_vysledny_stav;
                     last;
                 }
-                # Vrátit se k dosud nevyzkou¹enému stavu.
+                # VrÃ¡tit se k dosud nevyzkouÅ¡enÃ©mu stavu.
                 $stav = $prehled{$fronta_stavu[0]};
-                # Znova od tohoto stavu budovat strom. (Celı while je kopií obdobného kódu o pár øádkù vı¹e,
-                # mìla by na to bıt funkce.)
+                # Znova od tohoto stavu budovat strom. (CelÃ½ while je kopiÃ­ obdobnÃ©ho kÃ³du o pÃ¡r Å™Ã¡dkÅ¯ vÃ½Å¡e,
+                # mÄ›la by na to bÃ½t funkce.)
                 while($stav->{zbyva}>0)
                 {
-                    # Pro ka¾dou povolenou hranu vygenerovat stav odpovídající pøidání této hrany do stromu.
-                    my $nove_stavy = genstav::generovat_stavy($stav, 1);
-                    # Zapamatovat si, ¾e dosavadní stav byl zpracován a vy¾dímán.
+                    # Pro kaÅ¾dou povolenou hranu vygenerovat stav odpovÃ­dajÃ­cÃ­ pÅ™idÃ¡nÃ­ tÃ©to hrany do stromu.
+                    my $nove_stavy = genstav::generovat_stavy($stav, $anot, 1);
+                    # Zapamatovat si, Å¾e dosavadnÃ­ stav byl zpracovÃ¡n a vyÅ¾dÃ­mÃ¡n.
                     $stav->{zpracovano} = 1;
-                    # Zapamatovat si odkazy na v¹echny nové stavy. Pokud nìkterı novı stav
-                    # obsahuje stejnı strom jako nìkterı u¾ známı stav, neukládat strom dvakrát.
-                    # Pouze se podívat, jestli novı stav neposkytuje danému stromu lep¹í váhu,
-                    # vítìze schovat a pora¾eného zahodit.
+                    # Zapamatovat si odkazy na vÅ¡echny novÃ© stavy. Pokud nÄ›kterÃ½ novÃ½ stav
+                    # obsahuje stejnÃ½ strom jako nÄ›kterÃ½ uÅ¾ znÃ¡mÃ½ stav, neuklÃ¡dat strom dvakrÃ¡t.
+                    # Pouze se podÃ­vat, jestli novÃ½ stav neposkytuje danÃ©mu stromu lepÅ¡Ã­ vÃ¡hu,
+                    # vÃ­tÄ›ze schovat a poraÅ¾enÃ©ho zahodit.
                     for(my $i = 0; $i<=$#{$nove_stavy}; $i++)
                     {
                         my $hashvalue = join(",", @{$nove_stavy->[$i]{rodic}});
                         if(exists($prehled{$hashvalue}))
                         {
-                            # Jestli¾e jsme pøirozenım procesem získali stav, kterı u¾ byl v nìjakém minulém procesu
-                            # nalezen a zpracován, vylouèit ho z novıch stavù. Na øadu pøijde dal¹í náhradník.
+                            # JestliÅ¾e jsme pÅ™irozenÃ½m procesem zÃ­skali stav, kterÃ½ uÅ¾ byl v nÄ›jakÃ©m minulÃ©m procesu
+                            # nalezen a zpracovÃ¡n, vylouÄit ho z novÃ½ch stavÅ¯. Na Å™adu pÅ™ijde dalÅ¡Ã­ nÃ¡hradnÃ­k.
                             if($prehled{$hashvalue}{zpracovano})
                             {
                                 if($i==0)
@@ -198,8 +214,8 @@ sub backtrack
                             $prehled{$hashvalue} = $nove_stavy->[$i];
                         }
                     }
-                    # První prvek pole je stav, kterı má zvítìzit.
-                    # Pokud nám ov¹em po pøedcházející èistce vùbec nìjakı zbyl.
+                    # PrvnÃ­ prvek pole je stav, kterÃ½ mÃ¡ zvÃ­tÄ›zit.
+                    # Pokud nÃ¡m ovÅ¡em po pÅ™edchÃ¡zejÃ­cÃ­ Äistce vÅ¯bec nÄ›jakÃ½ zbyl.
                     if($#{$nove_stavy}>=0)
                     {
                         $stav = $nove_stavy->[0];
@@ -209,8 +225,8 @@ sub backtrack
                         $stav = $puvodni_vysledny_stav;
                     }
                 }
-                # Pokud jsme do pøedcházející smyèky vùbec nevkroèili, ná¹ stav není oznaèen jako zpracovanı!
-                # Oznaèit ho, nebo ho budeme dostávat poøád dokola!
+                # Pokud jsme do pÅ™edchÃ¡zejÃ­cÃ­ smyÄky vÅ¯bec nevkroÄili, nÃ¡Å¡ stav nenÃ­ oznaÄen jako zpracovanÃ½!
+                # OznaÄit ho, nebo ho budeme dostÃ¡vat poÅ™Ã¡d dokola!
                 $stav->{zpracovano} = 1;
             }
             print("Jsme venku z valencni smycky. Pokud nedosly stavy, valence je naplnena!\n");
@@ -218,12 +234,12 @@ sub backtrack
         }
     }
 konec_valencniho_backtrackingu:
-    # Zjistit, kolik dìtí má koøen. Pokud jich bude mít víc ne¾ 2, øe¹it.
+    # Zjistit, kolik dÄ›tÃ­ mÃ¡ koÅ™en. Pokud jich bude mÃ­t vÃ­c neÅ¾ 2, Å™eÅ¡it.
     my $n_deti_korene = $stav->{ndeti}[0];
     if($konfig->{koren_2_deti} && $n_deti_korene>2)
     {
-        # Vybrat z dìtí to nejpravdìpodobnìj¹í. Poslední uzel vynechat, mohla
-        # by to bıt koncová interpunkce.
+        # Vybrat z dÄ›tÃ­ to nejpravdÄ›podobnÄ›jÅ¡Ã­. PoslednÃ­ uzel vynechat, mohla
+        # by to bÃ½t koncovÃ¡ interpunkce.
         my $maxp;
         my $imaxp;
         for(my $i = 0; $i<$#{$anot}; $i++)
@@ -238,22 +254,22 @@ konec_valencniho_backtrackingu:
                 }
             }
         }
-        # V¹echny dìti kromì vítìze a posledního uzlu odpojit. Jejich závislost
-        # na koøeni dát na èernou listinu.
+        # VÅ¡echny dÄ›ti kromÄ› vÃ­tÄ›ze a poslednÃ­ho uzlu odpojit. Jejich zÃ¡vislost
+        # na koÅ™eni dÃ¡t na Äernou listinu.
         for(my $i = 0; $i<$#{$anot}; $i++)
         {
             if($stav->{rodic}[$i]==0 && $i!=$imaxp)
             {
                 stav::zrusit_zavislost($stav, $i);
-                zakaz::pridat_zakaz(\$stav->{zakaz}, 0, $i, "koøen");
+                zakaz::pridat_zakaz(\$stav->{zakaz}, 0, $i, "koÅ™en");
             }
         }
-        # Odpojené uzly znova nìkam zavìsit.
+        # OdpojenÃ© uzly znova nÄ›kam zavÄ›sit.
         while($stav->{zbyva}>0)
         {
-            # Pro ka¾dou povolenou hranu vygenerovat stav odpovídající pøidání této hrany do stromu.
-            my $nove_stavy = genstav::generovat_stavy($stav, 0);
-            # První prvek pole je stav, kterı má zvítìzit. Zálo¾ní návrhy zatím ignorovat a zahodit.
+            # Pro kaÅ¾dou povolenou hranu vygenerovat stav odpovÃ­dajÃ­cÃ­ pÅ™idÃ¡nÃ­ tÃ©to hrany do stromu.
+            my $nove_stavy = genstav::generovat_stavy($stav, $anot, 0);
+            # PrvnÃ­ prvek pole je stav, kterÃ½ mÃ¡ zvÃ­tÄ›zit. ZÃ¡loÅ¾nÃ­ nÃ¡vrhy zatÃ­m ignorovat a zahodit.
             $stav = $nove_stavy->[0];
         }
     }
@@ -263,59 +279,85 @@ konec_valencniho_backtrackingu:
 
 
 #------------------------------------------------------------------------------
-# Nastaví poèáteèní stav analızy.
+# NastavÃ­ poÄÃ¡teÄnÃ­ stav analÃ½zy.
 #------------------------------------------------------------------------------
 sub vytvorit_pocatecni_stav
 {
-    # Volitelnì lze jako parametr dodat vısledek èásteèné analızy jinımi
-    # prostøedky. V tom pøípadì funkce doplní rodièe jen tìm uzlùm, které je
-    # dosud nemají.
+    my $anot = shift; # odkaz na pole hashÅ¯
+    # VolitelnÄ› lze jako parametr dodat vÃ½sledek ÄÃ¡steÄnÃ© analÃ½zy jinÃ½mi
+    # prostÅ™edky. V tom pÅ™Ã­padÄ› funkce doplnÃ­ rodiÄe jen tÄ›m uzlÅ¯m, kterÃ© je
+    # dosud nemajÃ­.
     my $analyza0 = shift;
-    # Zatím globální promìnné.
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
-    # Zalo¾it balíèek se v¹emi údaji o stavu analızy.
+    # ZaloÅ¾it balÃ­Äek se vÅ¡emi Ãºdaji o stavu analÃ½zy.
     my %stav;
-    # Nejdùle¾itìj¹í èást stavu je èásteènì vybudovanı strom. Reprezentuje ho pole odkazù na rodièe.
-    # Na zaèátku nastavit index rodièe ka¾dého uzlu na -1.
+    # NejdÅ¯leÅ¾itÄ›jÅ¡Ã­ ÄÃ¡st stavu je ÄÃ¡steÄnÄ› vybudovanÃ½ strom. Reprezentuje ho pole odkazÅ¯ na rodiÄe.
+    # Na zaÄÃ¡tku nastavit index rodiÄe kaÅ¾dÃ©ho uzlu na -1.
     @{$stav{rodic}} = map{-1}(0..$#{$anot});
-    $stav{nprid} = 0; # poøadí naposledy pøidaného uzlu (první pøidanı uzel má jednièku)
-    $stav{zbyva} = $#{$anot}; # Pokrok v analıze je øízen touto promìnnou. Pøedpokládá, ¾e poèet uzlù ve vìtì se nemìní!
-    # Stav analızy si udr¾uje svou vlastní kopii morfologickıch znaèek jednotlivıch
-    # uzlù. Tyto znaèky se mohou mìnit i v prùbìhu syntaktické analızy. Napø. se
-    # mù¾e zjistit, ¾e znaèka navr¾ená taggerem by poru¹ovala shodu. U koøenù koordinace
-    # se ihned po sestavení koordinace vyplní morfologická znaèka nìkterého èlena
-    # koordinace. Atd. Ve¹kerá pravidla a statistické modely by se bìhem analızy
-    # mìla dívat na znaèku ulo¾enou ve stavu. Pro pou¾ití pùvodní znaèky by musel
-    # bıt dobrı dùvod.
+    $stav{nprid} = 0; # poÅ™adÃ­ naposledy pÅ™idanÃ©ho uzlu (prvnÃ­ pÅ™idanÃ½ uzel mÃ¡ jedniÄku)
+    $stav{zbyva} = $#{$anot}; # Pokrok v analÃ½ze je Å™Ã­zen touto promÄ›nnou. PÅ™edpoklÃ¡dÃ¡, Å¾e poÄet uzlÅ¯ ve vÄ›tÄ› se nemÄ›nÃ­!
+    # Stav analÃ½zy si udrÅ¾uje svou vlastnÃ­ kopii morfologickÃ½ch znaÄek jednotlivÃ½ch
+    # uzlÅ¯. Tyto znaÄky se mohou mÄ›nit i v prÅ¯bÄ›hu syntaktickÃ© analÃ½zy. NapÅ™. se
+    # mÅ¯Å¾e zjistit, Å¾e znaÄka navrÅ¾enÃ¡ taggerem by poruÅ¡ovala shodu. U koÅ™enÅ¯ koordinace
+    # se ihned po sestavenÃ­ koordinace vyplnÃ­ morfologickÃ¡ znaÄka nÄ›kterÃ©ho Älena
+    # koordinace. Atd. VeÅ¡kerÃ¡ pravidla a statistickÃ© modely by se bÄ›hem analÃ½zy
+    # mÄ›la dÃ­vat na znaÄku uloÅ¾enou ve stavu. Pro pouÅ¾itÃ­ pÅ¯vodnÃ­ znaÄky by musel
+    # bÃ½t dobrÃ½ dÅ¯vod.
     @{$stav{uznck}} = map{$_->{uznacka}}(@{$anot});
-    # Pøidání nìkterıch závislostí mù¾e bıt zakázáno, pokud nebo dokud nejsou splnìny urèité podmínky. Tyto zákazy
-    # jsou vìt¹inou motivovány lingvisticky, závisí na konkrétním obsahu vìty a mají pøednost pøed seznamem povolenıch
-    # závislostí (kterı je vymezen matematicky, aby to byl projektivní strom). Na konci mohou bıt zákazy zru¹eny, pokud
-    # by bránili dokonèení alespoò nìjakého stromu. Nyní vytvoøíme poèáteèní mno¾inu zákazù.
-    my @prislusnost_k_useku; $stav{prislusnost_k_useku} = \@prislusnost_k_useku; # pro ka¾dı uzel èíslo mezièárkového úseku
-    my @hotovost_useku; $stav{hotovost_useku} = \@hotovost_useku; # pro ka¾dı úsek pøíznak, zda u¾ je jeho podstrom hotovı
-    zakaz::formulovat_zakazy(\%stav);
-    # Jestli¾e u¾ máme èásteènı rozbor vìty, zapracovat ho do stavu.
+    # PÅ™idÃ¡nÃ­ nÄ›kterÃ½ch zÃ¡vislostÃ­ mÅ¯Å¾e bÃ½t zakÃ¡zÃ¡no, pokud nebo dokud nejsou splnÄ›ny urÄitÃ© podmÃ­nky. Tyto zÃ¡kazy
+    # jsou vÄ›tÅ¡inou motivovÃ¡ny lingvisticky, zÃ¡visÃ­ na konkrÃ©tnÃ­m obsahu vÄ›ty a majÃ­ pÅ™ednost pÅ™ed seznamem povolenÃ½ch
+    # zÃ¡vislostÃ­ (kterÃ½ je vymezen matematicky, aby to byl projektivnÃ­ strom). Na konci mohou bÃ½t zÃ¡kazy zruÅ¡eny, pokud
+    # by brÃ¡nili dokonÄenÃ­ alespoÅˆ nÄ›jakÃ©ho stromu. NynÃ­ vytvoÅ™Ã­me poÄÃ¡teÄnÃ­ mnoÅ¾inu zÃ¡kazÅ¯.
+    my @prislusnost_k_useku; $stav{prislusnost_k_useku} = \@prislusnost_k_useku; # pro kaÅ¾dÃ½ uzel ÄÃ­slo meziÄÃ¡rkovÃ©ho Ãºseku
+    my @hotovost_useku; $stav{hotovost_useku} = \@hotovost_useku; # pro kaÅ¾dÃ½ Ãºsek pÅ™Ã­znak, zda uÅ¾ je jeho podstrom hotovÃ½
+    zakaz::formulovat_zakazy($anot, \%stav);
+    # JestliÅ¾e uÅ¾ mÃ¡me ÄÃ¡steÄnÃ½ rozbor vÄ›ty, zapracovat ho do stavu.
     for(my $i = 0; $i<=$#{$analyza0}; $i++)
     {
         if($analyza0->[$i] ne "" && $analyza0->[$i]!=-1)
         {
-            stav::pridat_zavislost(\%stav, {"r" => $analyza0->[$i], "z" => $i, "c" => 0, "p" => 1});
+            stav::pridat_zavislost($anot, \%stav, {"r" => $analyza0->[$i], "z" => $i, "c" => 0, "p" => 1});
         }
     }
-    # Vytipovat závislosti, které by mohly naplnit subkategorizaèní rámce sloves.
+    # Vytipovat zÃ¡vislosti, kterÃ© by mohly naplnit subkategorizaÄnÃ­ rÃ¡mce sloves.
     if($konfig->{valence})
     {
-        $stav{valencni} = subkat::vytipovat_valencni_zavislosti($konfig->{nacteny_subkategorizacni_slovnik});
+        $stav{valencni} = subkat::vytipovat_valencni_zavislosti($anot, $konfig->{nacteny_subkategorizacni_slovnik});
     }
-    # Najít závislosti, kterım nemá bıt dovoleno pøeskoèit sloveso.
+    # NajÃ­t zÃ¡vislosti, kterÃ½m nemÃ¡ bÃ½t dovoleno pÅ™eskoÄit sloveso.
     if($konfig->{nepreskocv})
     {
         $stav{zakaz} = nepreskocv::najit_ve_vete($konfig->{nacteny_seznam_zakazu_preskoceni_slovesa}, $anot, $stav{zakaz});
     }
     $stav{zpracovano} = 0;
     return \%stav;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Do pole @{$stav->{altzav}} pÅ™ipÃ­Å¡e "dostateÄnÄ› slibnÃ¡" alternativnÃ­ zavÄ›Å¡enÃ­
+# uzlu, jenÅ¾ byl prÃ¡vÄ› zavÄ›Å¡en.
+#------------------------------------------------------------------------------
+sub pridat_do_stavu_alternativy
+{
+    my $stav = shift;
+    my $nove_stavy = shift; # UÅ¾ neobsahujÃ­ aktuÃ¡lnÃ­ stav.
+    my $maxivaha = $stav->{maxp}[$stav->{poslz}];
+    for(my $i = 0; $i<=$#{$nove_stavy}; $i++)
+    {
+        my $z = $nove_stavy->[$i]{poslz};
+        my $r = $nove_stavy->[$i]{rodic}[$z];
+        my $vaha = $nove_stavy->[$i]{maxp}[$z];
+        last if($vaha<0.9*$maxivaha);
+        # TÃ­m, Å¾e kaÅ¾dou zÃ¡vislost zapisujeme na pÅ™edem urÄenÃ© mÃ­sto, zajistÃ­me,
+        # Å¾e Å¾Ã¡dnou zÃ¡vislost nenavrhneme opakovanÄ›. NezaruÄÃ­me vÅ¡ak, Å¾e jako
+        # alternativnÃ­ nenavrhneme nÄ›jakou zÃ¡vislost, kterÃ¡ pozdÄ›ji vyhraje
+        # doopravdy.
+        $stav->{altzav}[$r][$z] = 1;
+        $maxivaha = $vaha;
+    }
 }
 
 

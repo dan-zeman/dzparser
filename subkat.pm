@@ -1,42 +1,44 @@
-# Funkce související se subkategorizací sloves.
+# Funkce souvisejÃ­cÃ­ se subkategorizacÃ­ sloves.
 package subkat;
+use utf8;
 use model;
 
 
 
 #------------------------------------------------------------------------------
-# Naète seznam subkategorizaèních rámcù sloves.
+# NaÄte seznam subkategorizaÄnÃ­ch rÃ¡mcÅ¯ sloves.
 #------------------------------------------------------------------------------
 sub cist
 {
     my $jmeno_souboru = shift;
-    my %subcat; # vıstupní hash (subkategorizaèní slovník)
+    my %subcat; # vÃ½stupnÃ­ hash (subkategorizaÄnÃ­ slovnÃ­k)
     open(SUBCAT, $jmeno_souboru) or die("Nelze otevrit soubor $jmeno_souboru se seznamem ramcu: $!\n");
+    binmode(SUBCAT, ":encoding(iso-8859-2)");
     while(<SUBCAT>)
     {
         chomp;
-        # Na øádku je nejdøíve sloveso, pak dvì (?) mezery, pak rámec.
-        # Rámec mezery neobsahuje. Èleny jsou oddìleny dvìma vlnovkami.
-        # Prázdnı rámec nepøechodnıch sloves je zastoupen znaèkou <INTR>.
+        # Na Å™Ã¡dku je nejdÅ™Ã­ve sloveso, pak dvÄ› (?) mezery, pak rÃ¡mec.
+        # RÃ¡mec mezery neobsahuje. ÄŒleny jsou oddÄ›leny dvÄ›ma vlnovkami.
+        # PrÃ¡zdnÃ½ rÃ¡mec nepÅ™echodnÃ½ch sloves je zastoupen znaÄkou <INTR>.
         if(m/(.+?)\s+(.+)$/)
         {
             my $sloveso = $1;
-            next if($sloveso eq "bıt");
+            next if($sloveso eq "bÃ½t");
             my $ramec = $2;
-            # Rozdìlit rámce na jednotlivé vazby.
+            # RozdÄ›lit rÃ¡mce na jednotlivÃ© vazby.
             my @vazby = split(/~~/, $ramec);
             for(my $i = 0; $i<=$#vazby; $i++)
             {
-                # Vazba se skládá ze subkategorizaèní znaèky a
-                # z analytické funkce (s-znaèky), oddìlené jsou
-                # lomítkem. Odstranit lomítko a s-znaèku.
+                # Vazba se sklÃ¡dÃ¡ ze subkategorizaÄnÃ­ znaÄky a
+                # z analytickÃ© funkce (s-znaÄky), oddÄ›lenÃ© jsou
+                # lomÃ­tkem. Odstranit lomÃ­tko a s-znaÄku.
                 $vazby[$i] =~ s-/.*--;
                 $subcat{"$sloveso $vazby[$i]"}++;
             }
-            # Zapamatovat si, ¾e sloveso je slovníkem vùbec nìjak pokryto.
+            # Zapamatovat si, Å¾e sloveso je slovnÃ­kem vÅ¯bec nÄ›jak pokryto.
             $subcat{"SLO $sloveso"}++;
-            # Zapamatovat si celı rámec slovesa (vı¹e jsme si pamatovali jen jednotlivé
-            # vazby) tak, aby bylo mo¾né najít v¹echny rámce urèitého slovesa.
+            # Zapamatovat si celÃ½ rÃ¡mec slovesa (vÃ½Å¡e jsme si pamatovali jen jednotlivÃ©
+            # vazby) tak, aby bylo moÅ¾nÃ© najÃ­t vÅ¡echny rÃ¡mce urÄitÃ©ho slovesa.
             push(@{$subcat{"RAM $sloveso"}}, "$sloveso $ramec");
         }
     }
@@ -47,16 +49,16 @@ sub cist
 
 
 #------------------------------------------------------------------------------
-# Pøevede (neredukovanou) morfologickou znaèku na subkategorizaèní.
+# PÅ™evede (neredukovanou) morfologickou znaÄku na subkategorizaÄnÃ­.
 #------------------------------------------------------------------------------
 sub prevest_mznacku_na_vazbu
 {
     my $mznacka = $_[0];
     my $heslo = $_[1];
-    # Základem vazby je slovní druh. Podstatná jména, pøídavná jména, zájmena
-    # a èíslovky v¹ak pova¾ujeme za jedinı slovní druh. Vıjimkou jsou urèité
-    # vıskyty zvratnıch zájmen "se" a "si" (vlastnì jen ty, v nich¾ vystupují
-    # jako zvratné èástice. Nikdy v¹ak nemají morfologickou znaèku èástice.
+    # ZÃ¡kladem vazby je slovnÃ­ druh. PodstatnÃ¡ jmÃ©na, pÅ™Ã­davnÃ¡ jmÃ©na, zÃ¡jmena
+    # a ÄÃ­slovky vÅ¡ak povaÅ¾ujeme za jedinÃ½ slovnÃ­ druh. VÃ½jimkou jsou urÄitÃ©
+    # vÃ½skyty zvratnÃ½ch zÃ¡jmen "se" a "si" (vlastnÄ› jen ty, v nichÅ¾ vystupujÃ­
+    # jako zvratnÃ© ÄÃ¡stice. Nikdy vÅ¡ak nemajÃ­ morfologickou znaÄku ÄÃ¡stice.
     my $vazba = substr($mznacka, 0, 1);
     if($vazba eq "P" && $heslo =~ m/^(se|si)/)
     {
@@ -66,42 +68,42 @@ sub prevest_mznacku_na_vazbu
     {
         $vazba =~ s/[APC]/N/;
     }
-    # Pøes podøadící spojky visí na slovesech závislé klauze (¾e, aby...)
+    # PÅ™es podÅ™adÃ­cÃ­ spojky visÃ­ na slovesech zÃ¡vislÃ© klauze (Å¾e, aby...)
     if(substr($mznacka, 0, 2) eq "J,")
     {
         $vazba = "JS";
     }
-    # Pokud visí na slovese jiné urèité sloveso, jde o klauzi (kterı...)
-    # nebo o pøímou øeè.
+    # Pokud visÃ­ na slovese jinÃ© urÄitÃ© sloveso, jde o klauzi (kterÃ½...)
+    # nebo o pÅ™Ã­mou Å™eÄ.
     if($mznacka =~ m/^V[^f]/)
     {
         $vazba = "S";
     }
-    # Pokud visí na slovese infinitiv, chceme to vyjádøit zøetelnìji.
+    # Pokud visÃ­ na slovese infinitiv, chceme to vyjÃ¡dÅ™it zÅ™etelnÄ›ji.
     if(substr($mznacka, 0, 2) eq "Vf")
     {
         $vazba = "VINF";
     }
-    # Pøíslovce byla znaèena DB (i pokud jejich m-znaèka je Dg).
+    # PÅ™Ã­slovce byla znaÄena DB (i pokud jejich m-znaÄka je Dg).
     if($vazba eq "D")
     {
         $vazba = "DB";
     }
-    # Je-li relevantní pád, pøidat ho (mù¾e nastat u vı¹e uvedenıch a u
-    # pøedlo¾ek.
+    # Je-li relevantnÃ­ pÃ¡d, pÅ™idat ho (mÅ¯Å¾e nastat u vÃ½Å¡e uvedenÃ½ch a u
+    # pÅ™edloÅ¾ek.
     my $pad = substr($mznacka, 4, 1);
     if($pad ne "-")
     {
         $vazba .= $pad;
     }
-    # U pøedlo¾ek a podøadících spojek pøidat do závorky heslo.
-    # Toté¾ platí i o slovech "jak" a "proè", která jsou sice ve slovníku
-    # vedena jako pøíslovce, ale anotátoøi je obèas povìsili jako AuxC.
-    # Kvùli této nekonzistenci se tu musí objevit jazykovì závislı seznam.
+    # U pÅ™edloÅ¾ek a podÅ™adÃ­cÃ­ch spojek pÅ™idat do zÃ¡vorky heslo.
+    # TotÃ©Å¾ platÃ­ i o slovech "jak" a "proÄ", kterÃ¡ jsou sice ve slovnÃ­ku
+    # vedena jako pÅ™Ã­slovce, ale anotÃ¡toÅ™i je obÄas povÄ›sili jako AuxC.
+    # KvÅ¯li tÃ©to nekonzistenci se tu musÃ­ objevit jazykovÄ› zÃ¡vislÃ½ seznam.
     if($vazba =~ m/^(R|JS)/ ||
-    $vazba eq "DB" && $heslo =~ m/^(jak|proè)(?:[-_].*)?$/)
+    $vazba eq "DB" && $heslo =~ m/^(jak|proÄ)(?:[-_].*)?$/)
     {
-        # Z hesla odstranit pøípadné rozli¹ení vıznamù za pomlèkou.
+        # Z hesla odstranit pÅ™Ã­padnÃ© rozliÅ¡enÃ­ vÃ½znamÅ¯ za pomlÄkou.
         $heslo =~ s/-.*//;
         $vazba .= "($heslo)";
     }
@@ -111,46 +113,46 @@ sub prevest_mznacku_na_vazbu
 
 
 #------------------------------------------------------------------------------
-# Vytipuje valenèní závislosti ve vìtì. Volá se pøed vlastní analızou vìty.
-# Vrací pole @valencni, jeho¾ prvek má tvar $r-$z($p), r a z jsou indexy
-# øídícího a závislého uzlu a p je pravdìpodobnost takové závislosti (podle
-# normálního modelu, nemá zatím nic spoleèného s pravdìpodobností pou¾itého
-# rámce).
+# Vytipuje valenÄnÃ­ zÃ¡vislosti ve vÄ›tÄ›. VolÃ¡ se pÅ™ed vlastnÃ­ analÃ½zou vÄ›ty.
+# VracÃ­ pole @valencni, jehoÅ¾ prvek mÃ¡ tvar $r-$z($p), r a z jsou indexy
+# Å™Ã­dÃ­cÃ­ho a zÃ¡vislÃ©ho uzlu a p je pravdÄ›podobnost takovÃ© zÃ¡vislosti (podle
+# normÃ¡lnÃ­ho modelu, nemÃ¡ zatÃ­m nic spoleÄnÃ©ho s pravdÄ›podobnostÃ­ pouÅ¾itÃ©ho
+# rÃ¡mce).
 #------------------------------------------------------------------------------
 sub vytipovat_valencni_zavislosti
 {
-    my $subcat = shift; # odkaz na hash se subkategorizaèním slovníkem
-    # Zatím globální promìnné.
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $subcat = shift; # odkaz na hash se subkategorizaÄnÃ­m slovnÃ­kem
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
-    # Zjistit, které potenciální závislosti ve vìtì by mohly bıt valenèní.
+    # Zjistit, kterÃ© potenciÃ¡lnÃ­ zÃ¡vislosti ve vÄ›tÄ› by mohly bÃ½t valenÄnÃ­.
     my @valencni;
     for(my $i = 0; $i<=$#{$anot}; $i++)
     {
         if($anot->[$i]{uznacka}=~m/^V/)
         {
-            # Pro ka¾dé sloveso projít v¹echny ostatní uzly a zkoumat,
-            # jestli by mohly bıt jeho vazbami.
+            # Pro kaÅ¾dÃ© sloveso projÃ­t vÅ¡echny ostatnÃ­ uzly a zkoumat,
+            # jestli by mohly bÃ½t jeho vazbami.
             for(my $j = 0; $j<=$#{$anot}; $j++)
             {
                 if($j!=$i)
                 {
                     my $zn = $anot->[$j]{uznacka};
                     $zn =~ s/P(\d)/N$1/;
-                    $zn =~ s/V([Bp]|jsem|jsi|je|ní|jsme|jste|jsou|budu|bude¹|bude|budeme|budete|budou|byl[aoiy]?)/S/;
-                    $zn =~ s/V(f|bıt)/VINF/;
+                    $zn =~ s/V([Bp]|jsem|jsi|je|nÃ­|jsme|jste|jsou|budu|budeÅ¡|bude|budeme|budete|budou|byl[aoiy]?)/S/;
+                    $zn =~ s/V(f|bÃ½t)/VINF/;
                     $zn =~ s/Pse(s)?/PR4/;
                     $zn =~ s/Psi(s)?/PR3/;
                     $zn =~ s/Db/DB/;
-                    # Pøedlo¾ky se konvertují pøi naèítání valencí,
-                    # proto¾e tady neznáme jejich pád.
-                    $zn =~ s/J(,|¾e|aby|zda)/JS($anot->[$j]{slovo})/;
+                    # PÅ™edloÅ¾ky se konvertujÃ­ pÅ™i naÄÃ­tÃ¡nÃ­ valencÃ­,
+                    # protoÅ¾e tady neznÃ¡me jejich pÃ¡d.
+                    $zn =~ s/J(,|Å¾e|aby|zda)/JS($anot->[$j]{slovo})/;
                 jeste_jako_n:
                     if(exists($subcat->{"$anot->[$i]{heslo} $zn"}))
                     {
-                        # Závislost i-j by mohla bıt valenèní.
-                        # Zjistit její pravdìpodobnost.
-                        my ($p, $c) = model::zjistit_nezkreslenou_pravdepodobnost($i, $j);
+                        # ZÃ¡vislost i-j by mohla bÃ½t valenÄnÃ­.
+                        # Zjistit jejÃ­ pravdÄ›podobnost.
+                        my ($p, $c) = model::zjistit_nezkreslenou_pravdepodobnost($anot, $i, $j);
                         push(@valencni, "$i-$j($p)");
                     }
                     elsif($zn=~s/^PR/N/)
@@ -161,7 +163,7 @@ sub vytipovat_valencni_zavislosti
             }
         }
     }
-    # Setøídit seznam potenciálních valenèních závislostí v této vìtì sestupnì podle pravdìpodobnosti.
+    # SetÅ™Ã­dit seznam potenciÃ¡lnÃ­ch valenÄnÃ­ch zÃ¡vislostÃ­ v tÃ©to vÄ›tÄ› sestupnÄ› podle pravdÄ›podobnosti.
     @valencni = sort
     {
         $a =~ m/(\d+)-(\d+)\((.*)\)/;
@@ -186,31 +188,31 @@ sub vytipovat_valencni_zavislosti
 
 
 #------------------------------------------------------------------------------
-# Projde strom vytvoøenı parserem a pokusí se najít slovesa, kterım chybí
-# nìjakı argument. Pokud taková najde a pokud navíc zjistí, ¾e ve vìtì existuje
-# materiál, kterım by rámce mohly jít naplnit, vrátí 1. Jinak vrátí 0.
+# Projde strom vytvoÅ™enÃ½ parserem a pokusÃ­ se najÃ­t slovesa, kterÃ½m chybÃ­
+# nÄ›jakÃ½ argument. Pokud takovÃ¡ najde a pokud navÃ­c zjistÃ­, Å¾e ve vÄ›tÄ› existuje
+# materiÃ¡l, kterÃ½m by rÃ¡mce mohly jÃ­t naplnit, vrÃ¡tÃ­ 1. Jinak vrÃ¡tÃ­ 0.
 #------------------------------------------------------------------------------
 sub najit_nenaplnene_ramce
 {
-    my $subcat = shift; # odkaz na hash se subkategorizaèním slovníkem
-    my $stav = shift; # odkaz na hash se stavem analızy (obsahuje mj. návrh stromu)
-    # Zatím globální promìnné.
+    my $anot = shift;
+    my $subcat = shift; # odkaz na hash se subkategorizaÄnÃ­m slovnÃ­kem
+    my $stav = shift; # odkaz na hash se stavem analÃ½zy (obsahuje mj. nÃ¡vrh stromu)
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
-    # Najít slovesa.
+    # NajÃ­t slovesa.
     for(my $i = 0; $i<=$#{$anot}; $i++)
     {
-        # Zajímají nás pouze slovesa pokrytá subkategorizaèním slovníkem.
-        # Nezajímají nás, pokud jsou v pøíèestí trpném (pak toti¾ asi chybí N4 a nemá se doplòovat).
+        # ZajÃ­majÃ­ nÃ¡s pouze slovesa pokrytÃ¡ subkategorizaÄnÃ­m slovnÃ­kem.
+        # NezajÃ­majÃ­ nÃ¡s, pokud jsou v pÅ™Ã­ÄestÃ­ trpnÃ©m (pak totiÅ¾ asi chybÃ­ N4 a nemÃ¡ se doplÅˆovat).
         if($anot->[$i]{znacka} =~ m/^V[^s]/ && exists($subcat->{"SLO $anot->[$i]{heslo}"}))
         {
-            # Najít v¹echny navrhované dìti tohoto slovesa.
+            # NajÃ­t vÅ¡echny navrhovanÃ© dÄ›ti tohoto slovesa.
             my @deti;
             my %vazby_navrh;
             my %k_dispozici;
             for(my $j = 0; $j<=$#{$stav->{rodic}}; $j++)
             {
-                # Zapamatovat si, jaké vazby by byly k dispozici.
+                # Zapamatovat si, jakÃ© vazby by byly k dispozici.
                 my $vznacka;
                 if(exists($anot->[$j]{dedic}))
                 {
@@ -224,38 +226,38 @@ sub najit_nenaplnene_ramce
                 if($stav->{rodic}[$j]==$i)
                 {
                     push(@deti, $anot->[$j]);
-                    # Zapamatovat si, ¾e se v návrhu vyskytla urèitá vazba.
-                    # Bude se nám to hodit pøi ovìøování naplnìnosti rámcù.
+                    # Zapamatovat si, Å¾e se v nÃ¡vrhu vyskytla urÄitÃ¡ vazba.
+                    # Bude se nÃ¡m to hodit pÅ™i ovÄ›Å™ovÃ¡nÃ­ naplnÄ›nosti rÃ¡mcÅ¯.
                     $vazby_navrh{$vznacka}++;
                     my $spravne = $anot->[$j]{rodic_vzor}==$i ? 1 : 0;
                 }
             }
-            # Projít v¹echny známé rámce tohoto slovesa a hledat nìjakı naplnìnı.
+            # ProjÃ­t vÅ¡echny znÃ¡mÃ© rÃ¡mce tohoto slovesa a hledat nÄ›jakÃ½ naplnÄ›nÃ½.
             my $n_naplnenych = 0;
             my $n_lze_naplnit;
             foreach my $ramec (@{$subcat->{"RAM $anot->[$i]{heslo}"}})
             {
-                # Zjistit, zda je tento rámec v navrhovaném stromu naplnìn.
-                # Udìlat si kopii evidence navrhovanıch vazeb, abychom si v ní mohli èmárat.
+                # Zjistit, zda je tento rÃ¡mec v navrhovanÃ©m stromu naplnÄ›n.
+                # UdÄ›lat si kopii evidence navrhovanÃ½ch vazeb, abychom si v nÃ­ mohli ÄmÃ¡rat.
                 my %kopie_navrhovanych_vazeb = %vazby_navrh;
                 my %kopie_vazeb_k_dispozici = %k_dispozici;
-                # Rozdìlit rámec na jednotlivé vazby.
-                # Nejdøív z rámce odstranit sloveso.
+                # RozdÄ›lit rÃ¡mec na jednotlivÃ© vazby.
+                # NejdÅ™Ã­v z rÃ¡mce odstranit sloveso.
                 my $ramec_bez_slovesa = $ramec;
                 $ramec_bez_slovesa =~ s/^\S+ //;
                 my $ok = 1;
                 my $lze_naplnit = 1;
-                # Rámec "<INTR>" znamená, ¾e jde o nepøechodné sloveso, které nevy¾aduje ¾ádné argumenty.
+                # RÃ¡mec "<INTR>" znamenÃ¡, Å¾e jde o nepÅ™echodnÃ© sloveso, kterÃ© nevyÅ¾aduje Å¾Ã¡dnÃ© argumenty.
                 unless($ramec_bez_slovesa eq "<INTR>")
                 {
                     my @vazby = split(/~~/, $ramec_bez_slovesa);
                     foreach my $vazba (@vazby)
                     {
-                        # Vazba se skládá ze subkategorizaèní znaèky a
-                        # z analytické funkce (s-znaèky), oddìlené jsou
-                        # lomítkem. Odstranit lomítko a s-znaèku.
+                        # Vazba se sklÃ¡dÃ¡ ze subkategorizaÄnÃ­ znaÄky a
+                        # z analytickÃ© funkce (s-znaÄky), oddÄ›lenÃ© jsou
+                        # lomÃ­tkem. Odstranit lomÃ­tko a s-znaÄku.
                         $vazba =~ s-/.*--;
-                        # Zjistit, zda na tuto vazbu je¹tì zbıvá nìjakı uzel z návrhu.
+                        # Zjistit, zda na tuto vazbu jeÅ¡tÄ› zbÃ½vÃ¡ nÄ›jakÃ½ uzel z nÃ¡vrhu.
                         if($kopie_navrhovanych_vazeb{$vazba}>0)
                         {
                             $kopie_navrhovanych_vazeb{$vazba}--;
@@ -263,7 +265,7 @@ sub najit_nenaplnene_ramce
                         }
                         else
                         {
-                            # Zvlá¹tní pøípad: PR4 mù¾e naplnit i N4, tak¾e pokud nemù¾eme najít N4, zkusíme je¹tì PR4.
+                            # ZvlÃ¡Å¡tnÃ­ pÅ™Ã­pad: PR4 mÅ¯Å¾e naplnit i N4, takÅ¾e pokud nemÅ¯Å¾eme najÃ­t N4, zkusÃ­me jeÅ¡tÄ› PR4.
                             if($vazba eq "N4" && $kopie_navrhovanych_vazeb{"PR4"}>0)
                             {
                                 $kopie_navrhovanych_vazeb{"PR4"}--;
@@ -306,39 +308,39 @@ sub najit_nenaplnene_ramce
 
 
 #==============================================================================
-# Funkce pro zji¹tìní, co lze na souèasné analıze vìty zlep¹it, aby byly lépe
-# naplnìny valenèní rámce.
+# Funkce pro zjiÅ¡tÄ›nÃ­, co lze na souÄasnÃ© analÃ½ze vÄ›ty zlepÅ¡it, aby byly lÃ©pe
+# naplnÄ›ny valenÄnÃ­ rÃ¡mce.
 #==============================================================================
 
 
 
 #------------------------------------------------------------------------------
-# Získá seznam slov, která v dané analıze zaplòují nìkteré místo ve valenèních
-# rámcích (a není tedy vhodné na jejich zavì¹ení nìco mìnit) a seznam slov,
-# která nepatøí do první mno¾iny a souèasnì jejich pøevì¹ení mù¾e vést
-# k zaplnìní dal¹ích valenèních míst. Oba seznamy zakóduje do návratového pole
-# takto: 0 ... slovo u¾ zaplòuje valenci, nemìnit; 1 ... slovo nezaplòuje
-# valenci, ale mohlo by; 2 ... slovo nezaplòuje valenci a ani nebylo zji¹tìno,
-# ¾e by mohlo.
+# ZÃ­skÃ¡ seznam slov, kterÃ¡ v danÃ© analÃ½ze zaplÅˆujÃ­ nÄ›kterÃ© mÃ­sto ve valenÄnÃ­ch
+# rÃ¡mcÃ­ch (a nenÃ­ tedy vhodnÃ© na jejich zavÄ›Å¡enÃ­ nÄ›co mÄ›nit) a seznam slov,
+# kterÃ¡ nepatÅ™Ã­ do prvnÃ­ mnoÅ¾iny a souÄasnÄ› jejich pÅ™evÄ›Å¡enÃ­ mÅ¯Å¾e vÃ©st
+# k zaplnÄ›nÃ­ dalÅ¡Ã­ch valenÄnÃ­ch mÃ­st. Oba seznamy zakÃ³duje do nÃ¡vratovÃ©ho pole
+# takto: 0 ... slovo uÅ¾ zaplÅˆuje valenci, nemÄ›nit; 1 ... slovo nezaplÅˆuje
+# valenci, ale mohlo by; 2 ... slovo nezaplÅˆuje valenci a ani nebylo zjiÅ¡tÄ›no,
+# Å¾e by mohlo.
 #------------------------------------------------------------------------------
 sub najit_valencni_rezervy
 {
-    my $anot = shift; # odkaz na pole hashù
-    my $stav = shift; # odkaz na hash (potøebujeme z nìj zejména návrh stromu, ale nejen ten)
-    my $subkat = shift; # odkaz na hash se subkategorizaèním slovníkem
-    my @evidence; # vıstupní pole (0 u¾ pou¾ito 1 lze pou¾ít 2 ostatní)
-    # Naplnit evidenci vıchozími hodnotami.
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $stav = shift; # odkaz na hash (potÅ™ebujeme z nÄ›j zejmÃ©na nÃ¡vrh stromu, ale nejen ten)
+    my $subkat = shift; # odkaz na hash se subkategorizaÄnÃ­m slovnÃ­kem
+    my @evidence; # vÃ½stupnÃ­ pole (0 uÅ¾ pouÅ¾ito 1 lze pouÅ¾Ã­t 2 ostatnÃ­)
+    # Naplnit evidenci vÃ½chozÃ­mi hodnotami.
     @evidence = map{2}(0..$#{$anot});
-    # Získat seznam sloves ve vìtì, pokrytıch valenèním slovníkem.
+    # ZÃ­skat seznam sloves ve vÄ›tÄ›, pokrytÃ½ch valenÄnÃ­m slovnÃ­kem.
     my $slovesa = ziskat_seznam_sloves($anot, $subkat);
-    # Získat doplòující údaje ke v¹em uzlùm navr¾enım za dìti sloves.
+    # ZÃ­skat doplÅˆujÃ­cÃ­ Ãºdaje ke vÅ¡em uzlÅ¯m navrÅ¾enÃ½m za dÄ›ti sloves.
     my $deti = obohatit_deti($anot, $stav);
-    # Projít slovesa a zjistit, co mají a co jim chybí.
+    # ProjÃ­t slovesa a zjistit, co majÃ­ a co jim chybÃ­.
     foreach my $sloveso (@{$slovesa})
     {
-        # Pro dané sloveso vybrat rámec, zjistit, která slova se v nìm anga¾ují a
-        # jaké druhy slov rámec je¹tì shání. Tato zji¹tìní rovnou pøipsat do
-        # centrální evidence vyu¾itelnosti slov pro valenci.
+        # Pro danÃ© sloveso vybrat rÃ¡mec, zjistit, kterÃ¡ slova se v nÄ›m angaÅ¾ujÃ­ a
+        # jakÃ© druhy slov rÃ¡mec jeÅ¡tÄ› shÃ¡nÃ­. Tato zjiÅ¡tÄ›nÃ­ rovnou pÅ™ipsat do
+        # centrÃ¡lnÃ­ evidence vyuÅ¾itelnosti slov pro valenci.
         vybrat_ramec_a_promitnout_ho_do_evidence($anot, $sloveso, $deti, $subkat, \@evidence);
     }
     return \@evidence;
@@ -347,19 +349,19 @@ sub najit_valencni_rezervy
 
 
 #------------------------------------------------------------------------------
-# Dílèí funkce pro kontrolu valence. Projde vìtu a najde slovesa, pro která
-# známe alespoò jeden rámec.
+# DÃ­lÄÃ­ funkce pro kontrolu valence. Projde vÄ›tu a najde slovesa, pro kterÃ¡
+# znÃ¡me alespoÅˆ jeden rÃ¡mec.
 #------------------------------------------------------------------------------
 sub ziskat_seznam_sloves
 {
-    my $anot = shift; # odkaz na pole hashù
-    my $subcat = shift; # odkaz na hash se subkategorizaèním slovníkem
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $subcat = shift; # odkaz na hash se subkategorizaÄnÃ­m slovnÃ­kem
     my @slovesa;
-    # Najít slovesa.
+    # NajÃ­t slovesa.
     for(my $i = 0; $i<=$#{$anot}; $i++)
     {
-        # Zajímají nás pouze slovesa pokrytá subkategorizaèním slovníkem.
-        # Nezajímají nás, pokud jsou v pøíèestí trpném (pak toti¾ asi chybí N4 a nemá se doplòovat).
+        # ZajÃ­majÃ­ nÃ¡s pouze slovesa pokrytÃ¡ subkategorizaÄnÃ­m slovnÃ­kem.
+        # NezajÃ­majÃ­ nÃ¡s, pokud jsou v pÅ™Ã­ÄestÃ­ trpnÃ©m (pak totiÅ¾ asi chybÃ­ N4 a nemÃ¡ se doplÅˆovat).
         if($anot->[$i]{znacka} =~ m/^V[^s]/ && exists($subcat->{"SLO $anot->[$i]{heslo}"}))
         {
             push(@slovesa, $i);
@@ -371,79 +373,79 @@ sub ziskat_seznam_sloves
 
 
 #------------------------------------------------------------------------------
-# Zjistí pro ka¾dé dítì slovesa informace, které mohou rozhodovat o jeho zaøazení
-# mezi povinná nebo volitelná doplnìní.
+# ZjistÃ­ pro kaÅ¾dÃ© dÃ­tÄ› slovesa informace, kterÃ© mohou rozhodovat o jeho zaÅ™azenÃ­
+# mezi povinnÃ¡ nebo volitelnÃ¡ doplnÄ›nÃ­.
 #------------------------------------------------------------------------------
 sub obohatit_deti
 {
-    my $anot = shift; # odkaz na anotace jednotlivıch slov
-    my $stav = shift; # odkaz na hash; potøebujeme jen pøedat dál do model::ohodnotit_hranu(), jinak staèí pole navrhovanıch rodièù
-    my $navrhrod = $stav->{rodic}; # odkaz na pole indexù navrhovanıch rodièù
-    my @hodnoceni; # vıstupní pole hashù
-    # Potøebujeme zjistit:
-    # - pro ka¾dé dítì slovesa váhu jeho závislosti na jeho rodièi
-    # - pro ka¾dé dítì slovesa poèet sloves mezi ním a jeho rodièem
-    # - pro ka¾dé dítì slovesa poèet sloves od nìj smìrem pryè od jeho rodièe
-    my @slovesa; # seznam indexù dosud vidìnıch sloves
-    my @deti; # evidence rozpracovanıch a zpracovanıch dìtí
-    # A teï vlastní implementace.
-    # Procházet slova ve vìtì.
+    my $anot = shift; # odkaz na anotace jednotlivÃ½ch slov
+    my $stav = shift; # odkaz na hash; potÅ™ebujeme jen pÅ™edat dÃ¡l do model::ohodnotit_hranu(), jinak staÄÃ­ pole navrhovanÃ½ch rodiÄÅ¯
+    my $navrhrod = $stav->{rodic}; # odkaz na pole indexÅ¯ navrhovanÃ½ch rodiÄÅ¯
+    my @hodnoceni; # vÃ½stupnÃ­ pole hashÅ¯
+    # PotÅ™ebujeme zjistit:
+    # - pro kaÅ¾dÃ© dÃ­tÄ› slovesa vÃ¡hu jeho zÃ¡vislosti na jeho rodiÄi
+    # - pro kaÅ¾dÃ© dÃ­tÄ› slovesa poÄet sloves mezi nÃ­m a jeho rodiÄem
+    # - pro kaÅ¾dÃ© dÃ­tÄ› slovesa poÄet sloves od nÄ›j smÄ›rem pryÄ od jeho rodiÄe
+    my @slovesa; # seznam indexÅ¯ dosud vidÄ›nÃ½ch sloves
+    my @deti; # evidence rozpracovanÃ½ch a zpracovanÃ½ch dÄ›tÃ­
+    # A teÄ vlastnÃ­ implementace.
+    # ProchÃ¡zet slova ve vÄ›tÄ›.
     for(my $i = 0; $i<=$#{$anot}; $i++)
     {
-        # Zkonstruovat valenèní znaèku podle morfologické znaèky a dát ji do hodnocení.
+        # Zkonstruovat valenÄnÃ­ znaÄku podle morfologickÃ© znaÄky a dÃ¡t ji do hodnocenÃ­.
         $hodnoceni[$i]{vznacka} = zjistit_valencni_znacku($anot, $i);
-        # Zkopírovat do hodnocení index navrhovaného rodièe, aby se v¹em funkcím nemusel pøedávat i stav analızy.
+        # ZkopÃ­rovat do hodnocenÃ­ index navrhovanÃ©ho rodiÄe, aby se vÅ¡em funkcÃ­m nemusel pÅ™edÃ¡vat i stav analÃ½zy.
         $hodnoceni[$i]{index} = $i;
         $hodnoceni[$i]{rodic} = $navrhrod->[$i];
         $hodnoceni[$i]{vzdalenost} = abs($i-$navrhrod->[$i]);
-        # Jsme na dítìti slovesa?
+        # Jsme na dÃ­tÄ›ti slovesa?
         if(je_sloveso($anot->[$navrhrod->[$i]]))
         {
-            # Zjistit váhu závislosti aktuálního dítìte na slovese.
-            $hodnoceni[$i]{vaha} = model::ohodnotit_hranu($i, $navrhrod->[$i], $stav);
-            # Je rodièovské sloveso vpravo od nás?
+            # Zjistit vÃ¡hu zÃ¡vislosti aktuÃ¡lnÃ­ho dÃ­tÄ›te na slovese.
+            $hodnoceni[$i]{vaha} = model::ohodnotit_hranu($anot, $i, $navrhrod->[$i], $stav);
+            # Je rodiÄovskÃ© sloveso vpravo od nÃ¡s?
             if($navrhrod->[$i]>$i)
             {
-                # V¹echna dosud vidìná slovesa pøièíst jako vnìj¹í slovesa tohoto uzlu.
+                # VÅ¡echna dosud vidÄ›nÃ¡ slovesa pÅ™iÄÃ­st jako vnÄ›jÅ¡Ã­ slovesa tohoto uzlu.
                 $hodnoceni[$i]{vnejsi} += $#slovesa+1;
-                # Pøidat se do seznamu dìtí jako rozpracované.
+                # PÅ™idat se do seznamu dÄ›tÃ­ jako rozpracovanÃ©.
                 push(@deti, {"index" => $i, "stav" => "rozprac"});
             }
-            # Rodièovské sloveso je vlevo od nás.
+            # RodiÄovskÃ© sloveso je vlevo od nÃ¡s.
             else
             {
-                # Vrátit se po seznamu vidìnıch sloves a¾ k rodièi tohoto uzlu a spoèítat vnitøní slovesa.
+                # VrÃ¡tit se po seznamu vidÄ›nÃ½ch sloves aÅ¾ k rodiÄi tohoto uzlu a spoÄÃ­tat vnitÅ™nÃ­ slovesa.
                 for(my $j = $#slovesa; $j>=0 && $slovesa[$j]!=$navrhrod->[$i]; $j--)
                 {
                     $hodnoceni[$i]{vnitrni}++;
                 }
-                # Pøidat se do seznamu dìtí rovnou jako zpracované.
+                # PÅ™idat se do seznamu dÄ›tÃ­ rovnou jako zpracovanÃ©.
                 push(@deti, {"index" => $i, "stav" => "zprac"});
             }
         }
-        # Jsme na slovese? (Pozor na poøadí krokù, i sloveso mù¾e bıt dítìtem jiného slovesa!)
+        # Jsme na slovese? (Pozor na poÅ™adÃ­ krokÅ¯, i sloveso mÅ¯Å¾e bÃ½t dÃ­tÄ›tem jinÃ©ho slovesa!)
         if(je_sloveso($anot->[$i]))
         {
-            # Pøipsat se mezi vidìná slovesa.
+            # PÅ™ipsat se mezi vidÄ›nÃ¡ slovesa.
             push(@slovesa, $i);
-            # Projít rozpracované dìti. K cizím se pøièíst jako vnitøní, své ukonèit, ke zpracovanım pøípadnì jako vnìj¹í.
+            # ProjÃ­t rozpracovanÃ© dÄ›ti. K cizÃ­m se pÅ™iÄÃ­st jako vnitÅ™nÃ­, svÃ© ukonÄit, ke zpracovanÃ½m pÅ™Ã­padnÄ› jako vnÄ›jÅ¡Ã­.
             for(my $j = 0; $j<=$#deti; $j++)
             {
-                # Ke zpracovanım dìtem (nemohou bıt moje), jejich¾ rodiè le¾í vlevo od nich, se pøièíst jako vnìj¹í.
+                # Ke zpracovanÃ½m dÄ›tem (nemohou bÃ½t moje), jejichÅ¾ rodiÄ leÅ¾Ã­ vlevo od nich, se pÅ™iÄÃ­st jako vnÄ›jÅ¡Ã­.
                 my $index = $deti[$j]{index};
                 if($deti[$j]{stav} eq "zprac" && $navrhrod->[$index]<$index)
                 {
                     $hodnoceni[$index]{vnejsi}++;
                 }
-                # Rozpracované dìti.
+                # RozpracovanÃ© dÄ›ti.
                 elsif($deti[$j]{stav} eq "rozprac")
                 {
-                    # Pokud jsou moje, oznaèit je za zpracované.
+                    # Pokud jsou moje, oznaÄit je za zpracovanÃ©.
                     if($navrhrod->[$index]==$i)
                     {
                         $deti[$j]{stav} = "zprac";
                     }
-                    # Pokud nejsou moje, pøièíst se k nim jako vnitøní.
+                    # Pokud nejsou moje, pÅ™iÄÃ­st se k nim jako vnitÅ™nÃ­.
                     else
                     {
                         $hodnoceni[$index]{vnitrni}++;
@@ -458,12 +460,12 @@ sub obohatit_deti
 
 
 #------------------------------------------------------------------------------
-# Dílèí funkce pro kontrolu valence. Zjistí valenèní znaèku slova.
+# DÃ­lÄÃ­ funkce pro kontrolu valence. ZjistÃ­ valenÄnÃ­ znaÄku slova.
 #------------------------------------------------------------------------------
 sub zjistit_valencni_znacku
 {
-    my $anot = shift; # odkaz na pole hashù pro jednotlivá slova ve vìtì
-    my $index = shift; # index slova, jeho¾ valenèní znaèka nás zajímá
+    my $anot = shift; # odkaz na pole hashÅ¯ pro jednotlivÃ¡ slova ve vÄ›tÄ›
+    my $index = shift; # index slova, jehoÅ¾ valenÄnÃ­ znaÄka nÃ¡s zajÃ­mÃ¡
     my $vznacka;
     if(exists($anot->[$index]{dedic}))
     {
@@ -479,55 +481,55 @@ sub zjistit_valencni_znacku
 
 
 #------------------------------------------------------------------------------
-# Projde rámce zadaného slovesa a porovná je s dìtmi, které slovesu navrhl
-# parser. Vybere rámec, kterı je danou mno¾inou dìtí nejlépe naplnìn. Vyhraje
-# rámec, kterému zùstalo nejménì nezaplnìnıch míst. Pøi rovnosti vyhraje první
-# takovı nalezenı rámec. Mohli bychom je¹tì brát v úvahu, kolik je ve vìtì
-# k dispozici uzlù s valenèní znaèkou, kterou po¾aduje nìkteré nezaplnìné místo
-# rámce, ale tento poèet nebudeme znát pøesnì, dokud v¹em slovesùm nepøiøadíme
-# rámce (nìkteré dìti sloves mohou bıt oznaèeny za volná doplnìní a bıt tak
-# k dispozici pro rámce, které by z nich chtìly udìlat povinná doplnìní), a to
-# je zaèarovanı kruh. Funkce u¾ také nehledí na to, jak kvalitními doplnìními
-# jsou jednotlivá místa rámce zaplnìna (napø. jak daleko má pøíslu¹né dítì ke
-# slovesu), pøesto¾e se tato kritéria pou¾ívají pøi vlastním zaplòování jednoho
-# rámce a vıbìru mezi nìkolika dìtmi, které by dané místo mohly zaplnit.
+# Projde rÃ¡mce zadanÃ©ho slovesa a porovnÃ¡ je s dÄ›tmi, kterÃ© slovesu navrhl
+# parser. Vybere rÃ¡mec, kterÃ½ je danou mnoÅ¾inou dÄ›tÃ­ nejlÃ©pe naplnÄ›n. Vyhraje
+# rÃ¡mec, kterÃ©mu zÅ¯stalo nejmÃ©nÄ› nezaplnÄ›nÃ½ch mÃ­st. PÅ™i rovnosti vyhraje prvnÃ­
+# takovÃ½ nalezenÃ½ rÃ¡mec. Mohli bychom jeÅ¡tÄ› brÃ¡t v Ãºvahu, kolik je ve vÄ›tÄ›
+# k dispozici uzlÅ¯ s valenÄnÃ­ znaÄkou, kterou poÅ¾aduje nÄ›kterÃ© nezaplnÄ›nÃ© mÃ­sto
+# rÃ¡mce, ale tento poÄet nebudeme znÃ¡t pÅ™esnÄ›, dokud vÅ¡em slovesÅ¯m nepÅ™iÅ™adÃ­me
+# rÃ¡mce (nÄ›kterÃ© dÄ›ti sloves mohou bÃ½t oznaÄeny za volnÃ¡ doplnÄ›nÃ­ a bÃ½t tak
+# k dispozici pro rÃ¡mce, kterÃ© by z nich chtÄ›ly udÄ›lat povinnÃ¡ doplnÄ›nÃ­), a to
+# je zaÄarovanÃ½ kruh. Funkce uÅ¾ takÃ© nehledÃ­ na to, jak kvalitnÃ­mi doplnÄ›nÃ­mi
+# jsou jednotlivÃ¡ mÃ­sta rÃ¡mce zaplnÄ›na (napÅ™. jak daleko mÃ¡ pÅ™Ã­sluÅ¡nÃ© dÃ­tÄ› ke
+# slovesu), pÅ™estoÅ¾e se tato kritÃ©ria pouÅ¾Ã­vajÃ­ pÅ™i vlastnÃ­m zaplÅˆovÃ¡nÃ­ jednoho
+# rÃ¡mce a vÃ½bÄ›ru mezi nÄ›kolika dÄ›tmi, kterÃ© by danÃ© mÃ­sto mohly zaplnit.
 #
-# Funkce nevrací pøímo vybranı rámec, ale rovnou vısledky jeho srovnání s dìtmi
-# slovesa, proto¾e to je to, co volající potøebuje, a my to v prùbìhu vybírání
-# tak jako tak musíme získat.
+# Funkce nevracÃ­ pÅ™Ã­mo vybranÃ½ rÃ¡mec, ale rovnou vÃ½sledky jeho srovnÃ¡nÃ­ s dÄ›tmi
+# slovesa, protoÅ¾e to je to, co volajÃ­cÃ­ potÅ™ebuje, a my to v prÅ¯bÄ›hu vybÃ­rÃ¡nÃ­
+# tak jako tak musÃ­me zÃ­skat.
 #------------------------------------------------------------------------------
 sub vybrat_ramec_a_promitnout_ho_do_evidence
 {
-    my $anot = shift; # odkaz na pole hashù
+    my $anot = shift; # odkaz na pole hashÅ¯
     my $sloveso = shift; # index do pole @{$anot}
-    my $deti = shift; # odkaz na pole s doplòujícími informacemi o dìtech sloves
-    my $subcat = shift; # odkaz na hash se subkategorizaèním slovníkem
-    my $evidence = shift; # odkaz na cílové pole
-    # Získat seznam rámcù daného slovesa ze slovníku.
+    my $deti = shift; # odkaz na pole s doplÅˆujÃ­cÃ­mi informacemi o dÄ›tech sloves
+    my $subcat = shift; # odkaz na hash se subkategorizaÄnÃ­m slovnÃ­kem
+    my $evidence = shift; # odkaz na cÃ­lovÃ© pole
+    # ZÃ­skat seznam rÃ¡mcÅ¯ danÃ©ho slovesa ze slovnÃ­ku.
     my $ramce = $subcat->{"RAM $anot->[$sloveso]{heslo}"};
-    # Vybrat z pole informací o dìtech sloves pouze dìti na¹eho slovesa.
+    # Vybrat z pole informacÃ­ o dÄ›tech sloves pouze dÄ›ti naÅ¡eho slovesa.
     my @me_deti = grep{$_->{rodic}==$sloveso}(@{$deti});
-    # Projít v¹echny rámce slovesa, hledat ten nejlépe zaplnìnı.
+    # ProjÃ­t vÅ¡echny rÃ¡mce slovesa, hledat ten nejlÃ©pe zaplnÄ›nÃ½.
     my $min_nezaplnenych;
     my $srovnani_min;
     foreach my $ramec (@{$ramce})
     {
         my $vazby = pripravit_ramec_k_porovnani($ramec);
         my $srovnani = porovnat_deti_s_ramcem(\@me_deti, $vazby);
-        # Jestli¾e srovnání vy¹lo lépe ne¾ u dosud nejlep¹ího rámce, prohlásit za nejlep¹í tenhle.
+        # JestliÅ¾e srovnÃ¡nÃ­ vyÅ¡lo lÃ©pe neÅ¾ u dosud nejlepÅ¡Ã­ho rÃ¡mce, prohlÃ¡sit za nejlepÅ¡Ã­ tenhle.
         if($min_nezaplnenych eq "" || $srovnani->{n_chybi}<$min_nezaplnenych)
         {
             $min_nezaplnenych = $srovnani->{n_chybi};
             $srovnani_min = $srovnani;
         }
     }
-    # Pøipsat nejlep¹í rámec do evidence.
-    # Uzlùm, které se podílejí na zaplnìní rámce, nastavit v evidenci 0.
+    # PÅ™ipsat nejlepÅ¡Ã­ rÃ¡mec do evidence.
+    # UzlÅ¯m, kterÃ© se podÃ­lejÃ­ na zaplnÄ›nÃ­ rÃ¡mce, nastavit v evidenci 0.
     foreach my $i (@{$srovnani_min->{nalezeno}})
     {
         $evidence->[$i] = 0;
     }
-    # Uzlùm, které ode mne ani od nikoho jiného nemají 0, ale mohly by mi pomoci k lep¹ímu zaplnìní, nastavit 1.
+    # UzlÅ¯m, kterÃ© ode mne ani od nikoho jinÃ©ho nemajÃ­ 0, ale mohly by mi pomoci k lepÅ¡Ã­mu zaplnÄ›nÃ­, nastavit 1.
     for(my $i = 0; $i<=$#{$anot}; $i++)
     {
         if($srovnani_min->{chybi}{$deti->[$i]{vznacka}} && $evidence->[$i]!=0)
@@ -540,25 +542,25 @@ sub vybrat_ramec_a_promitnout_ho_do_evidence
 
 
 #------------------------------------------------------------------------------
-# Zpracuje rámec tak, aby bylo mo¾né s ním porovnat seznam uzlù, které ho mají
+# Zpracuje rÃ¡mec tak, aby bylo moÅ¾nÃ© s nÃ­m porovnat seznam uzlÅ¯, kterÃ© ho majÃ­
 # naplnit.
 #------------------------------------------------------------------------------
 sub pripravit_ramec_k_porovnani
 {
-    my $ramec = shift; # øetìzec vazeb oddìlenıch ~~ nebo <INTR>
-    # Odstranit z rámce sloveso.
+    my $ramec = shift; # Å™etÄ›zec vazeb oddÄ›lenÃ½ch ~~ nebo <INTR>
+    # Odstranit z rÃ¡mce sloveso.
     my $ramec_bez_slovesa = $ramec;
     $ramec_bez_slovesa =~ s/^\S+ //;
-    # Pøevést rámec na seznam vazeb. Seznam reprezentovat hashem, pro ka¾dou vazbu poèet vıskytù.
-    # Rámec "<INTR>" znamená, ¾e jde o nepøechodné sloveso, které nemá ¾ádné vazby.
+    # PÅ™evÃ©st rÃ¡mec na seznam vazeb. Seznam reprezentovat hashem, pro kaÅ¾dou vazbu poÄet vÃ½skytÅ¯.
+    # RÃ¡mec "<INTR>" znamenÃ¡, Å¾e jde o nepÅ™echodnÃ© sloveso, kterÃ© nemÃ¡ Å¾Ã¡dnÃ© vazby.
     my %hash;
     unless($ramec_bez_slovesa eq "<INTR>")
     {
         my @vazby = split(/~~/, $ramec_bez_slovesa);
-        # Pøevést pole vazeb na reprezentaèní hash.
+        # PÅ™evÃ©st pole vazeb na reprezentaÄnÃ­ hash.
         for(my $i = 0; $i<=$#vazby; $i++)
         {
-            # Vazby jsou ulo¾eny ve tvaru vznacka/afun. Odstranit analytickou funkci.
+            # Vazby jsou uloÅ¾eny ve tvaru vznacka/afun. Odstranit analytickou funkci.
             $vazby[$i] =~ s-/.*--;
             $hash{$vazby[$i]}++;
         }
@@ -569,30 +571,30 @@ sub pripravit_ramec_k_porovnani
 
 
 #------------------------------------------------------------------------------
-# Dílèí funkce pro kontrolu valence. Porovná seznam navrhovanıch dìtí slovesa
-# s rámcem tohoto slovesa.
+# DÃ­lÄÃ­ funkce pro kontrolu valence. PorovnÃ¡ seznam navrhovanÃ½ch dÄ›tÃ­ slovesa
+# s rÃ¡mcem tohoto slovesa.
 #
-# Vrací:
-# - seznam valenèních znaèek, které chybí
-# - seznam indexù uzlù, které plní roli argumentù
+# VracÃ­:
+# - seznam valenÄnÃ­ch znaÄek, kterÃ© chybÃ­
+# - seznam indexÅ¯ uzlÅ¯, kterÃ© plnÃ­ roli argumentÅ¯
 #
-# Mù¾e se stát, ¾e rámec po¾aduje men¹í poèet doplnìní urèitého druhu (napø. N4),
-# ne¾ kolik takovıch doplnìní na slovesu podle návrhu visí. V tom pøípadì je tøeba
-# rozhodnout, které z navrhovanıch dìtí je to nejlep¹í a ostatní prohlásit za
-# volná doplnìní. Za nejlep¹í prohlásíme to dítì, jeho¾ závislosti model pøiøadí
-# nejvìt¹í váhu. Pøi rovnosti vah rozhodne vzdálenost dítìte od slovesa: vyhrává
-# dítì oddìlené men¹ím poètem jinıch sloves, potom bli¾¹í dítì, potom dítì na
-# stranì, na které je ménì dal¹ích sloves, potom dítì vpravo.
+# MÅ¯Å¾e se stÃ¡t, Å¾e rÃ¡mec poÅ¾aduje menÅ¡Ã­ poÄet doplnÄ›nÃ­ urÄitÃ©ho druhu (napÅ™. N4),
+# neÅ¾ kolik takovÃ½ch doplnÄ›nÃ­ na slovesu podle nÃ¡vrhu visÃ­. V tom pÅ™Ã­padÄ› je tÅ™eba
+# rozhodnout, kterÃ© z navrhovanÃ½ch dÄ›tÃ­ je to nejlepÅ¡Ã­ a ostatnÃ­ prohlÃ¡sit za
+# volnÃ¡ doplnÄ›nÃ­. Za nejlepÅ¡Ã­ prohlÃ¡sÃ­me to dÃ­tÄ›, jehoÅ¾ zÃ¡vislosti model pÅ™iÅ™adÃ­
+# nejvÄ›tÅ¡Ã­ vÃ¡hu. PÅ™i rovnosti vah rozhodne vzdÃ¡lenost dÃ­tÄ›te od slovesa: vyhrÃ¡vÃ¡
+# dÃ­tÄ› oddÄ›lenÃ© menÅ¡Ã­m poÄtem jinÃ½ch sloves, potom bliÅ¾Å¡Ã­ dÃ­tÄ›, potom dÃ­tÄ› na
+# stranÄ›, na kterÃ© je mÃ©nÄ› dalÅ¡Ã­ch sloves, potom dÃ­tÄ› vpravo.
 #
-# Pozor, tato funkce nebere v úvahu, ¾e mohou existovat je¹tì jiné rámce tého¾
-# slovesa, které by seznam dìtí uspokojil.
+# Pozor, tato funkce nebere v Ãºvahu, Å¾e mohou existovat jeÅ¡tÄ› jinÃ© rÃ¡mce tÃ©hoÅ¾
+# slovesa, kterÃ© by seznam dÄ›tÃ­ uspokojil.
 #------------------------------------------------------------------------------
 sub porovnat_deti_s_ramcem
 {
-    my $deti = shift; # odkaz na pole hashù o dìtech (obsahují mj. i odkaz do @anot na standardní údaje)
-    my $ramec = shift; # odkaz na hash indexovanı valenèními znaèkami, hodnoty jsou poèet po¾adovanıch takovıch vazeb
-    # Seøadit dìti sestupnì podle pravdìpodobnosti, ¾e právì ony jsou povinnımi doplnìními slovesa.
-    # "Pravdìpodobností" se zde nemyslí jen váha podle modelu, ale pøi nerozhodnosti i dal¹í heuristiky.
+    my $deti = shift; # odkaz na pole hashÅ¯ o dÄ›tech (obsahujÃ­ mj. i odkaz do @anot na standardnÃ­ Ãºdaje)
+    my $ramec = shift; # odkaz na hash indexovanÃ½ valenÄnÃ­mi znaÄkami, hodnoty jsou poÄet poÅ¾adovanÃ½ch takovÃ½ch vazeb
+    # SeÅ™adit dÄ›ti sestupnÄ› podle pravdÄ›podobnosti, Å¾e prÃ¡vÄ› ony jsou povinnÃ½mi doplnÄ›nÃ­mi slovesa.
+    # "PravdÄ›podobnostÃ­" se zde nemyslÃ­ jen vÃ¡ha podle modelu, ale pÅ™i nerozhodnosti i dalÅ¡Ã­ heuristiky.
     my @sdeti = sort
     {
         my $vysledek = $b->{vaha}<=>$a->{vaha};
@@ -615,28 +617,28 @@ sub porovnat_deti_s_ramcem
         return $vysledek;
     }
     (@{$deti});
-    # Vytvoøit si kopii rámce, abychom si v ní mohli èmárat.
+    # VytvoÅ™it si kopii rÃ¡mce, abychom si v nÃ­ mohli ÄmÃ¡rat.
     my %ramec = %{$ramec};
-    # Procházet dìti a u ka¾dého se zeptat, jestli je povinné (umazáváním pøíslu¹nıch znaèek z rámce).
-    # PR4 uspokojí pøednostnì po¾adavek na PR4, ale pokud takovı po¾adavek není, zkusí uspokojit po¾adavek na N4.
+    # ProchÃ¡zet dÄ›ti a u kaÅ¾dÃ©ho se zeptat, jestli je povinnÃ© (umazÃ¡vÃ¡nÃ­m pÅ™Ã­sluÅ¡nÃ½ch znaÄek z rÃ¡mce).
+    # PR4 uspokojÃ­ pÅ™ednostnÄ› poÅ¾adavek na PR4, ale pokud takovÃ½ poÅ¾adavek nenÃ­, zkusÃ­ uspokojit poÅ¾adavek na N4.
     for(my $i = 0; $i<=$#sdeti; $i++)
     {
         if($ramec{$sdeti[$i]{vznacka}})
         {
-            # Poznamenat si, ¾e tento èlen rámce u¾ je naplnìn.
+            # Poznamenat si, Å¾e tento Älen rÃ¡mce uÅ¾ je naplnÄ›n.
             $ramec{$sdeti[$i]{vznacka}}--;
-            # Poznamenat si, ¾e tento uzel u¾ je anga¾ován jako povinné doplnìní.
+            # Poznamenat si, Å¾e tento uzel uÅ¾ je angaÅ¾ovÃ¡n jako povinnÃ© doplnÄ›nÃ­.
             $sdeti[$i]{arg} = 1;
         }
         elsif($sdeti[$i]{vznacka} eq "PR4" && $ramec{"N4"})
         {
-            # Poznamenat si, ¾e tento èlen rámce u¾ je naplnìn.
+            # Poznamenat si, Å¾e tento Älen rÃ¡mce uÅ¾ je naplnÄ›n.
             $ramec{"N4"}--;
-            # Poznamenat si, ¾e tento uzel u¾ je anga¾ován jako povinné doplnìní.
+            # Poznamenat si, Å¾e tento uzel uÅ¾ je angaÅ¾ovÃ¡n jako povinnÃ© doplnÄ›nÃ­.
             $sdeti[$i]{arg} = 1;
         }
     }
-    # Sestavit návratové údaje a vrátit je.
+    # Sestavit nÃ¡vratovÃ© Ãºdaje a vrÃ¡tit je.
     my %srovnani;
     while(my ($klic, $hodnota) = each(%ramec))
     {
@@ -651,14 +653,14 @@ sub porovnat_deti_s_ramcem
 
 
 #==============================================================================
-# Pomocné funkce, ze kterıch by se èasem mìl vytvoøit samostatnı modul pro
-# odstínìní zvlá¹tností jazyka nebo znaèení v konkrétním korpusu.
+# PomocnÃ© funkce, ze kterÃ½ch by se Äasem mÄ›l vytvoÅ™it samostatnÃ½ modul pro
+# odstÃ­nÄ›nÃ­ zvlÃ¡Å¡tnostÃ­ jazyka nebo znaÄenÃ­ v konkrÃ©tnÃ­m korpusu.
 #==============================================================================
 
 
 
 #------------------------------------------------------------------------------
-# Zjistí z anotace slova, zda jde o sloveso.
+# ZjistÃ­ z anotace slova, zda jde o sloveso.
 #------------------------------------------------------------------------------
 sub je_sloveso
 {

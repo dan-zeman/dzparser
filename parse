@@ -1,1 +1,1 @@
-nohup parse.pl -q > /dev/null &
+nohup parse.pl -q $* > /dev/null &

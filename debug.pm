@@ -1,10 +1,11 @@
 package debug;
+use utf8;
 use vystupy;
 
 
 
 #------------------------------------------------------------------------------
-# VypÌπe ladÌcÌ informaci do souboru DBGLOG, jestliæe je vypisov·nÌ zapnuto.
+# Vyp√≠≈°e lad√≠c√≠ informaci do souboru DBGLOG, jestli≈æe je vypisov√°n√≠ zapnuto.
 #------------------------------------------------------------------------------
 sub dbglog
 {

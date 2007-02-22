@@ -1,24 +1,26 @@
-# Model krátkıch vìt na základì vzorù morfologickıch znaèek.
+# Model krÃ¡tkÃ½ch vÄ›t na zÃ¡kladÄ› vzorÅ¯ morfologickÃ½ch znaÄek.
 package krvety;
+use utf8;
+use rozebrat;
 
 
 
 #------------------------------------------------------------------------------
-# Zjistí, zda vzor morfologickıch znaèek ve vìtì odpovídá nìkterému vzoru
-# známému z trénovacích dat. Pokud ano, zjistí syntaktickou strukturu
-# odpovídající tomuto vzoru a vrátí ji. Pokud ne, zavolá funkci na bì¾nı rozbor
-# vìty. Vıslednou strukturu vrací zabalenou do hashe %stav, kvùli kompatibilitì
-# s jinımi funkcemi na rozbor vìty.
+# ZjistÃ­, zda vzor morfologickÃ½ch znaÄek ve vÄ›tÄ› odpovÃ­dÃ¡ nÄ›kterÃ©mu vzoru
+# znÃ¡mÃ©mu z trÃ©novacÃ­ch dat. Pokud ano, zjistÃ­ syntaktickou strukturu
+# odpovÃ­dajÃ­cÃ­ tomuto vzoru a vrÃ¡tÃ­ ji. Pokud ne, zavolÃ¡ funkci na bÄ›Å¾nÃ½ rozbor
+# vÄ›ty. VÃ½slednou strukturu vracÃ­ zabalenou do hashe %stav, kvÅ¯li kompatibilitÄ›
+# s jinÃ½mi funkcemi na rozbor vÄ›ty.
 #------------------------------------------------------------------------------
 sub rozebrat
 {
-    my $vzorstrom = shift; # odkaz na hash hashù {vzor}{strom}
-    # Zatím globální promìnné.
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $vzorstrom = shift; # odkaz na hash hashÅ¯ {vzor}{strom}
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
-    # Odkaz na vıstupní hash.
+    # Odkaz na vÃ½stupnÃ­ hash.
     my $stav;
-    # Sestavit morfologickı vzorec vìty.
+    # Sestavit morfologickÃ½ vzorec vÄ›ty.
     my $vzor;
     for(my $i = 1; $i<=$#{$anot}; $i++)
     {
@@ -26,26 +28,26 @@ sub rozebrat
         my $znacka = $anot->[$i]{uznacka};
         $vzor .= $znacka;
     }
-    # Ke vzorci najít nejpravdìpodobnìj¹í stromovou strukturu.
+    # Ke vzorci najÃ­t nejpravdÄ›podobnÄ›jÅ¡Ã­ stromovou strukturu.
     my $strom = $vzorstrom->{$vzor}{strom};
     my $cetnost_stromu = $vzorstrom->{$vzor}{cetnost};
     my $cetnost_vzoru = $vzorstrom->{$vzor}{celkem};
-    # Nepøesvìdèivá èetnost, neznámı vzor => zpracovat klasicky.
+    # NepÅ™esvÄ›dÄivÃ¡ Äetnost, neznÃ¡mÃ½ vzor => zpracovat klasicky.
     if($cetnost_vzoru==0 || $cetnost_stromu/$cetnost_vzoru<0.5)
     {
-        # Pokud takovı vzorec neznáme, rozebrat vìtu klasicky.
-        $stav = rozebrat::rozebrat_vetu();
+        # Pokud takovÃ½ vzorec neznÃ¡me, rozebrat vÄ›tu klasicky.
+        $stav = rozebrat::rozebrat_vetu($anot);
     }
     else
     {
-        # Naprosto nestatistickı zásah. Tyto vìty (napø. "Karel Ro¾ánek, Praha") jsou v PDT anotovány nìkolika
-        # zpùsoby, a navíc v trénovacích datech pøeva¾uje jinı zpùsob ne¾ v testovacích. Zde mám ten z testovacích.
+        # Naprosto nestatistickÃ½ zÃ¡sah. Tyto vÄ›ty (napÅ™. "Karel RoÅ¾Ã¡nek, Praha") jsou v PDT anotovÃ¡ny nÄ›kolika
+        # zpÅ¯soby, a navÃ­c v trÃ©novacÃ­ch datech pÅ™evaÅ¾uje jinÃ½ zpÅ¯sob neÅ¾ v testovacÃ­ch. Zde mÃ¡m ten z testovacÃ­ch.
         if($vzor eq "NY1~N1~Z,~N1")
         {
             $strom = "2,3,0,3";
         }
         my @rodic = split(/,/, $strom);
-        # Pøidat prázdnı nultı prvek, ten ve vzorovıch stromech není.
+        # PÅ™idat prÃ¡zdnÃ½ nultÃ½ prvek, ten ve vzorovÃ½ch stromech nenÃ­.
         unshift(@rodic, -1);
         my %stav;
         $stav{rodic} = \@rodic;

@@ -1,43 +1,42 @@
-# Modul s funkcemi umo¾òujícími vyu¾ít pøi parsingu model n-tic vedle sebe le¾ících slov.
+# Modul s funkcemi umoÅ¾ÅˆujÃ­cÃ­mi vyuÅ¾Ã­t pÅ™i parsingu model n-tic vedle sebe leÅ¾Ã­cÃ­ch slov.
 package plodnost;
-require 5.000;
-require Exporter;
+use utf8;
 use vystupy;
 
 
 
 #------------------------------------------------------------------------------
-# Uèení plodnosti. Projde vìtu, zjistí poèet dìtí jednotlivıch uzlù, vygeneruje
-# pøíslu¹né události a zapí¹e je do centrální evidence.
+# UÄenÃ­ plodnosti. Projde vÄ›tu, zjistÃ­ poÄet dÄ›tÃ­ jednotlivÃ½ch uzlÅ¯, vygeneruje
+# pÅ™Ã­sluÅ¡nÃ© udÃ¡losti a zapÃ­Å¡e je do centrÃ¡lnÃ­ evidence.
 #------------------------------------------------------------------------------
 sub ucit
 {
-    my $anot = shift; # odkaz na pole hashù s anotacemi slov
+    my $anot = shift; # odkaz na pole hashÅ¯ s anotacemi slov
     my @n_deti;# = map{0}(0..$#{$anot});
-    # Zjistit, kolik má kterı uzel dìtí.
+    # Zjistit, kolik mÃ¡ kterÃ½ uzel dÄ›tÃ­.
     for(my $i = 0; $i<=$#{$anot}; $i++)
     {
         my $rodic = $anot->[$i]{rodic_vzor};
-        if($rodic>=0) # mù¾e to bıt i -1
+        if($rodic>=0) # mÅ¯Å¾e to bÃ½t i -1
         {
             $n_deti[$rodic]++;
         }
     }
-    # Projít nasèítané poèty dìtí a ulo¾it vıskyt ka¾dého pøípadu.
+    # ProjÃ­t nasÄÃ­tanÃ© poÄty dÄ›tÃ­ a uloÅ¾it vÃ½skyt kaÅ¾dÃ©ho pÅ™Ã­padu.
     for(my $i = 0; $i<=$#n_deti; $i++)
     {
         my $udalost = "ZPL ".$anot->[$i]{uznacka}." ".$n_deti[$i];
-        # Kontrola podezøelıch událostí.
+        # Kontrola podezÅ™elÃ½ch udÃ¡lostÃ­.
         if($udalost eq "ZPL Z?K 1")
         {
             print(join(" ", map{$_->{slovo}."/".$_->{uznacka}."/".$_->{rodic_vzor}}(@{$anot})), "\n");
             print(join(" ", @n_deti), "\n");
             die;
         }
-        # Zavolat ud() v hlavním modulu, pøedpokládáme, ¾e je to train.pl.
-        # Nemù¾eme pøistupovat pøímo do hashe, proto¾e {uznacka} by ve skuteènosti
-        # mohl bıt seznam znaèek ud() to vyøe¹í. Lep¹í by bylo pøesunout ud()
-        # do samostatného modulu, ale pozor, trénovací ud() není toté¾ co ud()
+        # Zavolat ud() v hlavnÃ­m modulu, pÅ™edpoklÃ¡dÃ¡me, Å¾e je to train.pl.
+        # NemÅ¯Å¾eme pÅ™istupovat pÅ™Ã­mo do hashe, protoÅ¾e {uznacka} by ve skuteÄnosti
+        # mohl bÃ½t seznam znaÄek ud() to vyÅ™eÅ¡Ã­. LepÅ¡Ã­ by bylo pÅ™esunout ud()
+        # do samostatnÃ©ho modulu, ale pozor, trÃ©novacÃ­ ud() nenÃ­ totÃ©Å¾ co ud()
         # pro parsing!
         main::ud($udalost);
     }
@@ -46,14 +45,15 @@ sub ucit
 
 
 #------------------------------------------------------------------------------
-# Naète nauèené plodnosti znaèek. Vzhledem k tomu, ¾e uèení probíhalo v rámci
-# standardního tréninku, mohli bychom k plodnostem pøistupovat do standardní
-# statistiky, ale tady je máme trochu pøed¾vıkané a jsou v nich zahrnuty pouze
-# znaèky, které dávají pøednost urèitému poètu dìtí alespoò v 50 %.
+# NaÄte nauÄenÃ© plodnosti znaÄek. Vzhledem k tomu, Å¾e uÄenÃ­ probÃ­halo v rÃ¡mci
+# standardnÃ­ho trÃ©ninku, mohli bychom k plodnostem pÅ™istupovat do standardnÃ­
+# statistiky, ale tady je mÃ¡me trochu pÅ™edÅ¾vÃ½kanÃ© a jsou v nich zahrnuty pouze
+# znaÄky, kterÃ© dÃ¡vajÃ­ pÅ™ednost urÄitÃ©mu poÄtu dÄ›tÃ­ alespoÅˆ v 50 %.
 #------------------------------------------------------------------------------
 sub cist
 {
     open(PLODNOST, "plodnost.txt") or die("Nelze otevrit plodnost: $!\n");
+    binmode(PLODNOST, ":encoding(iso-8859-2)");
     while(<PLODNOST>)
     {
         if(m/^(\S+) (\d+) (\S+)/ && $3>0.5)
@@ -68,15 +68,15 @@ sub cist
 
 
 #------------------------------------------------------------------------------
-# Projde v¹echny události typu ZPL v centrální statistice. Sestaví z nich
-# tabulku, která pro ka¾dou m-znaèku a danı poèet dìtí øekne, jaká je pravdì-
-# podobnost, ¾e uzel, kterı má tuto m-znaèku a byl mu ji¾ dán dotyènı poèet
-# dìtí, dostane je¹tì dal¹í dítì.
+# Projde vÅ¡echny udÃ¡losti typu ZPL v centrÃ¡lnÃ­ statistice. SestavÃ­ z nich
+# tabulku, kterÃ¡ pro kaÅ¾dou m-znaÄku a danÃ½ poÄet dÄ›tÃ­ Å™ekne, jakÃ¡ je pravdÄ›-
+# podobnost, Å¾e uzel, kterÃ½ mÃ¡ tuto m-znaÄku a byl mu jiÅ¾ dÃ¡n dotyÄnÃ½ poÄet
+# dÄ›tÃ­, dostane jeÅ¡tÄ› dalÅ¡Ã­ dÃ­tÄ›.
 #------------------------------------------------------------------------------
 sub pripravit_ffm
 {
-    my $stat = shift; # odkaz na hash s centrální statistikou
-    # Najít v centrální evidenci pøíslu¹né události.
+    my $stat = shift; # odkaz na hash s centrÃ¡lnÃ­ statistikou
+    # NajÃ­t v centrÃ¡lnÃ­ evidenci pÅ™Ã­sluÅ¡nÃ© udÃ¡losti.
     my %plodnost;
     while(my ($udalost, $pocet) = each(%{$stat}))
     {
@@ -88,19 +88,19 @@ sub pripravit_ffm
             $plodnost{$znacka}[$ndeti] += $pocet;
         }
     }
-    # Projít jednotlivé znaèky a sestavit si pro nì tabulky.
+    # ProjÃ­t jednotlivÃ© znaÄky a sestavit si pro nÄ› tabulky.
     while(my ($znacka, $plodnost) = each(%plodnost))
     {
-        # Zjistit celkovı poèet vıskytù znaèky.
+        # Zjistit celkovÃ½ poÄet vÃ½skytÅ¯ znaÄky.
         my $n_vyskytu;
         for(my $i = 0; $i<=$#{$plodnost}; $i++)
         {
             $n_vyskytu += $plodnost->[$i];
         }
-        # Vypoèítat pravdìpodobnost pro ka¾dé zvı¹ení poètu dìtí.
+        # VypoÄÃ­tat pravdÄ›podobnost pro kaÅ¾dÃ© zvÃ½Å¡enÃ­ poÄtu dÄ›tÃ­.
         for(my $i = 0; $i<=3; $i++)
         {
-            # Zjistit èetnosti vy¹¹ího ne¾ aktuálního poètu dìtí.
+            # Zjistit Äetnosti vyÅ¡Å¡Ã­ho neÅ¾ aktuÃ¡lnÃ­ho poÄtu dÄ›tÃ­.
             my $n_vyssi;
             for(my $j = $i+1; $j<=3; $j++)
             {
@@ -115,13 +115,13 @@ sub pripravit_ffm
 
 
 #------------------------------------------------------------------------------
-# Ohodnotí pravdìpodobnost, ¾e uzel, kterı má nyní n dìtí jich má mít více ne¾
-# n. Vısledek je èíslo z uzavøeného intervalu <0;1>.
+# OhodnotÃ­ pravdÄ›podobnost, Å¾e uzel, kterÃ½ mÃ¡ nynÃ­ n dÄ›tÃ­ jich mÃ¡ mÃ­t vÃ­ce neÅ¾
+# n. VÃ½sledek je ÄÃ­slo z uzavÅ™enÃ©ho intervalu <0;1>.
 #------------------------------------------------------------------------------
 sub ohodnotit
 {
     my $znacka = shift;
-    my $dosn = shift; # dosavadní poèet dìtí
+    my $dosn = shift; # dosavadnÃ­ poÄet dÄ›tÃ­
     my $konfig = \%main::konfig;
     if($konfig->{plodnost_model} eq "ffm")
     {
@@ -136,7 +136,7 @@ sub ohodnotit
     }
     else # tfm nebo qfm
     {
-        # Jestli¾e znaèka nedává jasnou pøednost urèitému poètu dìtí, vrátit 0.5.
+        # JestliÅ¾e znaÄka nedÃ¡vÃ¡ jasnou pÅ™ednost urÄitÃ©mu poÄtu dÄ›tÃ­, vrÃ¡tit 0.5.
         if($plodnost{$znacka}{p}<0.8)
         {
             if($konfig->{plodnost_model} eq "tfm")
@@ -148,14 +148,14 @@ sub ohodnotit
                 return 1;
             }
         }
-        # Jestli¾e u¾ byl dosa¾en nebo pøekroèen upøednostòovanı poèet, vrátit 0.
+        # JestliÅ¾e uÅ¾ byl dosaÅ¾en nebo pÅ™ekroÄen upÅ™ednostÅˆovanÃ½ poÄet, vrÃ¡tit 0.
         if($dosn>=$plodnost{$znacka}{nd})
         {
             return 0;
         }
-        # Jestli¾e upøednostòovanı poèet je¹tì nebyl dosa¾en, vrátit 1.
-        # (Nikdy není takto silnì (80%) upøednostòován poèet 3 nebo vy¹¹í, tak¾e
-        # nemusíme mít strach, ¾e nìjakému uzlu schválíme neomezenı poèet dìtí.)
+        # JestliÅ¾e upÅ™ednostÅˆovanÃ½ poÄet jeÅ¡tÄ› nebyl dosaÅ¾en, vrÃ¡tit 1.
+        # (Nikdy nenÃ­ takto silnÄ› (80%) upÅ™ednostÅˆovÃ¡n poÄet 3 nebo vyÅ¡Å¡Ã­, takÅ¾e
+        # nemusÃ­me mÃ­t strach, Å¾e nÄ›jakÃ©mu uzlu schvÃ¡lÃ­me neomezenÃ½ poÄet dÄ›tÃ­.)
         return 1;
     }
 }

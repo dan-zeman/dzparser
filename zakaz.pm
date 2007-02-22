@@ -1,17 +1,18 @@
 package zakaz;
+use utf8;
 
 
 
 #------------------------------------------------------------------------------
-# Pøidá závislost na èernou listinu (resp. pøidá dal¹í dùvod, proè ji tam
-# nechat, pokud u¾ tam je).
+# PÅ™idÃ¡ zÃ¡vislost na Äernou listinu (resp. pÅ™idÃ¡ dalÅ¡Ã­ dÅ¯vod, proÄ ji tam
+# nechat, pokud uÅ¾ tam je).
 #------------------------------------------------------------------------------
 sub pridat_zakaz
 {
-    my $zakaz = shift; # odkaz na skalár se seznamem zákazù
-    my $r = shift; # index øídícího uzlu hrany, která se má zakázat
-    my $z = shift; # index závislého uzlu hrany, která se má zakázat
-    my $duvod = shift; # dùvod zákazu (aby bylo mo¾né odvolat zákazy mající stejnou pøíèinu)
+    my $zakaz = shift; # odkaz na skalÃ¡r se seznamem zÃ¡kazÅ¯
+    my $r = shift; # index Å™Ã­dÃ­cÃ­ho uzlu hrany, kterÃ¡ se mÃ¡ zakÃ¡zat
+    my $z = shift; # index zÃ¡vislÃ©ho uzlu hrany, kterÃ¡ se mÃ¡ zakÃ¡zat
+    my $duvod = shift; # dÅ¯vod zÃ¡kazu (aby bylo moÅ¾nÃ© odvolat zÃ¡kazy majÃ­cÃ­ stejnou pÅ™Ã­Äinu)
     if($$zakaz !~ m/\($r-$z:$duvod\)/)
     {
         $$zakaz .= "($r-$z:$duvod)";
@@ -21,49 +22,49 @@ sub pridat_zakaz
 
 
 #------------------------------------------------------------------------------
-# Odebere jeden dùvod zákazu dané závislosti z èerné listiny. Pokud toto byl
-# poslední dùvod, závislost se stane povolenou a je opìt schopna soutì¾e.
+# Odebere jeden dÅ¯vod zÃ¡kazu danÃ© zÃ¡vislosti z ÄernÃ© listiny. Pokud toto byl
+# poslednÃ­ dÅ¯vod, zÃ¡vislost se stane povolenou a je opÄ›t schopna soutÄ›Å¾e.
 #------------------------------------------------------------------------------
 sub zrusit_zakaz
 {
-    my $zakaz = shift; # odkaz na skalár se seznamem zákazù
-    my $r = shift; # index øídícího uzlu hrany, která se má zakázat
-    my $z = shift; # index závislého uzlu hrany, která se má zakázat
-    my $duvod = shift; # dùvod zákazu (aby bylo mo¾né odvolat zákazy mající stejnou pøíèinu)
+    my $zakaz = shift; # odkaz na skalÃ¡r se seznamem zÃ¡kazÅ¯
+    my $r = shift; # index Å™Ã­dÃ­cÃ­ho uzlu hrany, kterÃ¡ se mÃ¡ zakÃ¡zat
+    my $z = shift; # index zÃ¡vislÃ©ho uzlu hrany, kterÃ¡ se mÃ¡ zakÃ¡zat
+    my $duvod = shift; # dÅ¯vod zÃ¡kazu (aby bylo moÅ¾nÃ© odvolat zÃ¡kazy majÃ­cÃ­ stejnou pÅ™Ã­Äinu)
     $$zakaz =~ s/\($r-$z:$duvod\)//g;
 }
 
 
 
 #------------------------------------------------------------------------------
-# Zjistí, zda je závislost na èerné listinì (doèasnì zakázaná).
+# ZjistÃ­, zda je zÃ¡vislost na ÄernÃ© listinÄ› (doÄasnÄ› zakÃ¡zanÃ¡).
 #------------------------------------------------------------------------------
 sub je_zakazana
 {
-    my $zakaz = shift; # skalár se seznamem zákazù
-    my $r = shift; # index øídícího uzlu hrany, která se má zakázat
-    my $z = shift; # index závislého uzlu hrany, která se má zakázat
+    my $zakaz = shift; # skalÃ¡r se seznamem zÃ¡kazÅ¯
+    my $r = shift; # index Å™Ã­dÃ­cÃ­ho uzlu hrany, kterÃ¡ se mÃ¡ zakÃ¡zat
+    my $z = shift; # index zÃ¡vislÃ©ho uzlu hrany, kterÃ¡ se mÃ¡ zakÃ¡zat
     return $zakaz =~ m/\($r-$z:/;
 }
 
 
 
 #------------------------------------------------------------------------------
-# Inicializuje seznam zákazù na zaèátku zpracování vìty.
-# Vrátí øetìzec se zakódovanım seznamem zákazù.
-# (Jazykovì závislá funkce.)
+# Inicializuje seznam zÃ¡kazÅ¯ na zaÄÃ¡tku zpracovÃ¡nÃ­ vÄ›ty.
+# VrÃ¡tÃ­ Å™etÄ›zec se zakÃ³dovanÃ½m seznamem zÃ¡kazÅ¯.
+# (JazykovÄ› zÃ¡vislÃ¡ funkce.)
 #------------------------------------------------------------------------------
 sub formulovat_zakazy
 {
+    my $anot = shift; # odkaz na pole hashÅ¯
     my $stav = shift; # odkaz na hash
-    my $prislusnost_k_useku = $stav->{prislusnost_k_useku}; # odkaz na pole s pøíslu¹ností slov k mezièárkovım úsekùm
-    my $hotovost_useku = $stav->{hotovost_useku}; # odkaz na pole s údaji o úplnosti analızy mezi dvìma èárkami
-    my $zakaz; # vıstupní øetìzec
-    # Zatím globální promìnné.
+    my $prislusnost_k_useku = $stav->{prislusnost_k_useku}; # odkaz na pole s pÅ™Ã­sluÅ¡nostÃ­ slov k meziÄÃ¡rkovÃ½m ÃºsekÅ¯m
+    my $hotovost_useku = $stav->{hotovost_useku}; # odkaz na pole s Ãºdaji o Ãºplnosti analÃ½zy mezi dvÄ›ma ÄÃ¡rkami
+    my $zakaz; # vÃ½stupnÃ­ Å™etÄ›zec
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
-    ### Závislosti na èárkách jsou zakázány ###
-    # Ve skuteènosti toti¾ závislost na èárce v¾dy znamená Coord nebo Apos.
+    ### ZÃ¡vislosti na ÄÃ¡rkÃ¡ch jsou zakÃ¡zÃ¡ny ###
+    # Ve skuteÄnosti totiÅ¾ zÃ¡vislost na ÄÃ¡rce vÅ¾dy znamenÃ¡ Coord nebo Apos.
     if($konfig->{carka_je_list})
     {
         for(my $i = 1; $i<=$#{$anot}; $i++)
@@ -77,10 +78,10 @@ sub formulovat_zakazy
             }
         }
     }
-    ### Úseky mezi èárkami ###
+    ### Ãšseky mezi ÄÃ¡rkami ###
     if($konfig->{mezicarkove_useky})
     {
-        # Zapamatovat si rozdìlení vìty interpunkcí na úseky.
+        # Zapamatovat si rozdÄ›lenÃ­ vÄ›ty interpunkcÃ­ na Ãºseky.
         splice(@{$prislusnost_k_useku});
         splice(@{$hotovost_useku});
         my $i_usek = -1;
@@ -107,8 +108,8 @@ sub formulovat_zakazy
             }
             $prislusnost_k_useku->[$i] = $i_usek;
         }
-        # Zakázat závislosti vedoucí pøes èárku. Povoleny budou a¾ po spojení v¹ech
-        # mezièárkovıch úsekù.
+        # ZakÃ¡zat zÃ¡vislosti vedoucÃ­ pÅ™es ÄÃ¡rku. Povoleny budou aÅ¾ po spojenÃ­ vÅ¡ech
+        # meziÄÃ¡rkovÃ½ch ÃºsekÅ¯.
         if($je_co_zakazovat)
         {
             for(my $i = 0; $i<=$#{$anot}; $i++)
@@ -126,8 +127,8 @@ sub formulovat_zakazy
     }
     if($konfig->{predlozky})
     {
-        ### Pøeskakování bezdìtnıch pøedlo¾ek ###
-        # Zakázat závislosti, které pøeskakují pøedlo¾ku, je¾ dosud nemá dítì.
+        ### PÅ™eskakovÃ¡nÃ­ bezdÄ›tnÃ½ch pÅ™edloÅ¾ek ###
+        # ZakÃ¡zat zÃ¡vislosti, kterÃ© pÅ™eskakujÃ­ pÅ™edloÅ¾ku, jeÅ¾ dosud nemÃ¡ dÃ­tÄ›.
         for(my $i = 0; $i<=$#{$anot}; $i++)
         {
             if($stav->{uznck}[$i] =~ m/^R/)
@@ -149,25 +150,25 @@ sub formulovat_zakazy
 
 
 #------------------------------------------------------------------------------
-# Zvá¾í uvolnìní nìkterıch zákazù na základì naposledy pøidané závislosti.
-# (Jazykovì závislá funkce.)
+# ZvÃ¡Å¾Ã­ uvolnÄ›nÃ­ nÄ›kterÃ½ch zÃ¡kazÅ¯ na zÃ¡kladÄ› naposledy pÅ™idanÃ© zÃ¡vislosti.
+# (JazykovÄ› zÃ¡vislÃ¡ funkce.)
 #------------------------------------------------------------------------------
 sub prehodnotit_zakazy
 {
+    my $anot = shift; # odkaz na pole hashÅ¯
     my $stav = shift; # odkaz na hash
-    my $r = shift; # index øídícího uzlu naposledy pøidané závislosti
-    my $z = shift; # index závislého uzlu naposledy pøidané závislosti
-    my $prislusnost_k_useku = $stav->{prislusnost_k_useku}; # odkaz na pole s pøíslu¹ností slov k mezièárkovım úsekùm
-    my $hotovost_useku = $stav->{hotovost_useku}; # odkaz na pole s údaji o úplnosti analızy mezi dvìma èárkami
-    my $n_zbyva_zavesit = $stav->{zbyva}; # poèet uzlù, kteøí dosud nemají rodièe
-    # Zatím globální promìnné.
+    my $r = shift; # index Å™Ã­dÃ­cÃ­ho uzlu naposledy pÅ™idanÃ© zÃ¡vislosti
+    my $z = shift; # index zÃ¡vislÃ©ho uzlu naposledy pÅ™idanÃ© zÃ¡vislosti
+    my $prislusnost_k_useku = $stav->{prislusnost_k_useku}; # odkaz na pole s pÅ™Ã­sluÅ¡nostÃ­ slov k meziÄÃ¡rkovÃ½m ÃºsekÅ¯m
+    my $hotovost_useku = $stav->{hotovost_useku}; # odkaz na pole s Ãºdaji o Ãºplnosti analÃ½zy mezi dvÄ›ma ÄÃ¡rkami
+    my $n_zbyva_zavesit = $stav->{zbyva}; # poÄet uzlÅ¯, kteÅ™Ã­ dosud nemajÃ­ rodiÄe
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
-    ### Úseky mezi èárkami ###
-    # Zvı¹it hotovost úseku, ke kterému nále¾í naposledy zavì¹enı uzel.
+    ### Ãšseky mezi ÄÃ¡rkami ###
+    # ZvÃ½Å¡it hotovost Ãºseku, ke kterÃ©mu nÃ¡leÅ¾Ã­ naposledy zavÄ›Å¡enÃ½ uzel.
     my $hotovost = --$hotovost_useku->[$prislusnost_k_useku->[$z]];
-    # Jestli¾e u¾ jsou hotové mezièárkové úseky, povolit i závislosti vedoucí
-    # mezi úseky.
+    # JestliÅ¾e uÅ¾ jsou hotovÃ© meziÄÃ¡rkovÃ© Ãºseky, povolit i zÃ¡vislosti vedoucÃ­
+    # mezi Ãºseky.
     if($hotovost<=1 && $stav->{zakaz} =~ m/:carky/)
     {
         for(my $i = 0; $i <= $#{$hotovost_useku}; $i++)
@@ -180,19 +181,19 @@ sub prehodnotit_zakazy
         zrusit_zakaz(\$stav->{zakaz}, "\\d+", "\\d+", "carky");
         nektere_useky_jeste_nejsou_hotove:
     }
-    ### Pøeskakování bezdìtnıch pøedlo¾ek ###
+    ### PÅ™eskakovÃ¡nÃ­ bezdÄ›tnÃ½ch pÅ™edloÅ¾ek ###
     if($konfig->{predlozky})
     {
-        ### Pøeskakování bezdìtnıch pøedlo¾ek ###
-        # Zru¹it zákaz závislostí, které pøeskakují pøedlo¾ku, je¾ u¾ má dítì.
+        ### PÅ™eskakovÃ¡nÃ­ bezdÄ›tnÃ½ch pÅ™edloÅ¾ek ###
+        # ZruÅ¡it zÃ¡kaz zÃ¡vislostÃ­, kterÃ© pÅ™eskakujÃ­ pÅ™edloÅ¾ku, jeÅ¾ uÅ¾ mÃ¡ dÃ­tÄ›.
         if($stav->{uznck}[$r] =~ m/^R/)
         {
             zrusit_zakaz(\$stav->{zakaz}, "\\d+", "\\d+", "predlozka $r");
         }
-        # Teoreticky se mù¾e stát, ¾e na ka¾dém konci vìty zùstane jedna
-        # bezdìtná pøedlo¾ka a zbytek zùstane mezi nimi uvìznìn a nebude se
-        # moci pøipojit ani na jednu stranu. Proto ve chvíli, kdy zbıvá
-        # zavìsit poslední uzel, uvolnit v¹echny zákazy.
+        # Teoreticky se mÅ¯Å¾e stÃ¡t, Å¾e na kaÅ¾dÃ©m konci vÄ›ty zÅ¯stane jedna
+        # bezdÄ›tnÃ¡ pÅ™edloÅ¾ka a zbytek zÅ¯stane mezi nimi uvÄ›znÄ›n a nebude se
+        # moci pÅ™ipojit ani na jednu stranu. Proto ve chvÃ­li, kdy zbÃ½vÃ¡
+        # zavÄ›sit poslednÃ­ uzel, uvolnit vÅ¡echny zÃ¡kazy.
         if($n_zbyva_zavesit==1)
         {
             zrusit_zakaz(\$stav->{zakaz}, "\\d+", "\\d+", "predlozka \\d+");

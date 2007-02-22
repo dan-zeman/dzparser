@@ -1,33 +1,34 @@
 package genstav;
+use utf8;
 use povol;
 use zakaz;
 use model;
 use lokon;
 use stav;
-use vystupy; # kvùli chybovım a ladícím vıpisùm
+use vystupy; # kvÅ¯li chybovÃ½m a ladÃ­cÃ­m vÃ½pisÅ¯m
 
 
 
 #------------------------------------------------------------------------------
-# Vezme aktuální stav (les), projde závislosti, které je mo¾né pøidat, zjistí
-# jejich pravdìpodobnosti a nageneruje pøíslu¹né pokraèovací stavy. Vrací hash
-# s prvky r (index øídícího), z (index závislého), c (èetnost) a p (pravdìpo-
+# Vezme aktuÃ¡lnÃ­ stav (les), projde zÃ¡vislosti, kterÃ© je moÅ¾nÃ© pÅ™idat, zjistÃ­
+# jejich pravdÄ›podobnosti a nageneruje pÅ™Ã­sluÅ¡nÃ© pokraÄovacÃ­ stavy. VracÃ­ hash
+# s prvky r (index Å™Ã­dÃ­cÃ­ho), z (index zÃ¡vislÃ©ho), c (Äetnost) a p (pravdÄ›po-
 # dobnost).
 #------------------------------------------------------------------------------
 sub generovat_stavy
 {
-    my $stav = shift; # odkaz na hash s dosavadním stavem analızy
-    my $generovat_vse = shift; # generovat v¹echny pokraèovací stavy, nebo jen vítìznı?
-    # Zatím globální promìnné.
+    my $stav = shift; # odkaz na hash s dosavadnÃ­m stavem analÃ½zy
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $generovat_vse = shift; # generovat vÅ¡echny pokraÄovacÃ­ stavy, nebo jen vÃ­tÄ›znÃ½?
+    # ZatÃ­m globÃ¡lnÃ­ promÄ›nnÃ©.
     my $konfig = \%main::konfig;
-    my $anot = \@main::anot;
-    # Zjistit seznam závislostí, jejich¾ pøidání do stromu je momentálnì povolené.
-    my @povol = povol::zjistit_povol($stav->{rodic});
-    # Ulo¾it seznam povolenıch hran do stavu analızy, jednak aby se o nìm dozvìdìly volané funkce
-    # (tøeba pøi navrhování koordinace je potøeba vìdìt, zda je povolena i druhá hrana), jednak
-    # kvùli ladìní, aby bylo mo¾né zpìtnì zjistit, z jakıch hran jsme vybírali.
+    # Zjistit seznam zÃ¡vislostÃ­, jejichÅ¾ pÅ™idÃ¡nÃ­ do stromu je momentÃ¡lnÄ› povolenÃ©.
+    my @povol = povol::zjistit_povol($anot, $stav->{rodic});
+    # UloÅ¾it seznam povolenÃ½ch hran do stavu analÃ½zy, jednak aby se o nÄ›m dozvÄ›dÄ›ly volanÃ© funkce
+    # (tÅ™eba pÅ™i navrhovÃ¡nÃ­ koordinace je potÅ™eba vÄ›dÄ›t, zda je povolena i druhÃ¡ hrana), jednak
+    # kvÅ¯li ladÄ›nÃ­, aby bylo moÅ¾nÃ© zpÄ›tnÄ› zjistit, z jakÃ½ch hran jsme vybÃ­rali.
     $stav->{povol} = \@povol;
-    # Nejdøíve spojit koøen s koncovou interpunkcí. Zde nepustíme statistiku vùbec ke slovu.
+    # NejdÅ™Ã­ve spojit koÅ™en s koncovou interpunkcÃ­. Zde nepustÃ­me statistiku vÅ¯bec ke slovu.
     my $nove_stavy;
     if($konfig->{koncint})
     {
@@ -36,28 +37,28 @@ sub generovat_stavy
             return $nove_stavy;
         }
     }
-    # Zjistit, zda jsme v minulém kole nepøipojovali první èást koordinace.
-    # To bychom v tomto kole byli povinni pøipojit zbytek.
-    if($nove_stavy = generovat_pro_druhou_cast_koordinace($stav, $generovat_vse))
+    # Zjistit, zda jsme v minulÃ©m kole nepÅ™ipojovali prvnÃ­ ÄÃ¡st koordinace.
+    # To bychom v tomto kole byli povinni pÅ™ipojit zbytek.
+    if($nove_stavy = generovat_pro_druhou_cast_koordinace($stav, $anot, $generovat_vse))
     {
         return $nove_stavy;
     }
-    # Pokud je mezi povolenımi závislostmi nejlépe hodnocená valenèní
-    # závislost, vybere se ona (i kdyby nìkteré nevalenèní byly lep¹í).
+    # Pokud je mezi povolenÃ½mi zÃ¡vislostmi nejlÃ©pe hodnocenÃ¡ valenÄnÃ­
+    # zÃ¡vislost, vybere se ona (i kdyby nÄ›kterÃ© nevalenÄnÃ­ byly lepÅ¡Ã­).
     if($konfig->{valence})
     {
-        if($nove_stavy = generovat_pro_valencni_zavislost($stav, $generovat_vse))
+        if($nove_stavy = generovat_pro_valencni_zavislost($stav, $anot, $generovat_vse))
         {
             return $nove_stavy;
         }
     }
-    # Projít povolené a nezakázané závislosti, vygenerovat pro nì stavy a vrátit jejich seznam.
-    # Zatím se pomocí parametru %max získává zvlá¹» i popis vítìzného kandidáta.
-    # Èasem to pøestane bıt potøeba, proto¾e první stav v seznamu bude odpovídat tomuto kandidátovi.
+    # ProjÃ­t povolenÃ© a nezakÃ¡zanÃ© zÃ¡vislosti, vygenerovat pro nÄ› stavy a vrÃ¡tit jejich seznam.
+    # ZatÃ­m se pomocÃ­ parametru %max zÃ­skÃ¡vÃ¡ zvlÃ¡Å¡Å¥ i popis vÃ­tÄ›znÃ©ho kandidÃ¡ta.
+    # ÄŒasem to pÅ™estane bÃ½t potÅ™eba, protoÅ¾e prvnÃ­ stav v seznamu bude odpovÃ­dat tomuto kandidÃ¡tovi.
     my %max;
-    $nove_stavy = generovat_zaklad($stav, \%max, $generovat_vse);
-    # Jestli¾e máme generovat i zálo¾ní stavy, zjistit k nim také váhy, podle kterıch
-    # bude mo¾né mezi nimi vybírat.
+    $nove_stavy = generovat_zaklad($stav, $anot, \%max, $generovat_vse);
+    # JestliÅ¾e mÃ¡me generovat i zÃ¡loÅ¾nÃ­ stavy, zjistit k nim takÃ© vÃ¡hy, podle kterÃ½ch
+    # bude moÅ¾nÃ© mezi nimi vybÃ­rat.
     if($generovat_vse)
     {
         for(my $i = 0; $i<=$#{$nove_stavy}; $i++)
@@ -77,39 +78,39 @@ sub generovat_stavy
                 $nove_stavy->[$i]{vaha} = 0;
             }
         }
-        # Seøadit nové stavy podle váhy. Dìláme to je¹tì pøed øe¹ením lokálních konfliktù.
-        # Pokud nìkdo vyhraje na základì nich, bude vyta¾en mimo poøadí.
+        # SeÅ™adit novÃ© stavy podle vÃ¡hy. DÄ›lÃ¡me to jeÅ¡tÄ› pÅ™ed Å™eÅ¡enÃ­m lokÃ¡lnÃ­ch konfliktÅ¯.
+        # Pokud nÄ›kdo vyhraje na zÃ¡kladÄ› nich, bude vytaÅ¾en mimo poÅ™adÃ­.
         @{$nove_stavy} = sort{$b->{vaha}<=>$a->{vaha}}(@{$nove_stavy});
     }
     if($konfig->{lokon})
     {
-        # Je vybrán vítìznı kandidát na základì své relativní èetnosti bez
-        # ohledu na kontext. Teï zohlednit kontext a pokusit se vyøe¹it lokální
+        # Je vybrÃ¡n vÃ­tÄ›znÃ½ kandidÃ¡t na zÃ¡kladÄ› svÃ© relativnÃ­ Äetnosti bez
+        # ohledu na kontext. TeÄ zohlednit kontext a pokusit se vyÅ™eÅ¡it lokÃ¡lnÃ­
         # konflikty.
-        lokalni_konflikty($stav, $nove_stavy, $generovat_vse);
+        lokalni_konflikty($anot, $stav, $nove_stavy, $generovat_vse);
     }
-    # Vrátit celé pole.
+    # VrÃ¡tit celÃ© pole.
     return $nove_stavy;
 }
 
 
 
 #------------------------------------------------------------------------------
-# Vezme aktuální stav, zkontroluje, zda u¾ byla zavì¹ena koncová interpunkce,
-# a pokud ne, zavìsí ji a vrátí odkaz na pole, jeho¾ jedinım prvkem je vıslednı
+# Vezme aktuÃ¡lnÃ­ stav, zkontroluje, zda uÅ¾ byla zavÄ›Å¡ena koncovÃ¡ interpunkce,
+# a pokud ne, zavÄ›sÃ­ ji a vrÃ¡tÃ­ odkaz na pole, jehoÅ¾ jedinÃ½m prvkem je vÃ½slednÃ½
 # stav.
 #------------------------------------------------------------------------------
 sub generovat_pro_koncovou_interpunkci
 {
     my $stav = shift; # odkaz na hash
-    my $anot = shift; # odkaz na pole hashù
-    my $generovat_vse = shift; # generovat v¹echny pokraèovací stavy, nebo jen vítìznı?
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $generovat_vse = shift; # generovat vÅ¡echny pokraÄovacÃ­ stavy, nebo jen vÃ­tÄ›znÃ½?
     if($stav->{rodic}[$#{$anot}]==-1 && $anot->[$#{$anot}]{uznacka}=~m/^Z/)
     {
         my $r = 0;
         my $z = $#{$anot};
         my $stav1 = $generovat_vse ? stav::zduplikovat($stav) : $stav;
-        stav::pridat_zavislost($stav1, model::ohodnotit_hranu($r, $z, $stav1));
+        stav::pridat_zavislost($anot, $stav1, model::ohodnotit_hranu($anot, $r, $z, $stav1));
         my @vysledek;
         push(@vysledek, $stav1);
         return \@vysledek;
@@ -123,28 +124,29 @@ sub generovat_pro_koncovou_interpunkci
 
 
 #------------------------------------------------------------------------------
-# Vezme aktuální stav, zkontroluje, zda se má tvoøit druhá èást koordinace,
-# a pokud ano, zavìsí ji a vrátí odkaz na pole, jeho¾ jedinım prvkem je
-# vıslednı stav.
+# Vezme aktuÃ¡lnÃ­ stav, zkontroluje, zda se mÃ¡ tvoÅ™it druhÃ¡ ÄÃ¡st koordinace,
+# a pokud ano, zavÄ›sÃ­ ji a vrÃ¡tÃ­ odkaz na pole, jehoÅ¾ jedinÃ½m prvkem je
+# vÃ½slednÃ½ stav.
 #------------------------------------------------------------------------------
 sub generovat_pro_druhou_cast_koordinace
 {
     my $stav = shift; # odkaz na hash
-    my $generovat_vse = shift; # generovat v¹echny pokraèovací stavy, nebo jen vítìznı?
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $generovat_vse = shift; # generovat vÅ¡echny pokraÄovacÃ­ stavy, nebo jen vÃ­tÄ›znÃ½?
     if($stav->{priste}=~m/^(\d+)-(\d+)$/)
     {
         my $r = $1;
         my $z = $2;
-        # Pro v¹echny pøípady ovìøit, ¾e tato závislost je povolená.
-        if(!povol::je_povoleno($r, $z, $stav->{povol}))
+        # Pro vÅ¡echny pÅ™Ã­pady ovÄ›Å™it, Å¾e tato zÃ¡vislost je povolenÃ¡.
+        if(!povol::je_povoleno($anot, $r, $z, $stav->{povol}))
         {
-            vypsat("prubeh", "Po¾adováno povinné pøidání závislosti $r-$z.\n");
-            vypsat("prubeh", "Povoleny jsou závislosti ".join(",", @{$stav->{povol}})."\n");
-            die("CHYBA! Druhá èást koordinace pøestala bıt po pøidání první èásti povolena.\n");
+            vypsat("prubeh", "PoÅ¾adovÃ¡no povinnÃ© pÅ™idÃ¡nÃ­ zÃ¡vislosti $r-$z.\n");
+            vypsat("prubeh", "Povoleny jsou zÃ¡vislosti ".join(",", @{$stav->{povol}})."\n");
+            die("CHYBA! DruhÃ¡ ÄÃ¡st koordinace pÅ™estala bÃ½t po pÅ™idÃ¡nÃ­ prvnÃ­ ÄÃ¡sti povolena.\n");
         }
         my $stav1 = $generovat_vse ? stav::zduplikovat($stav) : $stav;
         $stav1->{priste} = "";
-        stav::pridat_zavislost($stav1, {"r" => $r, "z" => $z, "c" => 0, "p" => "1"});
+        stav::pridat_zavislost($anot, $stav1, {"r" => $r, "z" => $z, "c" => 0, "p" => "1"});
         my @vysledek;
         push(@vysledek, $stav1);
         return \@vysledek;
@@ -158,28 +160,29 @@ sub generovat_pro_druhou_cast_koordinace
 
 
 #------------------------------------------------------------------------------
-# Vezme aktuální stav, zkontroluje, zda lze pøidat valenèní závislost, a pokud
-# ano, zavìsí ji a vrátí odkaz na pole, jeho¾ jedinım prvkem je vıslednı stav.
+# Vezme aktuÃ¡lnÃ­ stav, zkontroluje, zda lze pÅ™idat valenÄnÃ­ zÃ¡vislost, a pokud
+# ano, zavÄ›sÃ­ ji a vrÃ¡tÃ­ odkaz na pole, jehoÅ¾ jedinÃ½m prvkem je vÃ½slednÃ½ stav.
 #------------------------------------------------------------------------------
 sub generovat_pro_valencni_zavislost
 {
-    my $generovat_vse = shift; # generovat v¹echny pokraèovací stavy, nebo jen vítìznı?
     my $stav = shift; # odkaz na hash
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $generovat_vse = shift; # generovat vÅ¡echny pokraÄovacÃ­ stavy, nebo jen vÃ­tÄ›znÃ½?
     if($#{$stav->{valencni}}>=0)
     {
         $stav->{valencni}[0] =~ m/^(\d+)-(\d+)/;
         my %max;
         $max{r} = $1;
         $max{z} = $2;
-        # Zjistit, zda je nejlep¹í valenèní závislost mezi povolenımi.
+        # Zjistit, zda je nejlepÅ¡Ã­ valenÄnÃ­ zÃ¡vislost mezi povolenÃ½mi.
         for(my $i = 0; $i<=$#{$stav->{povol}}; $i++)
         {
             if($stav->{povol}[$i] eq "$max{r}-$max{z}" && !zakaz::je_zakazana($stav->{zakaz}, $max{r}, $max{z}))
             {
                 my $stav1 = $generovat_vse ? stav::zduplikovat($stav) : $stav;
                 shift(@{$stav1->{valencni}});
-                ($max{p}, $max{c}) = model::zjistit_pravdepodobnost($max{r}, $max{z}, $stav1);
-                stav::pridat_zavislost($stav1, \%max);
+                ($max{p}, $max{c}) = model::zjistit_pravdepodobnost($anot, $max{r}, $max{z}, $stav1);
+                stav::pridat_zavislost($anot, $stav1, \%max);
                 my @vysledek;
                 push(@vysledek, $stav1);
                 return \@vysledek;
@@ -192,69 +195,70 @@ sub generovat_pro_valencni_zavislost
 
 
 #------------------------------------------------------------------------------
-# Projde povolené a nezakázané závislosti, pro ka¾dou vygeneruje stav analızy,
-# jako kdyby tato závislost byla pøidána do stromu, a vybere nejlep¹í z tìchto
-# stavù. Pokud nejsou k dispozici povolené a nezakázané hrany, zru¹í v¹echny
-# zákazy. Vrátí seznam pokraèovacích stavù, na prvním místì vítìze.
+# Projde povolenÃ© a nezakÃ¡zanÃ© zÃ¡vislosti, pro kaÅ¾dou vygeneruje stav analÃ½zy,
+# jako kdyby tato zÃ¡vislost byla pÅ™idÃ¡na do stromu, a vybere nejlepÅ¡Ã­ z tÄ›chto
+# stavÅ¯. Pokud nejsou k dispozici povolenÃ© a nezakÃ¡zanÃ© hrany, zruÅ¡Ã­ vÅ¡echny
+# zÃ¡kazy. VrÃ¡tÃ­ seznam pokraÄovacÃ­ch stavÅ¯, na prvnÃ­m mÃ­stÄ› vÃ­tÄ›ze.
 #------------------------------------------------------------------------------
 sub generovat_zaklad
 {
     my $stav = shift; # odkaz na hash
-    my $max = shift; # odkaz, kam opsat vítìzného kandidáta
-    my $generovat_vse = shift; # generovat v¹echny pokraèovací stavy, nebo jen vítìznı?
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $max = shift; # odkaz, kam opsat vÃ­tÄ›znÃ©ho kandidÃ¡ta
+    my $generovat_vse = shift; # generovat vÅ¡echny pokraÄovacÃ­ stavy, nebo jen vÃ­tÄ›znÃ½?
     my @nove_stavy;
     my $index_viteze;
-    # Generování pøípadnì opakovat dvakrát. Pokud se napoprvé nic nenajde, zru¹it v¹echny zákazy a zkusit to znova.
+    # GenerovÃ¡nÃ­ pÅ™Ã­padnÄ› opakovat dvakrÃ¡t. Pokud se napoprvÃ© nic nenajde, zruÅ¡it vÅ¡echny zÃ¡kazy a zkusit to znova.
     for(; $max->{p} eq "";)
     {
-        die("CHYBA! Není povolena ani jedna závislost a hrozí nekoneèná smyèka.\n") unless($#{$stav->{povol}}+1);
+        die("CHYBA! NenÃ­ povolena ani jedna zÃ¡vislost a hrozÃ­ nekoneÄnÃ¡ smyÄka.\n") unless($#{$stav->{povol}}+1);
         for(my $i = 0; $i<=$#{$stav->{povol}}; $i++)
         {
-            # Pøeèíst závislost - kandidáta.
+            # PÅ™eÄÃ­st zÃ¡vislost - kandidÃ¡ta.
             $stav->{povol}[$i] =~ m/(\d+)-(\d+)/;
             my $r = $1;
             my $z = $2;
-            # Pokud je závislost na èerné listinì, vyøadit ji ze soutì¾e.
-            # Èerná listina $zakaz má vy¹¹í prioritu ne¾ $povol.
+            # Pokud je zÃ¡vislost na ÄernÃ© listinÄ›, vyÅ™adit ji ze soutÄ›Å¾e.
+            # ÄŒernÃ¡ listina $zakaz mÃ¡ vyÅ¡Å¡Ã­ prioritu neÅ¾ $povol.
             if(zakaz::je_zakazana($stav->{zakaz}, $r, $z))
             {
                 next;
             }
-            # Pøidat do seznamu pokraèovací stav pro tuto závislost.
-            my $kandidat = model::ohodnotit_hranu($r, $z, $stav);
+            # PÅ™idat do seznamu pokraÄovacÃ­ stav pro tuto zÃ¡vislost.
+            my $kandidat = model::ohodnotit_hranu($anot, $r, $z, $stav);
             if($generovat_vse)
             {
                 my $stav1 = stav::zduplikovat($stav);
-                stav::pridat_zavislost($stav1, $kandidat);
+                stav::pridat_zavislost($anot, $stav1, $kandidat);
                 push(@nove_stavy, $stav1);
             }
-            # Zjistit, zda je tato pravdìpodobnost vy¹¹í ne¾ pravdìpodobnosti
-            # závislostí testovanıch v pøedchozích prùchodech.
+            # Zjistit, zda je tato pravdÄ›podobnost vyÅ¡Å¡Ã­ neÅ¾ pravdÄ›podobnosti
+            # zÃ¡vislostÃ­ testovanÃ½ch v pÅ™edchozÃ­ch prÅ¯chodech.
             if($max->{p} eq "" || $kandidat->{p}>$max->{p}) # i==0 nefunguje, kvuli $zakaz
             {
                 %{$max} = %{$kandidat};
-                # U pole novıch stavù si zatím pamatovat jen index nejlep¹ího pokraèovacího stavu.
+                # U pole novÃ½ch stavÅ¯ si zatÃ­m pamatovat jen index nejlepÅ¡Ã­ho pokraÄovacÃ­ho stavu.
                 $index_viteze = $#nove_stavy;
             }
         }
-        # Pokud se mezi povolenımi nena¹la jediná nezakázaná závislost, nouzová
-        # situace: zru¹it v¹echny zákazy pro tuto vìtu.
+        # Pokud se mezi povolenÃ½mi nenaÅ¡la jedinÃ¡ nezakÃ¡zanÃ¡ zÃ¡vislost, nouzovÃ¡
+        # situace: zruÅ¡it vÅ¡echny zÃ¡kazy pro tuto vÄ›tu.
         if($max->{p} eq "")
         {
             $stav->{zakaz} = "";
         }
     }
-    # Pokud se nemìly generovat v¹echny pokraèovací stavy, je teï èas vygenerovat
-    # ten jeden vítìznı.
+    # Pokud se nemÄ›ly generovat vÅ¡echny pokraÄovacÃ­ stavy, je teÄ Äas vygenerovat
+    # ten jeden vÃ­tÄ›znÃ½.
     unless($generovat_vse)
     {
         my $stav1 = stav::zduplikovat($stav);
-        stav::pridat_zavislost($stav1, $max);
+        stav::pridat_zavislost($anot, $stav1, $max);
         $nove_stavy[0] = $stav1;
     }
     else
     {
-        # Pøed návratem zaøídit, aby vítìznı kandidát byl v seznamu novıch stavù na prvním místì.
+        # PÅ™ed nÃ¡vratem zaÅ™Ã­dit, aby vÃ­tÄ›znÃ½ kandidÃ¡t byl v seznamu novÃ½ch stavÅ¯ na prvnÃ­m mÃ­stÄ›.
         my $vitezny_stav = $nove_stavy[$index_viteze];
         splice(@nove_stavy, $index_viteze, 1);
         unshift(@nove_stavy, $vitezny_stav);
@@ -265,14 +269,15 @@ sub generovat_zaklad
 
 
 #------------------------------------------------------------------------------
-# Pøehodnotí názor na vítìze na základì modelu lokálních konfliktù. Mno¾inu
-# novıch stavù nemìní, mù¾e v¹ak zmìnit poøadí novıch stavù.
+# PÅ™ehodnotÃ­ nÃ¡zor na vÃ­tÄ›ze na zÃ¡kladÄ› modelu lokÃ¡lnÃ­ch konfliktÅ¯. MnoÅ¾inu
+# novÃ½ch stavÅ¯ nemÄ›nÃ­, mÅ¯Å¾e vÅ¡ak zmÄ›nit poÅ™adÃ­ novÃ½ch stavÅ¯.
 #------------------------------------------------------------------------------
 sub lokalni_konflikty
 {
-    my $stav = shift; # odkaz na hash s dosavadním stavem (novı kandidát je¹tì nebyl pøidán)
-    my $nove_stavy = shift; # odkaz na pole hashù s novımi stavy; první z nich je vítìz ze základního kola
-    my $generovat_vse = shift; # generovat v¹echny pokraèovací stavy, nebo jen vítìznı?
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $stav = shift; # odkaz na hash s dosavadnÃ­m stavem (novÃ½ kandidÃ¡t jeÅ¡tÄ› nebyl pÅ™idÃ¡n)
+    my $nove_stavy = shift; # odkaz na pole hashÅ¯ s novÃ½mi stavy; prvnÃ­ z nich je vÃ­tÄ›z ze zÃ¡kladnÃ­ho kola
+    my $generovat_vse = shift; # generovat vÅ¡echny pokraÄovacÃ­ stavy, nebo jen vÃ­tÄ›znÃ½?
     my $poslz = $nove_stavy->[0]{poslz};
     my %max0 =
     (
@@ -282,23 +287,23 @@ sub lokalni_konflikty
         "p" => $nove_stavy->[0]{maxp}[$poslz],
         "priste" => $nove_stavy->[0]{priste}
     );
-    my %max1 = lokon::lokalni_konflikty(\%max0, $stav);
-    # Vrstva kompatibility mezi starou implementací lokálních konfliktù a novou
-    # implementací generování stavù. Najít mezi novımi stavy ten, kterı reprezentuje
-    # vítìze lokálních konfliktù. Lep¹í by bylo, kdyby modul lokon pracoval
-    # rovnou s polem novıch stavù.
+    my %max1 = lokon::lokalni_konflikty($anot, \%max0, $stav);
+    # Vrstva kompatibility mezi starou implementacÃ­ lokÃ¡lnÃ­ch konfliktÅ¯ a novou
+    # implementacÃ­ generovÃ¡nÃ­ stavÅ¯. NajÃ­t mezi novÃ½mi stavy ten, kterÃ½ reprezentuje
+    # vÃ­tÄ›ze lokÃ¡lnÃ­ch konfliktÅ¯. LepÅ¡Ã­ by bylo, kdyby modul lokon pracoval
+    # rovnou s polem novÃ½ch stavÅ¯.
     if($max1{r}!=$max0{r} || $max1{z}!=$max0{z})
     {
-        # Pokud se nemìly generovat v¹echny pokraèovací stavy, nemáme nikde nachystanı
-        # stav, ve kterém místo základního vítìze vyhrál vítìz lokálního konfliktu,
-        # a musíme ho vygenerovat teï.
+        # Pokud se nemÄ›ly generovat vÅ¡echny pokraÄovacÃ­ stavy, nemÃ¡me nikde nachystanÃ½
+        # stav, ve kterÃ©m mÃ­sto zÃ¡kladnÃ­ho vÃ­tÄ›ze vyhrÃ¡l vÃ­tÄ›z lokÃ¡lnÃ­ho konfliktu,
+        # a musÃ­me ho vygenerovat teÄ.
         unless($generovat_vse)
         {
             my $stav1 = stav::zduplikovat($stav);
-            stav::pridat_zavislost($stav1, \%max1);
+            stav::pridat_zavislost($anot, $stav1, \%max1);
             $nove_stavy->[0] = $stav1;
         }
-        # Jinak staèí nového vítìze mezi stavy najít a pøesunout na první místo.
+        # Jinak staÄÃ­ novÃ©ho vÃ­tÄ›ze mezi stavy najÃ­t a pÅ™esunout na prvnÃ­ mÃ­sto.
         else
         {
             my $index_viteze = 0;
@@ -312,7 +317,7 @@ sub lokalni_konflikty
                     last;
                 }
             }
-            # Pøed návratem zaøídit, aby vítìznı kandidát byl v seznamu novıch stavù opìt na prvním místì.
+            # PÅ™ed nÃ¡vratem zaÅ™Ã­dit, aby vÃ­tÄ›znÃ½ kandidÃ¡t byl v seznamu novÃ½ch stavÅ¯ opÄ›t na prvnÃ­m mÃ­stÄ›.
             my $vitezny_stav = $nove_stavy->[$index_viteze];
             splice(@{$nove_stavy}, $index_viteze, 1);
             unshift(@{$nove_stavy}, $vitezny_stav);

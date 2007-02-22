@@ -1,49 +1,71 @@
 #!/usr/bin/perl
-# Natrénuje statistiky z treebanku a ulo¾í je.
+# NatrÃ©nuje statistiky z treebanku a uloÅ¾Ã­ je.
+use utf8;
+use Getopt::Long;
 use parse;
 use csts;
-use model; # kvùli zjistit_smer_a_delku()
+use model; # kvÅ¯li zjistit_smer_a_delku()
 use vystupy;
 use ntice;
 
 
 
 $starttime = time();
-parse::precist_konfig("parser.ini", \%konfig);
+my $inisoubor = "parser.ini"; # jmÃ©no souboru s konfiguracÃ­
+# train.pl --i parser2.ini
+GetOptions('ini=s' => \$inisoubor);
+parse::precist_konfig($inisoubor, \%konfig);
 
 
 
-# Naèíst seznam subkategorizaèních rámcù sloves.
-# Potøebujeme ho, abychom mohli poèítat, kolikrát se která m-znaèka vyskytla
-# jako povinné, a kolikrát jako volné doplnìní.
+# NaÄÃ­st seznam subkategorizaÄnÃ­ch rÃ¡mcÅ¯ sloves.
+# PotÅ™ebujeme ho, abychom mohli poÄÃ­tat, kolikrÃ¡t se kterÃ¡ m-znaÄka vyskytla
+# jako povinnÃ©, a kolikrÃ¡t jako volnÃ© doplnÄ›nÃ­.
 if($konfig{valence})
 {
-    $konfig{nacteny_subkategorizacni_slovnik} = subkat::cist($konfig{subcat}); # vrátí odkaz na hash se subkategorizaèním slovníkem
+    $konfig{nacteny_subkategorizacni_slovnik} = subkat::cist($konfig{subcat}); # vrÃ¡tÃ­ odkaz na hash se subkategorizaÄnÃ­m slovnÃ­kem
 }
 
 
 
-# Kvùli sní¾ení pamì»ovıch nárokù lze statistickı model rozdìlit do dílù.
-# Díly se èíslují od jednièky.
+# KvÅ¯li snÃ­Å¾enÃ­ pamÄ›Å¥ovÃ½ch nÃ¡rokÅ¯ lze statistickÃ½ model rozdÄ›lit do dÃ­lÅ¯.
+# DÃ­ly se ÄÃ­slujÃ­ od jedniÄky.
 $i_dil = 1;
 $konfig{hook_zacatek_cteni} = sub
 {
     my $maska = shift;
     my $soubory = shift;
-    vypsat("prubeh", "Maska pro jména souborù s daty: $maska\n");
-    vypsat("prubeh", "Nalezeno ".($#{$soubory}+1)." souborù.\n");
+    vypsat("prubeh", "Maska pro jmÃ©na souborÅ¯ s daty: $maska\n");
+    vypsat("prubeh", "Nalezeno ".($#{$soubory}+1)." souborÅ¯.\n");
 };
-csts::projit_data($konfig{train}, \%konfig);
-# Poslat mi mail, ¾e trénink je u konce. Musíme do mailu dát nìjakı existující
-# soubor. Staèil by mi sice prázdnı mail jen s pøedmìtem zprávy, ale pokud bych
-# k tomu chtìl vyu¾ít existující mechanismy, vznikl by mi tím na disku prázdnı
+csts::projit_data($konfig{train}, \%konfig, \&zpracovat_vetu);
+vypsat("prubeh", "PoÄet vÄ›t  = $veta\n");
+vypsat("prubeh", "PoÄet slov = $slovo\n");
+# TeÄ jeÅ¡tÄ› natrÃ©novat modely n-tic. Nemohli jsme to dÄ›lat vÅ¡echno pÅ™i jednom
+# prÅ¯chodu dat, protoÅ¾e by nÃ¡m nemusela staÄit pamÄ›Å¥. N-tic sice pÅ™eÅ¾ije jen
+# kolem 7000, ale bÄ›hem trÃ©novÃ¡nÃ­ jich musÃ­me mÃ­t v pamÄ›ti pÅ™es 5000000.
+if($konfig{ntice})
+{
+    %stat = ();
+    $veta = 0;
+    $slovo = 0;
+    $ohlasena_veta = 0;
+    csts::projit_data($konfig{train}, \%konfig, \&zpracovat_vetu_ntice);
+    ntice::vypsat_do_stat();
+}
+# Poslat mi mail, Å¾e trÃ©nink je u konce. MusÃ­me do mailu dÃ¡t nÄ›jakÃ½ existujÃ­cÃ­
+# soubor. StaÄil by mi sice prÃ¡zdnÃ½ mail jen s pÅ™edmÄ›tem zprÃ¡vy, ale pokud bych
+# k tomu chtÄ›l vyuÅ¾Ã­t existujÃ­cÃ­ mechanismy, vznikl by mi tÃ­m na disku prÃ¡zdnÃ½
 # soubor.
-vystupy::kopirovat_do_mailu("konfig", "Trenink $vystupy::cislo_instance skoncil");
+if($vystupy::cislo_instance)
+{
+    vystupy::kopirovat_do_mailu("konfig", "Trenink $vystupy::cislo_instance skoncil");
+}
 
 # Konec.
 $stoptime = time();
 parse::vypsat_delku_trvani_programu($starttime, $stoptime, "konfig");
-parse::vypsat_delku_trvani_programu($starttime, $stoptime, "vysledky");
+parse::vypsat_delku_trvani_programu($starttime, $stoptime, "vysledky") if($konfig{rezim} eq "debug");
 
 
 
@@ -54,103 +76,171 @@ parse::vypsat_delku_trvani_programu($starttime, $stoptime, "vysledky");
 
 
 #------------------------------------------------------------------------------
-# Projde vìtu a zapamatuje si vztahy v ní.
+# Projde vÄ›tu a zapamatuje si vztahy v nÃ­.
 #------------------------------------------------------------------------------
 sub zpracovat_vetu
 {
-    my $stav_cteni = shift; # hash s údaji o aktuálním dokumentu, odstavci a vìtì
-    my $anot = shift; # pole hashù o jednotlivıch slovech
-    @anot = @{$anot}; # zatím se ukládá jako globální promìnná v main
-    # Pøed zpracováním první vìty souboru ohlásit novı soubor.
-    if($stav_cteni->{novy_soubor})
+    my $stav_cteni = shift; # hash s Ãºdaji o aktuÃ¡lnÃ­m dokumentu, odstavci a vÄ›tÄ›
+    my $anot = shift; # pole hashÅ¯ o jednotlivÃ½ch slovech
+    # PÅ™ed zpracovÃ¡nÃ­m prvnÃ­ vÄ›ty souboru ohlÃ¡sit novÃ½ soubor.
+    # (Test, zda jsme na zaÄÃ¡tku souboru, je uvnitÅ™.)
+    vypsat_jmeno_souboru($stav_cteni);
+    # Vynechat vÄ›ty se zÃ¡vadnÃ½m obsahem (promÄ›nnÃ¡ $vynechat_vetu se nastavuje
+    # pÅ™i naÄÃ­tÃ¡nÃ­ slova) a vÄ›ty nad rÃ¡mec poÅ¾adovanÃ©ho rozsahu.
+    return if($vynechat_vetu || $konfig{max_trenovacich_vet} && $veta>=$konfig{max_trenovacich_vet});
+    # OhlÃ¡sit na vÃ½stup ÄÃ­slo zpracovÃ¡vanÃ© vÄ›ty.
+    $veta++ if($#{$anot}>0);
+    $slovo += $#{$anot};
+    $ohlasena_veta = ohlasit_vetu($stav_cteni, $ohlasena_veta, $veta);
+    # Zapamatovat si nejdelÅ¡Ã­ vÄ›tu.
+    if($#{$anot}>$maxn_slov)
     {
-        my ($sek, $min, $hod) = localtime(time());
-        my $jmeno_souboru_do_hlaseni = $stav_cteni->{soubor};
-        $jmeno_souboru_do_hlaseni =~ s-^.*/([^/]*)$-$1-;
-        $jmeno_souboru_do_hlaseni =~ s/\.(?:csts|amm)$//i;
-        vypsat("prubeh", parse::cas()." Otevírá se soubor $jmeno_souboru_do_hlaseni\n");
+        $maxn_slov = $#{$anot};
     }
-    # Nauèit se n-tice znaèek, které le¾í vedle sebe a tvoøí komponentu stromu.
-    for(my $i = 2; $i<=10; $i++)
+    if($#{$anot}>0) # Pokud nezaÄÃ­nÃ¡me ÄÃ­st prvnÃ­ vÄ›tu.
     {
-#        ntice::ucit($i);
+        #!!!
+        # AlternujÃ­cÃ­ ÄÃ¡sti kÃ³du.
+        my @alt;
+        $alt[0] = 1; # coordmember je (0) dite rodice se spravnym afunem (1) i vzdalenejsi potomek (treba pod predlozkou), ale zato clen (pokud je tedy dite korene koordinace, ale neni jeji clen, neni coordmember)
+        $alt[1] = 0; # ke koordinacim pridat apozice
+        $alt[2] = 1; # v beznych zavislostech zdedene znacky
+        $alt[3] = 0; # zaznamenavat koordinacni udalosti
+        # (jinak se zaznamenavaji pouze zavislosti)
+        #!!!
+        # Dokud existuje moÅ¾nost, Å¾e pÅ™i prochÃ¡zenÃ­ koordinacÃ­ se budou
+        # upravovat $anot->[$i]{znacka} a $anot->[$i]{afun}, musejÃ­ se koordinace zpracovÃ¡vat pÅ™ed
+        # zÃ¡vislostmi, ve kterÃ½ch se tohle vyuÅ¾ije. AÅ¾ se bude spolÃ©hat jen
+        # na zdÄ›dÄ›nÃ© znaÄky, bude moÅ¾nÃ© poÅ™adÃ­ otoÄit.
+        if($konfig{koordinace})
+        {
+            projit_koordinace($anot, \@alt);
+        }
+        # ProjÃ­t vÄ›tu a posbÃ­rat statistiky.
+        for(my $i = 1; $i<=$#{$anot}; $i++)
+        {
+            zjistit_udalosti_slovo($i, $anot->[$i]{rodic_vzor}, \@alt, $anot);
+        }
+        # SpoÄÃ­tat lokÃ¡lnÃ­ konflikty.
+        spocitat_lokalni_konflikty($anot);
+        # Zjistit rÃ¡mce vÅ¡ech Å™Ã­dÃ­cÃ­ch uzlÅ¯ (vÄetnÄ› volitelnÃ½ch doplnÄ›nÃ­).
+        projit_ramce($anot);
+        # U krÃ¡tkÃ½ch vÄ›t si zapamatovat celÃ½ strom.
+        projit_kratkou_vetu($anot);
     }
-    # Vynechat vìty se závadnım obsahem (promìnná $vynechat_vetu se nastavuje
-    # pøi naèítání slova).
-    unless($vynechat_vetu)
+    # UloÅ¾it statistiku, jestliÅ¾e je tohle poslednÃ­ vÄ›ta, popÅ™. poslednÃ­, kterÃ¡ se vejde do omezenÃ­.
+    $i_dil = ulozit_statistiku_pokud_je_to_potreba($stav_cteni, $veta, $i_dil);
+}
+
+
+
+#------------------------------------------------------------------------------
+# Projde vÄ›tu, najde v nÃ­ n-tice a zapamatuje si je.
+#------------------------------------------------------------------------------
+sub zpracovat_vetu_ntice
+{
+    my $stav_cteni = shift; # hash s Ãºdaji o aktuÃ¡lnÃ­m dokumentu, odstavci a vÄ›tÄ›
+    my $anot = shift; # pole hashÅ¯ o jednotlivÃ½ch slovech
+    # PÅ™ed zpracovÃ¡nÃ­m prvnÃ­ vÄ›ty souboru ohlÃ¡sit novÃ½ soubor.
+    # (Test, zda jsme na zaÄÃ¡tku souboru, je uvnitÅ™.)
+    vypsat_jmeno_souboru($stav_cteni);
+    # Vynechat vÄ›ty se zÃ¡vadnÃ½m obsahem (promÄ›nnÃ¡ $vynechat_vetu se nastavuje
+    # pÅ™i naÄÃ­tÃ¡nÃ­ slova) a vÄ›ty nad rÃ¡mec poÅ¾adovanÃ©ho rozsahu.
+    return if($vynechat_vetu || $konfig{max_trenovacich_vet} && $veta>=$konfig{max_trenovacich_vet});
+    # OhlÃ¡sit na vÃ½stup ÄÃ­slo zpracovÃ¡vanÃ© vÄ›ty.
+    $veta++ if($#{$anot}>0);
+    $slovo += $#{$anot};
+    $ohlasena_veta = ohlasit_vetu($stav_cteni, $ohlasena_veta, $veta, "N-tice: ");
+    for(my $n = 2; $n<=10; $n++)
     {
-        # Ohlásit na vıstup èíslo zpracovávané vìty.
-        $veta++;
-        if($veta-$ohlasena_veta==100 || $stav_cteni->{posledni_veta})
-        {
-            my $n_udalosti = int(keys(%stat));
-            vypsat("prubeh", parse::cas()." Zpracovává se vìta $veta.\n");
-            $ohlasena_veta = $veta;
-            # Jestli¾e jsme u¾ pøeèetli urèitı poèet událostí, ulo¾it dosud
-            # nasbíranou statistiku, vyprázdnit pamì» a od této vìty zaèít
-            # nanovo.
-            if($konfig{split}>0 && $n_udalosti>=$konfig{split} || $stav_cteni->{posledni_veta})
-            {
-                # Jméno souboru se statistikou.
-                my $jmeno = $konfig{prac}."/".$konfig{stat};
-                if($konfig{split}>0)
-                {
-                    vypsat("prubeh", parse::cas()." Konec $i_dil. dílu.\n");
-                    $jmeno .= $i_dil;
-                }
-                # Ulo¾it dosud nasbíranou statistiku.
-                ulozit(\%stat, $jmeno);
-                unless($stav_cteni->{posledni_veta})
-                {
-                    # Uvolnit pamì» pro novı díl.
-                    vypsat("prubeh", parse::cas()." Uvolòuje se pamì».\n");
-                    undef(%stat);
-                }
-                $i_dil++;
-            }
-        }
-        # Zapamatovat si nejdel¹í vìtu.
-        if($#{$anot}>$maxn_slov)
-        {
-            $maxn_slov = $#{$anot};
-        }
-        if($#{$anot}>0) # Pokud nezaèínáme èíst první vìtu.
-        {
-            #!!!
-            # Alternující èásti kódu.
-            my @alt;
-            $alt[0] = 1; # coordmember je (0) dite rodice se spravnym afunem (1) i vzdalenejsi potomek (treba pod predlozkou), ale zato clen (pokud je tedy dite korene koordinace, ale neni jeji clen, neni coordmember)
-            $alt[1] = 0; # ke koordinacim pridat apozice
-            $alt[2] = 1; # v beznych zavislostech zdedene znacky
-            $alt[3] = 0; # zaznamenavat koordinacni udalosti
-            # (jinak se zaznamenavaji pouze zavislosti)
-            #!!!
-            # Dokud existuje mo¾nost, ¾e pøi procházení koordinací se budou
-            # upravovat $anot->[$i]{znacka} a $anot->[$i]{afun}, musejí se koordinace zpracovávat pøed
-            # závislostmi, ve kterıch se tohle vyu¾ije. A¾ se bude spoléhat jen
-            # na zdìdìné znaèky, bude mo¾né poøadí otoèit.
-            if($konfig{koordinace})
-            {
-                projit_koordinace($anot, \@alt);
-            }
-            # Projít vìtu a posbírat statistiky.
-            for(my $i = 1; $i<=$#{$anot}; $i++)
-            {
-                zjistit_udalosti_slovo($i, $anot->[$i]{rodic_vzor}, \@alt, $anot);
-            }
-            # Spoèítat lokální konflikty.
-            spocitat_lokalni_konflikty($anot);
-            # U krátkıch vìt si zapamatovat celı strom.
-            projit_kratkou_vetu($anot);
-        }
+        ntice::ucit($n, $anot);
     }
 }
 
 
 
 #------------------------------------------------------------------------------
-# Zjistí trénovací události o jednom slovì (to neznamená, ¾e kvùli nìmu nebude
-# potøebovat projít v¹echna ostatní slova vìty).
+# VypÃ­Å¡e do prÅ¯bÄ›hu jmÃ©no souboru, kterÃ½ prÃ¡vÄ› Äteme.
+#------------------------------------------------------------------------------
+sub vypsat_jmeno_souboru
+{
+    my $stav_cteni = shift;
+    if($stav_cteni->{novy_soubor})
+    {
+        my ($sek, $min, $hod) = localtime(time());
+        my $jmeno_souboru_do_hlaseni = $stav_cteni->{soubor};
+        $jmeno_souboru_do_hlaseni =~ s-^.*/([^/]*)$-$1-;
+        $jmeno_souboru_do_hlaseni =~ s/\.(?:csts|amm)$//i;
+        vypsat("prubeh", parse::cas()." OtevÃ­rÃ¡ se soubor $jmeno_souboru_do_hlaseni\n");
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# VypÃ­Å¡e do prÅ¯bÄ›hu ÄÃ­slo vÄ›ty, kterou prÃ¡vÄ› zpracovÃ¡vÃ¡me. VrÃ¡tÃ­ ÄÃ­slo vÄ›ty,
+# pokud ji ohlÃ¡sil, jinak vrÃ¡tÃ­ ÄÃ­slo naposledy ohlÃ¡Å¡enÃ© vÄ›ty.
+#------------------------------------------------------------------------------
+sub ohlasit_vetu
+{
+    my $stav_cteni = shift;
+    my $ohlasena_veta = shift;
+    my $veta = shift;
+    my $prubeh = shift;
+    if($veta-$ohlasena_veta==100 ||
+       $stav_cteni->{posledni_veta} ||
+       ($konfig{max_trenovacich_vet} && $veta==$konfig{max_trenovacich_vet}))
+    {
+        vypsat("prubeh", parse::cas()." ${prubeh}ZpracovÃ¡vÃ¡ se vÄ›ta $veta.\n");
+        $ohlasena_veta = $veta;
+    }
+    return $ohlasena_veta;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Zjistit, zda je potÅ™eba uloÅ¾it statistiku, a v pÅ™Ã­padÄ› potÅ™eby to udÄ›lÃ¡.
+#------------------------------------------------------------------------------
+sub ulozit_statistiku_pokud_je_to_potreba
+{
+    my $stav_cteni = shift;
+    my $veta = shift; # ÄÃ­slo zpracovÃ¡vanÃ© vÄ›ty
+    my $i_dil = shift;
+    # %stat: globÃ¡lnÃ­ promÄ›nnÃ¡
+    my $konfig = \%main::konfig;
+    # JestliÅ¾e jsme uÅ¾ pÅ™eÄetli urÄitÃ½ poÄet udÃ¡lostÃ­, uloÅ¾it dosud nasbÃ­ranou
+    # statistiku, vyprÃ¡zdnit pamÄ›Å¥ a od pÅ™Ã­Å¡tÃ­ vÄ›ty zaÄÃ­t nanovo.
+    my $n_udalosti = int(keys(%stat));
+    if($konfig->{split}>0 && $n_udalosti>=$konfig->{split} ||
+       $konfig->{max_trenovacich_vet} && $veta==$konfig->{max_trenovacich_vet} ||
+       $stav_cteni->{posledni_veta})
+    {
+        # JmÃ©no souboru se statistikou.
+        my $jmeno = $konfig->{prac}."/".$konfig->{stat};
+        if($konfig->{split})
+        {
+            vypsat("prubeh", parse::cas()." Konec $i_dil. dÃ­lu.\n");
+            $jmeno .= $i_dil;
+        }
+        # UloÅ¾it dosud nasbÃ­ranou statistiku.
+        ulozit(\%stat, $jmeno);
+        unless($stav_cteni->{posledni_veta})
+        {
+            # Uvolnit pamÄ›Å¥ pro novÃ½ dÃ­l.
+            vypsat("prubeh", parse::cas()." UvolÅˆuje se pamÄ›Å¥.\n");
+            undef(%stat);
+        }
+        $i_dil++;
+    }
+    return $i_dil;
+}
+
+
+
+#------------------------------------------------------------------------------
+# ZjistÃ­ trÃ©novacÃ­ udÃ¡losti o jednom slovÄ› (to neznamenÃ¡, Å¾e kvÅ¯li nÄ›mu nebude
+# potÅ™ebovat projÃ­t vÅ¡echna ostatnÃ­ slova vÄ›ty).
 #------------------------------------------------------------------------------
 sub zjistit_udalosti_slovo
 {
@@ -158,11 +248,11 @@ sub zjistit_udalosti_slovo
     my $r = shift;
     my $alt = shift; # jen odkaz na pole
     my $anot = shift; # jen odkaz na pole
-    # Vynechat uzly, jejich¾ rodiè øídí koordinaci. Buï jsou èleny koordinace a
-    # jejich vztah k rodièi není závislost. Nebo závisejí na koordinaci, ta by
-    # ale místo znaèky souøadící spojky mìla bıt reprezentována znaèkou
-    # typického èlena, tak¾e závislost na koordinaci vy¾aduje zvlá¹tní
-    # zacházení.
+    # Vynechat uzly, jejichÅ¾ rodiÄ Å™Ã­dÃ­ koordinaci. BuÄ jsou Äleny koordinace a
+    # jejich vztah k rodiÄi nenÃ­ zÃ¡vislost. Nebo zÃ¡visejÃ­ na koordinaci, ta by
+    # ale mÃ­sto znaÄky souÅ™adÃ­cÃ­ spojky mÄ›la bÃ½t reprezentovÃ¡na znaÄkou
+    # typickÃ©ho Älena, takÅ¾e zÃ¡vislost na koordinaci vyÅ¾aduje zvlÃ¡Å¡tnÃ­
+    # zachÃ¡zenÃ­.
     my $coordmember;
     if($konfig{koordinace})
     {
@@ -182,14 +272,14 @@ sub zjistit_udalosti_slovo
             $coordmember = $anot->[$z]{coordmember};
         }
     }
-    # Odli¹it èleny koordinací od závislıch uzlù.
+    # OdliÅ¡it Äleny koordinacÃ­ od zÃ¡vislÃ½ch uzlÅ¯.
     if(!$coordmember)
     {
         if($konfig{koordinace})
         {
-            # Vynechat uzly, které samy øídí koordinaci. I vùèi svım nadøízenım
-            # by koordinace mìla bıt reprezentována nìèím jinım ne¾ znaèkou
-            # souøadící spojky.
+            # Vynechat uzly, kterÃ© samy Å™Ã­dÃ­ koordinaci. I vÅ¯Äi svÃ½m nadÅ™Ã­zenÃ½m
+            # by koordinace mÄ›la bÃ½t reprezentovÃ¡na nÄ›ÄÃ­m jinÃ½m neÅ¾ znaÄkou
+            # souÅ™adÃ­cÃ­ spojky.
             my $coordroot;
             if(!$alt->[1])
             {
@@ -204,12 +294,12 @@ sub zjistit_udalosti_slovo
                 next;
             }
         }
-        # Doplòkové parametry: smìr hrany a vzdálenost.
+        # DoplÅˆkovÃ© parametry: smÄ›r hrany a vzdÃ¡lenost.
         my $rs = $anot->[$r]{slovo};
         my $zs = $anot->[$z]{slovo};
         my $rz;
         my $zz;
-        # Pou¾ít vlastní, nebo zdìdìné znaèky?
+        # PouÅ¾Ã­t vlastnÃ­, nebo zdÄ›dÄ›nÃ© znaÄky?
         if(!$alt->[2] || !$konfig{koordinace})
         {
             $rz = $anot->[$r]{uznacka};
@@ -220,19 +310,17 @@ sub zjistit_udalosti_slovo
             $rz = $anot->[$r]{mznpodstrom};
             $zz = $anot->[$z]{mznpodstrom};
         }
-        my ($smer, $delka) = model::zjistit_smer_a_delku($r, $z);
-        # Pokusné volitelné roz¹íøení: má uzel sourozence stejného druhu?
+        my ($smer, $delka) = model::zjistit_smer_a_delku($anot, $r, $z);
+        # PokusnÃ© volitelnÃ© rozÅ¡Ã­Å™enÃ­: mÃ¡ uzel sourozence stejnÃ©ho druhu?
         my $zarlivost = $konfig{zarlivost} ? (ma_sourozence_stejneho_druhu($anot, $r, $z) ? " N" : " Z") : "";
         ud("OSS $rs $zs $smer $delka");
         ud("OZZ $rz $zz $smer $delka$zarlivost");
-        ###!!! Následující druhy událostí se momentálnì nevyu¾ívají pøi parsingu,
-        # tak nemá smysl s nimi prodlu¾ovat uèení a nafukovat statistiku.
-#        ud("OSZ $rs $zz $smer $delka");
-#        ud("OZS $rz $zs $smer $delka");
-#        ud("ZSS $rs $zs");
-#        ud("ZZZ $rz $zz");
-#        ud("ZSZ $rs $zz");
-#        ud("ZZS $rz $zs");
+        ud("OSZ $rs $zz $smer $delka");
+        ud("OZS $rz $zs $smer $delka");
+        ud("ZSS $rs $zs");
+        ud("ZZZ $rz $zz");
+        ud("ZSZ $rs $zz");
+        ud("ZZS $rz $zs");
         if($konfig{"pseudoval"})
         {
             if($rz =~ m/^V/)
@@ -248,24 +336,24 @@ sub zjistit_udalosti_slovo
 
 
 #------------------------------------------------------------------------------
-# Projde vìtu a zaeviduje události související s koordinacemi.
-# Parametry: @anot. Do znaèek a afunù zapisuje!
-# $alt_coordmember: 1 = èlen koordinace se pozná novım zpùsobem
-# $alt_apos: 1 = ke koordinacím pøidat apozice
-# $alt_znvkor: 1 = události KZZ se sestavují podle zdìdìnıch znaèek v koøeni;
-# toté¾ platí pro morfologickou(é) znaèku(y), která(é) reprezentuje(í) koordi-
-# naci v jejích závislostních vztazích s okolím.
+# Projde vÄ›tu a zaeviduje udÃ¡losti souvisejÃ­cÃ­ s koordinacemi.
+# Parametry: @anot. Do znaÄek a afunÅ¯ zapisuje!
+# $alt_coordmember: 1 = Älen koordinace se poznÃ¡ novÃ½m zpÅ¯sobem
+# $alt_apos: 1 = ke koordinacÃ­m pÅ™idat apozice
+# $alt_znvkor: 1 = udÃ¡losti KZZ se sestavujÃ­ podle zdÄ›dÄ›nÃ½ch znaÄek v koÅ™eni;
+# totÃ©Å¾ platÃ­ pro morfologickou(Ã©) znaÄku(y), kterÃ¡(Ã©) reprezentuje(Ã­) koordi-
+# naci v jejÃ­ch zÃ¡vislostnÃ­ch vztazÃ­ch s okolÃ­m.
 #------------------------------------------------------------------------------
 sub projit_koordinace
 {
-    my $anot = shift; # odkaz na pole hashù
+    my $anot = shift; # odkaz na pole hashÅ¯
     my $alt = shift; # odkaz na pole
     my $alt_znvkor = shift;
-    # Projít koordinace a posbírat statistiky o nich.
+    # ProjÃ­t koordinace a posbÃ­rat statistiky o nich.
     for(my $i = 1; $i<=$#{$anot}; $i++)
     {
-        # Zapamatovat si vıskyty ka¾dého slova, aby bylo mo¾né poèítat,
-        # v kolika procentech toto slovo øídilo koordinaci.
+        # Zapamatovat si vÃ½skyty kaÅ¾dÃ©ho slova, aby bylo moÅ¾nÃ© poÄÃ­tat,
+        # v kolika procentech toto slovo Å™Ã­dilo koordinaci.
         ud("USS $anot->[$i]{slovo}");
         ud("USZ $anot->[$i]{slovo}/$anot->[$i]{uznacka}");
         ud("UZZ $anot->[$i]{uznacka}");
@@ -280,10 +368,10 @@ sub projit_koordinace
         }
         if($koren)
         {
-            # Zapamatovat si pro ka¾dé slovo, kolikrát øídilo koord.
+            # Zapamatovat si pro kaÅ¾dÃ© slovo, kolikrÃ¡t Å™Ã­dilo koord.
             ud("KJJ $anot->[$i]{slovo}");
-            my $n_clenu; # Poèet èlenù koordinace.
-            my @koortypy; # Potøeba jen kdy¾ !$alt->[3].
+            my $n_clenu; # PoÄet ÄlenÅ¯ koordinace.
+            my @koortypy; # PotÅ™eba jen kdyÅ¾ !$alt->[3].
             for(my $j = 1; $j<=$#{$anot}; $j++)
             {
                 my $clen;
@@ -304,22 +392,22 @@ sub projit_koordinace
                 }
                 if($anot->[$j]{rodic_vzor}==$i && $clen)
                 {
-                    # Zapamatovat si pro ka¾dé heslo, kolikrát øídilo
-                    # víceèetnou koordinaci.
+                    # Zapamatovat si pro kaÅ¾dÃ© heslo, kolikrÃ¡t Å™Ã­dilo
+                    # vÃ­ceÄetnou koordinaci.
                     if(++$n_clenu==3)
                     {
                         ud("KJ3 $anot->[$i]{slovo}");
                     }
                     if($alt->[3])
                     {
-                        # Znaèky v¹ech èlenù koordinace jsou posbírané u
-                        # koøene.
+                        # ZnaÄky vÅ¡ech ÄlenÅ¯ koordinace jsou posbÃ­ranÃ© u
+                        # koÅ™ene.
                         my $mz = $anot->[$j]{mznpodstrom};
                         my $oz = $anot->[$i]{mznpodstrom};
-                        # Vyhodit z nich první vıskyt mojí znaèky - zastupuje
-                        # mne sama. Nemù¾eme to udìlat pomocí regulárních
-                        # vırazù, proto¾e bychom museli zne¹kodnit nejen
-                        # svislítka, ale i závorky a jiné znaky ve znaèkách.
+                        # Vyhodit z nich prvnÃ­ vÃ½skyt mojÃ­ znaÄky - zastupuje
+                        # mne sama. NemÅ¯Å¾eme to udÄ›lat pomocÃ­ regulÃ¡rnÃ­ch
+                        # vÃ½razÅ¯, protoÅ¾e bychom museli zneÅ¡kodnit nejen
+                        # svislÃ­tka, ale i zÃ¡vorky a jinÃ© znaky ve znaÄkÃ¡ch.
                         my @mz = split(/\|/, $mz);
                         my @oz = split(/\|/, $oz);
                         for(my $k = 0; $k<=$#mz; $k++)
@@ -334,14 +422,14 @@ sub projit_koordinace
                             }
                         }
                         $oz = join("|", @oz);
-                        # Nyní u¾ lze ohlásit koordinaèní událost. Roznásobení
-                        # zbıvajících znaèek s tìmi mımi zajistí pøímo
+                        # NynÃ­ uÅ¾ lze ohlÃ¡sit koordinaÄnÃ­ udÃ¡lost. RoznÃ¡sobenÃ­
+                        # zbÃ½vajÃ­cÃ­ch znaÄek s tÄ›mi mÃ½mi zajistÃ­ pÅ™Ã­mo
                         # procedura ud().
                         ud("KZZ $mz $oz");
                     }
                     else
                     {
-                        # Projít v¹echny dosud zji¹tìné èleny a spárovat je se
+                        # ProjÃ­t vÅ¡echny dosud zjiÅ¡tÄ›nÃ© Äleny a spÃ¡rovat je se
                         # mnou.
                         for(my $k = 0; $k<=$#koortypy; $k++)
                         {
@@ -354,7 +442,7 @@ sub projit_koordinace
             }
             if(!$alt->[2])
             {
-                # Zru¹it koordinaci, aby byl vidìt typ èlenù.
+                # ZruÅ¡it koordinaci, aby byl vidÄ›t typ ÄlenÅ¯.
                 $anot->[$i]{afun} = "zpracovana koordinace";
                 $anot->[$i]{uznacka} = $koortypy[0];
             }
@@ -365,47 +453,47 @@ sub projit_koordinace
 
 
 #------------------------------------------------------------------------------
-# Kontextové trénování.
-# Projde vìtu a pro ka¾dé slovo si zapamatuje jeho skuteèné zavì¹ení
-# v konkurenci s ka¾dım mo¾nım jinım zavì¹ením v okolí.
+# KontextovÃ© trÃ©novÃ¡nÃ­.
+# Projde vÄ›tu a pro kaÅ¾dÃ© slovo si zapamatuje jeho skuteÄnÃ© zavÄ›Å¡enÃ­
+# v konkurenci s kaÅ¾dÃ½m moÅ¾nÃ½m jinÃ½m zavÄ›Å¡enÃ­m v okolÃ­.
 #------------------------------------------------------------------------------
 sub spocitat_lokalni_konflikty
 {
-    my $anot = shift; # odkaz na pole hashù
-    # Bohu¾el je asi nìkde v této funkci chyba: asi se pøistupuje k prvkùm za
-    # souèasnou hranicí pole @anot. Tímpádem se nemù¾eme spolehnout na délku
-    # pole a øídit s její pomocí cykly. Pokud chybu neopravíme, bude bezpeènìj¹í
-    # hned na zaèátku délku vìty zafixovat a na konci ji vrátit.
+    my $anot = shift; # odkaz na pole hashÅ¯
+    # BohuÅ¾el je asi nÄ›kde v tÃ©to funkci chyba: asi se pÅ™istupuje k prvkÅ¯m za
+    # souÄasnou hranicÃ­ pole @anot. TÃ­mpÃ¡dem se nemÅ¯Å¾eme spolehnout na dÃ©lku
+    # pole a Å™Ã­dit s jejÃ­ pomocÃ­ cykly. Pokud chybu neopravÃ­me, bude bezpeÄnÄ›jÅ¡Ã­
+    # hned na zaÄÃ¡tku dÃ©lku vÄ›ty zafixovat a na konci ji vrÃ¡tit.
     my $n = $#{$anot};
     for(my $i = 1; $i<=$n; $i++)
     {
-        # Pokud je slovo zavì¹eno doleva, zapamatovat si pora¾ené konkurenty napravo.
+        # Pokud je slovo zavÄ›Å¡eno doleva, zapamatovat si poraÅ¾enÃ© konkurenty napravo.
         if($anot->[$i]{rodic_vzor}<$i)
         {
-            # Jde o závislost, nebo koordinaci?
-            my $vazba = ($anot->[$i]{afun}=~m/_Co/ ? "C " : "").$anot->[zjistit_vazbu($i)]{uznacka};
-            # Projít konkurenty.
+            # Jde o zÃ¡vislost, nebo koordinaci?
+            my $vazba = ($anot->[$i]{afun}=~m/_Co/ ? "C " : "").$anot->[zjistit_vazbu($anot, $i)]{uznacka};
+            # ProjÃ­t konkurenty.
             my $j = $i+1;
             do {
-                # Zapamatovat si konkurenèní závislost.
+                # Zapamatovat si konkurenÄnÃ­ zÃ¡vislost.
                 ud("LOK $anot->[$i]{uznacka} L $vazba P $anot->[$j]{uznacka} L");
-                # Pokud $j øídí kooridnaci, zapamatovat si ji také.
+                # Pokud $j Å™Ã­dÃ­ kooridnaci, zapamatovat si ji takÃ©.
                 if($anot->[$j]{afun}=~m/Coord/)
                 {
                     for(my $k = $j+1; $k<=$n; $k++)
                     {
                         if($anot->[$k]{rodic_vzor}==$j && $anot->[$k]{afun}=~m/_Co$/ &&
-                        $anot->[$k]{afun}!~m/Coord/) # Slo¾ené koordinace je lep¹í
-                        # vynechat ne¾ správnì procházet.
+                        $anot->[$k]{afun}!~m/Coord/) # SloÅ¾enÃ© koordinace je lepÅ¡Ã­
+                        # vynechat neÅ¾ sprÃ¡vnÄ› prochÃ¡zet.
                         {
                             ud("LOK $anot->[$i]{uznacka} L $vazba P C $anot->[$k]{uznacka} L");
                             last;
                         }
                     }
                 }
-                # Pokud $j neøídí koordinaci, ale teoreticky by mohlo, proto¾e
-                # u¾ jsme ho døíve vidìli v pozici koordinaèní spojky,
-                # zapamatovat si i v¹echny potenciální koordinace.
+                # Pokud $j neÅ™Ã­dÃ­ koordinaci, ale teoreticky by mohlo, protoÅ¾e
+                # uÅ¾ jsme ho dÅ™Ã­ve vidÄ›li v pozici koordinaÄnÃ­ spojky,
+                # zapamatovat si i vÅ¡echny potenciÃ¡lnÃ­ koordinace.
                 my $n_jako_koord = $stat{"KJJ $anot->[$j]{slovo}"};
                 if($n_jako_koord>0)
                 {
@@ -416,7 +504,7 @@ sub spocitat_lokalni_konflikty
                         $n_jako_koord/$n_jako_cokoli);
                     }
                 }
-                # Pokud má $j dítì nalevo ode mì, skonèit.
+                # Pokud mÃ¡ $j dÃ­tÄ› nalevo ode mÄ›, skonÄit.
                 for(my $k = $i-1; $k>0; $k--)
                 {
                     if($anot->[$k]{rodic_vzor}==$j)
@@ -428,33 +516,33 @@ sub spocitat_lokalni_konflikty
                 $j = $anot->[$j]{rodic_vzor};
             } while($j>$i);
         }
-        # Pokud je zavì¹eno doprava, zapamatovat si pora¾ené konkurenty nalevo.
+        # Pokud je zavÄ›Å¡eno doprava, zapamatovat si poraÅ¾enÃ© konkurenty nalevo.
         else
         {
-            # Jde o závislost, nebo koordinaci?
-            my $vazba = ($anot->[$i]{afun}=~m/_Co/ ? "C " : "").$anot->[zjistit_vazbu($i)]{uznacka};
-            # Projít konkurenty.
+            # Jde o zÃ¡vislost, nebo koordinaci?
+            my $vazba = ($anot->[$i]{afun}=~m/_Co/ ? "C " : "").$anot->[zjistit_vazbu($anot, $i)]{uznacka};
+            # ProjÃ­t konkurenty.
             my $j = $i-1;
             do {
-                # Zapamatovat si konkurenèní závislost.
+                # Zapamatovat si konkurenÄnÃ­ zÃ¡vislost.
                 ud("LOK $anot->[$i]{uznacka} L $anot->[$j]{uznacka} P $vazba P");
-                # Pokud $j øídí kooridnaci, zapamatovat si ji také.
+                # Pokud $j Å™Ã­dÃ­ kooridnaci, zapamatovat si ji takÃ©.
                 if($anot->[$j]{afun}=~m/Coord/)
                 {
                     for(my $k = $j-1; $k>0 && $k<=$n; $k--)
                     {
                         if($anot->[$k]{rodic_vzor}==$j && $anot->[$k]{afun}=~m/_Co$/ &&
-                        $anot->[$k]{afun}!~m/Coord/) # Slo¾ené koordinace je lep¹í
-                        # vynechat ne¾ správnì procházet.
+                        $anot->[$k]{afun}!~m/Coord/) # SloÅ¾enÃ© koordinace je lepÅ¡Ã­
+                        # vynechat neÅ¾ sprÃ¡vnÄ› prochÃ¡zet.
                         {
                             ud("LOK $anot->[$i]{uznacka} L C $anot->[$k]{uznacka} P $vazba P");
                             last;
                         }
                     }
                 }
-                # Pokud $j neøídí koordinaci, ale teoreticky by mohlo, proto¾e
-                # u¾ jsme ho døíve vidìli v pozici koordinaèní spojky,
-                # zapamatovat si i v¹echny potenciální koordinace.
+                # Pokud $j neÅ™Ã­dÃ­ koordinaci, ale teoreticky by mohlo, protoÅ¾e
+                # uÅ¾ jsme ho dÅ™Ã­ve vidÄ›li v pozici koordinaÄnÃ­ spojky,
+                # zapamatovat si i vÅ¡echny potenciÃ¡lnÃ­ koordinace.
                 my $n_jako_koord = $stat{"KJJ $anot->[$j]{slovo}"};
                 if($n_jako_koord>0)
                 {
@@ -465,7 +553,7 @@ sub spocitat_lokalni_konflikty
                         $n_jako_koord/$n_jako_cokoli);
                     }
                 }
-                # Pokud má $j dítì napravo ode mì, skonèit.
+                # Pokud mÃ¡ $j dÃ­tÄ› napravo ode mÄ›, skonÄit.
                 for(my $k = $i+1; $k<=$n; $k++)
                 {
                     if($anot->[$k]{rodic_vzor}==$j)
@@ -478,24 +566,57 @@ sub spocitat_lokalni_konflikty
             } while($j<$i && $j>0);
         }
     }
-    # Oprava chyby zpùsobené neopodstatnìnımi pøístupy k prvkùm mimo pole.
+    # Oprava chyby zpÅ¯sobenÃ© neopodstatnÄ›nÃ½mi pÅ™Ã­stupy k prvkÅ¯m mimo pole.
     $#{$anot} = $n;
 }
 
 
 
 #------------------------------------------------------------------------------
-# Pokud je vìta krátká, ulo¾í celı její strom.
+# Projde vÄ›tu a zapamatuje si rÃ¡mce vÅ¡ech Å™Ã­dÃ­cÃ­ch uzlÅ¯. NepokouÅ¡Ã­ se oddÄ›lit
+# povinnÃ¡ doplnÄ›nÃ­ od volitelnÃ½ch, to se bude muset dÄ›lat aÅ¾ s celou statisti-
+# kou najednou.
+#------------------------------------------------------------------------------
+sub projit_ramce
+{
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my @ramce;
+    # ProjÃ­t zÃ¡vislÃ© uzly a zapsat je do rÃ¡mcÅ¯ jejich Å™Ã­dÃ­cÃ­ch uzlÅ¯.
+    for(my $i = 0; $i<=$#{$anot}; $i++)
+    {
+        my $rodic = $anot->[$i]{rodic_vzor};
+        $rodic = "" if($rodic<0); # Pojistka. DÄ›lÃ¡m to takhle kvÅ¯li snaze dosÃ¡hnout statistiky identickÃ© s 013.
+        push(@{$ramce[$rodic]}, $anot->[$i]{mznpodstrom});
+    }
+    # ProjÃ­t nasbÃ­ranÃ© rÃ¡mce a seÅ™adit jejich Äleny podle abecedy.
+    # TÃ­m se zajistÃ­ nezÃ¡vislost rÃ¡mcÅ¯ na slovosledu.
+    for(my $i = 0; $i<=$#ramce; $i++)
+    {
+        @{$ramce[$i]} = sort(@{$ramce[$i]});
+        # NormalizovanÃ½ rÃ¡mec ihned uloÅ¾it do evidence.
+        my $heslo = $anot->[$i]{heslo};
+        # OddÄ›lit pÅ™Ã­ÄestÃ­ trpnÃ¡ od ostatnÃ­ch tvarÅ¯ sloves.
+        $heslo .= "-trp" if($anot->[$i]{mznpodstrom} =~ m/V[S4]/);
+        # ÄŒleny rÃ¡mce spojit vlnovkou, ta se v Å¾Ã¡dnÃ© znaÄce nevyskytuje.
+        my $udalost = "RAM $heslo ".join("~", @{$ramce[$i]});
+        ud($udalost);
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# Pokud je vÄ›ta krÃ¡tkÃ¡, uloÅ¾Ã­ celÃ½ jejÃ­ strom.
 #------------------------------------------------------------------------------
 sub projit_kratkou_vetu
 {
-    my $anot = shift; #odkaz na pole hashù
-    # Zkontrolovat, ¾e je vìta dostateènì krátká.
+    my $anot = shift; #odkaz na pole hashÅ¯
+    # Zkontrolovat, Å¾e je vÄ›ta dostateÄnÄ› krÃ¡tkÃ¡.
     if($#{$anot}>8)
     {
         return;
     }
-    # Vytvoøit událost: morfologickı vzor a strom.
+    # VytvoÅ™it udÃ¡lost: morfologickÃ½ vzor a strom.
     my $vzor;
     my $strom;
     my $i;
@@ -509,40 +630,40 @@ sub projit_kratkou_vetu
         $vzor .= $anot->[$i]{uznacka};
         $strom .= $anot->[$i]{rodic_vzor};
     }
-    # Ulo¾it vìtu a její strom mezi události.
+    # UloÅ¾it vÄ›tu a jejÃ­ strom mezi udÃ¡losti.
     ud("VET $vzor $strom");
 }
 
 
 
 #------------------------------------------------------------------------------
-# Zapamatuje si vıskyt nìèeho (událost). V pøípadì, ¾e nìkterı prvek události
-# (napø. morfologická znaèka øídícího uzlu) je nejednoznaènı (tj. skládá se
-# z více hodnot oddìlenıch svislítkem), nahradí událost nìkolika jednoznaènımi
-# událostmi a ka¾dé z nich pøiøadí pomìrnou èást vıskytu.
+# Zapamatuje si vÃ½skyt nÄ›Äeho (udÃ¡lost). V pÅ™Ã­padÄ›, Å¾e nÄ›kterÃ½ prvek udÃ¡losti
+# (napÅ™. morfologickÃ¡ znaÄka Å™Ã­dÃ­cÃ­ho uzlu) je nejednoznaÄnÃ½ (tj. sklÃ¡dÃ¡ se
+# z vÃ­ce hodnot oddÄ›lenÃ½ch svislÃ­tkem), nahradÃ­ udÃ¡lost nÄ›kolika jednoznaÄnÃ½mi
+# udÃ¡lostmi a kaÅ¾dÃ© z nich pÅ™iÅ™adÃ­ pomÄ›rnou ÄÃ¡st vÃ½skytu.
 #------------------------------------------------------------------------------
 sub ud
 {
-    my $ud = shift;
-    my $n = shift;
+    my @alt; # seznam alternativnÃ­ch udÃ¡lostÃ­
+    $alt[0] = $_[0];
+    my $i;
+    my $n = $_[1];
     $n = 1 if($n eq "");
-    # Rozdìlit alternativy do samostatnıch událostí.
-    my @alt; # seznam alternativních událostí
-    if(!$main::konfig{morfologicke_alternativy})
+    # RozdÄ›lit alternativy do samostatnÃ½ch udÃ¡lostÃ­.
+    for($i = 0; $i<=$#alt; $i++)
     {
-        $alt[0] = $ud;
+        while($alt[$i] =~ s/^(.*?)([^\s\|]+)\|(\S+)(.*)$/$1$2$4/)
+        {
+            $alt[++$#alt] = $1.$3.$4;
+        }
     }
-    else
-    {
-        @alt = model::rozepsat_alternativy($ud);
-    }
-    # Ka¾dé dílèí události zapoèítat pomìrnou èást vıskytu.
+    # KaÅ¾dÃ© dÃ­lÄÃ­ udÃ¡losti zapoÄÃ­tat pomÄ›rnou ÄÃ¡st vÃ½skytu.
     my $dil = $n/($#alt+1);
-    for(my $i = 0; $i<=$#alt; $i++)
+    for($i = 0; $i<=$#alt; $i++)
     {
         $stat{$alt[$i]} += $dil;
-        # Koordinace zapoèítat dvakrát, je to jakési primitivní zvı¹ení jejich
-        # váhy.
+        # Koordinace zapoÄÃ­tat dvakrÃ¡t, je to jakÃ©si primitivnÃ­ zvÃ½Å¡enÃ­ jejich
+        # vÃ¡hy.
         if($alt[$i] =~ m/^KZZ/)
         {
             $stat{$alt[$i]} += 2*$dil;
@@ -553,32 +674,30 @@ sub ud
 
 
 #------------------------------------------------------------------------------
-# Najde k uzlu jeho øídící uzel a vrátí jeho index. Pokud øídící uzel øídí
-# koordinaci, vrátí místo nìj index prvního èlena této koordinace ve vìtì.
-# Je na volajícím, aby vztah interpretoval jako koordinaci (závislı uzel má
-# afun _Co), nebo jako závislost na koordinaci (závislı uzel má jinı afun).
-#
-# Pou¾ívá globální pole @anot.
+# Najde k uzlu jeho Å™Ã­dÃ­cÃ­ uzel a vrÃ¡tÃ­ jeho index. Pokud Å™Ã­dÃ­cÃ­ uzel Å™Ã­dÃ­
+# koordinaci, vrÃ¡tÃ­ mÃ­sto nÄ›j index prvnÃ­ho Älena tÃ©to koordinace ve vÄ›tÄ›.
+# Je na volajÃ­cÃ­m, aby vztah interpretoval jako koordinaci (zÃ¡vislÃ½ uzel mÃ¡
+# afun _Co), nebo jako zÃ¡vislost na koordinaci (zÃ¡vislÃ½ uzel mÃ¡ jinÃ½ afun).
 #------------------------------------------------------------------------------
 sub zjistit_vazbu
 {
+    my $anot = shift;
     my $z = shift;
-    my $anot = \@main::anot;
     my $r = $anot->[$z]{rodic_vzor};
     my $i;
     if($anot->[$r]{afun}!~m/Coord/)
     {
-        # Obyèejná závislost.
+        # ObyÄejnÃ¡ zÃ¡vislost.
         return $r;
     }
     else
     {
-        # Koordinace nebo závislost na koordinaci.
+        # Koordinace nebo zÃ¡vislost na koordinaci.
         for($i = 1; $i<=$#{$anot}; $i++)
         {
             if($anot->[$i]{rodic_vzor}==$r && $anot->[$i]{afun}=~m/_Co/ && $i!=$z)
             {
-                # Ale pozor, mohla by to bıt dal¹í vnoøená koordinace!
+                # Ale pozor, mohla by to bÃ½t dalÅ¡Ã­ vnoÅ™enÃ¡ koordinace!
                 if($anot->[$i]{afun}=~m/Coord/)
                 {
                     $r = $i;
@@ -590,8 +709,8 @@ sub zjistit_vazbu
                 }
             }
         }
-        # Pokud z nìjakého dùvodu nebyl nalezen jinı èlen koordinace, vrátit
-        # pøece jenom index koordinaèní spojky.
+        # Pokud z nÄ›jakÃ©ho dÅ¯vodu nebyl nalezen jinÃ½ Älen koordinace, vrÃ¡tit
+        # pÅ™ece jenom index koordinaÄnÃ­ spojky.
         return $r;
     }
 }
@@ -599,33 +718,30 @@ sub zjistit_vazbu
 
 
 #------------------------------------------------------------------------------
-# Ulo¾í natrénované statistiky.
+# UloÅ¾Ã­ natrÃ©novanÃ© statistiky.
 #------------------------------------------------------------------------------
 sub ulozit
 {
-    vypsat("prubeh", parse::cas()." Ukládá se statistika.\n");
-    # Kvùli efektivitì se ha¹ovací tabulka pøedává odkazem (volání
-    # ulozit(\%stat)). Ve volané funkci se na ni pak dá dostat dvìma zpùsoby:
+    vypsat("prubeh", parse::cas()." UklÃ¡dÃ¡ se statistika.\n");
+    # KvÅ¯li efektivitÄ› se haÅ¡ovacÃ­ tabulka pÅ™edÃ¡vÃ¡ odkazem (volÃ¡nÃ­
+    # ulozit(\%stat)). Ve volanÃ© funkci se na ni pak dÃ¡ dostat dvÄ›ma zpÅ¯soby:
     # na celou tabulku najednou $%statref a na prvek $statref->{"ahoj"}.
-    my $statref = $_[0];
-    my $soubor = $_[1];
+    my $statref = shift;
     my @stat = keys(%$statref);
     my $n = $#stat+1;
-    vypsat("prubeh", parse::cas()." Statistika obsahuje $n událostí.\n");
-    #    open(SOUBOR, ">$soubor");
-    $n = 1 if($n==0); # kvùli dìlení pøi hlá¹ení pokroku
+    vypsat("prubeh", parse::cas()." Statistika obsahuje $n udÃ¡lostÃ­.\n");
+    $n = 1 if($n==0); # kvÅ¯li dÄ›lenÃ­ pÅ™i hlÃ¡Å¡enÃ­ pokroku
     for(my $i = 0; $i<=$#stat; $i++)
     {
         vypsat("stat", "$stat[$i]\t$statref->{$stat[$i]}\n");
     }
-    #    close(SOUBOR);
 }
 
 
 
 #------------------------------------------------------------------------------
-# Pro danou dvojici r-z zjistí, zda na r je¹tì visí jinı uzel se stejnou
-# znaèkou jako z.
+# Pro danou dvojici r-z zjistÃ­, zda na r jeÅ¡tÄ› visÃ­ jinÃ½ uzel se stejnou
+# znaÄkou jako z.
 #------------------------------------------------------------------------------
 sub ma_sourozence_stejneho_druhu
 {

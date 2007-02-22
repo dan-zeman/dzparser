@@ -1,4 +1,5 @@
 package vystupy;
+use utf8;
 require 5.000;
 require Exporter;
 use Carp;
@@ -8,48 +9,51 @@ use Encode;
 @EXPORT = qw(vypsat);
 
 #!/usr/bin/perl
-# Funkce pro obsluhu vıstupù.
+# Funkce pro obsluhu vÃ½stupÅ¯.
 
-our $cislo_instance; # èíslo odli¹ující na¹e vıstupy od stejnıch vıstupù jinıch procesù
-my %otevrene_vystupy;
-my %parametry_vystupu;
-my %kodovani; # pro ka¾dı vıstup identifikace kódování, které se má pou¾ít pøi pøípadném kopírování tohoto vıstupu na STDOUT
-# Jestli¾e má vıstup v okam¾iku zavírání nastavenı subject, po¹le se kopie vıstupu na zeman@ufal.mff.cuni.cz s tímto pøedmìtem.
-our %subject;
+our $cislo_instance; # ÄÃ­slo odliÅ¡ujÃ­cÃ­ naÅ¡e vÃ½stupy od stejnÃ½ch vÃ½stupÅ¯ jinÃ½ch procesÅ¯
+my %vystupy;
+# V nÃ¡sledujÃ­cÃ­ promÄ›nnÃ© si pamatujeme, jestli uÅ¾ jsme sprÃ¡vnÄ› zapnuli kÃ³dovÃ¡nÃ­
+# pro STDOUT a STDERR.
+our $standardni_kodovani_zapnuto;
 
 
 
 #------------------------------------------------------------------------------
-# Obálka kolem funkce print(). Ne¾ ji zavolá, zkontroluje, zda je u¾ otevøen
-# vıstupní soubor, a pøípadnì ho otevøe.
+# ObÃ¡lka kolem funkce print(). NeÅ¾ ji zavolÃ¡, zkontroluje, zda je uÅ¾ otevÅ™en
+# vÃ½stupnÃ­ soubor, a pÅ™Ã­padnÄ› ho otevÅ™e. Ale pokud nebÄ›Å¾Ã­me v mÃ³du debug, Å¾Ã¡dnÃ©
+# soubory na disku se neotvÃ­rajÃ­ a funkce pouze tÅ™Ã­dÃ­ vÃ½stup na STDOUT a
+# STDERR.
 #------------------------------------------------------------------------------
 sub vypsat
 {
     my $soubor = shift(@_);
-    # Zjistit, jestli je takovı soubor u¾ otevøen.
-    if(!exists($otevrene_vystupy{$soubor}))
+    # Zjistit, jestli je takovÃ½ soubor uÅ¾ otevÅ™en.
+    unless($vystupy{$soubor}{otevreno})
     {
         otevrit_vystup($soubor);
     }
-    # Nyní do souboru vypsat po¾adovanı text.
-    print $soubor @_;
-    # Pokud se vıstupy posílané do tohoto souboru mají kopírovat i na
-    # standardní vıstup (tj. vìt¹inou na obrazovku), a pokud tato funkce
-    # není globálnì zablokovaná (napø. proto¾e bì¾íme na pozadí), udìlat to.
-    if($parametry_vystupu{$soubor} eq "copy-to-stdout" && !$::konfig{ticho})
+    # Za jistÃ½ch okolnostÃ­ se nÄ›kterÃ© vÃ½stupy neposÃ­lajÃ­ do souboru, ale pouze
+    # na STDOUT, STDERR, pÅ™Ã­padnÄ› ÃºplnÄ› do ÄernÃ© dÃ­ry. Proto nÃ¡sledujÃ­c podmÃ­nka.
+    if($vystupy{$soubor}{psat_do_souboru})
     {
-        if(exists($kodovani{$soubor}))
-        {
-            print(map{encode($kodovani{$soubor}, decode("iso-8859-2", $_))}(@_));
-        }
-        else
-        {
-            print @_;
-        }
+        print $soubor (@_);
     }
-    # Pokud se vıstupy posílané do tohoto souboru mají kopírovat i do mailu,
-    # kopírovat.
-    if(exists($subject{$soubor}))
+    # Pokud se vÃ½stupy posÃ­lanÃ© do tohoto souboru majÃ­ kopÃ­rovat i na
+    # standardnÃ­ vÃ½stup (tj. vÄ›tÅ¡inou na obrazovku), udÄ›lat to.
+    if($vystupy{$soubor}{kopirovat_na_stdout})
+    {
+        print @_;
+    }
+    # Pokud se vÃ½stupy posÃ­lanÃ© do tohoto souboru majÃ­ kopÃ­rovat i na
+    # standardnÃ­ chybovÃ½ vÃ½stup (tj. vÄ›tÅ¡inou na obrazovku), udÄ›lat to.
+    if($vystupy{$soubor}{kopirovat_na_stderr})
+    {
+        print STDERR @_;
+    }
+    # Pokud se vÃ½stupy posÃ­lanÃ© do tohoto souboru majÃ­ kopÃ­rovat i do mailu,
+    # kopÃ­rovat.
+    if($vystupy{$soubor}{kopirovat_do_mailu})
     {
         print MAIL @_;
     }
@@ -58,58 +62,122 @@ sub vypsat
 
 
 #------------------------------------------------------------------------------
-# Otevøe vıstupní soubor. Zkonstruuje pro nìj jedineèné jméno, aby se proces
-# nepøetahoval o jeden soubor s jinımi procesy.
+# OtevÅ™e vÃ½stupnÃ­ soubor. Zkonstruuje pro nÄ›j jedineÄnÃ© jmÃ©no, aby se proces
+# nepÅ™etahoval o jeden soubor s jinÃ½mi procesy.
 #------------------------------------------------------------------------------
 sub otevrit_vystup
 {
-    my $soubor = $_[0];
-    # Zjistit, zda u¾ má tento proces pøiøazené èíslo, pod kterım ukládá své vıstupy.
-    if($cislo_instance eq "")
+    my $soubor = shift;
+    # Zapamatovat si, Å¾e jsme tento soubor otevÅ™eli.
+    $vystupy{$soubor}{otevreno} = 1;
+    # V mÃ©nÄ› ukecanÃ½ch reÅ¾imech vynechat nÄ›kterÃ© druhy vÃ½stupÅ¯.
+    if($::konfig{ukecanost}<1 && $soubor eq "prubeh")
     {
-        zjistit_cislo_instance();
+        return;
     }
-    # Sestavit jméno souboru.
-    my $jmeno = sprintf("$::konfig{prac}/%03d.$soubor", $cislo_instance);
-    # Otevøít soubor pro zápis (mìlo by jít o dosud neexistující soubor, ale nekontrolujeme to).
-    open($soubor, ">$jmeno")
-        or croak("Nelze otevrit vystupni soubor $jmeno: $!\n");
-    # Zaøídit pro tento soubor autoflush mezi ka¾dımi dvìma perlovımi pøíkazy.
-    my $old_fh = select($soubor);
-    $| = 1;
-    select($old_fh);
-    # Zapamatovat si, ¾e jsme tento soubor otevøeli.
-    $otevrene_vystupy{$soubor} = $jmeno;
-    # Má se tento vıstup kopírovat i na standardní vıstup?
-    # Zatím nastaveno natvrdo pro nìkteré identifikátory souborù.
-    if($soubor eq "prubeh" || $soubor eq "vysledky")
+    if($::konfig{ukecanost}<2 && $soubor eq "konfig")
     {
-        $parametry_vystupu{$soubor} = "copy-to-stdout";
-        # Zaøídit autoflush také na standardním vıstupu, kam se prùbì¾nì hlásí stav.
-        my $old_fh = select(STDOUT);
+        return;
+    }
+    if(!$::konfig{testovat} && $soubor eq "vysledky")
+    {
+        return;
+    }
+    # Pokud nejsme v ladicÃ­m reÅ¾imu, psÃ¡t pouze na STDOUT a STDERR.
+    if($::konfig{rezim} ne "debug")
+    {
+        $vystupy{$soubor}{psat_do_souboru} = 0;
+        # NatrÃ©novanÃ½ model je standardnÃ­ vÃ½stup skriptu train.pl.
+        # AnalyzovanÃ½ text ve formÃ¡tu CSTS je standardnÃ­ vÃ½stup skriptu parse.pl.
+        if($soubor =~ m/^(stat|csts)$/)
+        {
+            $vystupy{$soubor}{kopirovat_na_stdout} = 1;
+        }
+        # VÅ¡e ostatnÃ­ je diagnostickÃ½ vÃ½stup.
+        else
+        {
+            $vystupy{$soubor}{kopirovat_na_stderr} = 1;
+        }
+    }
+    else
+    {
+        $vystupy{$soubor}{psat_do_souboru} = 1;
+        # Zjistit, zda uÅ¾ mÃ¡ tento proces pÅ™iÅ™azenÃ© ÄÃ­slo, pod kterÃ½m uklÃ¡dÃ¡ svÃ© vÃ½stupy.
+        if($cislo_instance eq "")
+        {
+            zjistit_cislo_instance();
+        }
+        # Sestavit jmÃ©no souboru.
+        my $jmeno = sprintf("$::konfig{prac}/%03d.$soubor", $cislo_instance);
+        $vystupy{$soubor}{cesta} = $jmeno;
+        # OtevÅ™Ã­t soubor pro zÃ¡pis (mÄ›lo by jÃ­t o dosud neexistujÃ­cÃ­ soubor, ale nekontrolujeme to).
+        open($soubor, ">$jmeno") or croak("Nelze otevrit vystupni soubor $jmeno: $!\n");
+        # Stanovit pro soubor kÃ³dovÃ¡nÃ­.
+        if($soubor =~ m/^(csts|stat)$/ && $::konfig{kodovani_data} ne "")
+        {
+            binmode($soubor, ":encoding($::konfig{kodovani_data})");
+        }
+        elsif($soubor !~ m/^(csts|stat)$/ && $::konfig{kodovani_log} ne "")
+        {
+            binmode($soubor, ":encoding($::konfig{kodovani_log})");
+        }
+        else
+        {
+            binmode($soubor, ":utf8");
+        }
+        # ZaÅ™Ã­dit pro tento soubor autoflush mezi kaÅ¾dÃ½mi dvÄ›ma perlovÃ½mi pÅ™Ã­kazy.
+        my $old_fh = select($soubor);
         $| = 1;
         select($old_fh);
-        # Zajistit správné kódování na standardním vıstupu (tato funkce je tu kvùli oknu MS DOS).
-        # Primitivní identifikace, ¾e pracujeme v systému postaveném na DOSu: existuje cesta C:\?
+        # MÃ¡ se tento vÃ½stup kopÃ­rovat i na standardnÃ­ vÃ½stup?
+        # ZatÃ­m nastaveno natvrdo pro nÄ›kterÃ© identifikÃ¡tory souborÅ¯.
+        if(($soubor eq "prubeh" || $soubor eq "vysledky") && !$::konfig{ticho})
+        {
+            $vystupy{$soubor}{kopirovat_na_stdout} = 1;
+        }
+    }
+    # NÄ›kterÃ© vÃ½stupy se kopÃ­rujÃ­ na standardnÃ­ vÃ½stup, takÅ¾e potÅ™ebujeme zajistit,
+    # Å¾e standardnÃ­ vÃ½stup mÃ¡ nastavenÃ© nÄ›jakÃ© kÃ³dovÃ¡nÃ­. Je jedno, kdy to udÄ›lÃ¡me,
+    # a mÄ›lo by se to udÄ›lat jenom jednou. Proto to udÄ›lÃ¡me hned, bez ohledu na to,
+    # jestli zrovna tenhle vÃ½stup se bude na STDOUT kopÃ­rovat. PÅ™i vÃ½bÄ›ru kÃ³dovÃ¡nÃ­
+    # pro standardnÃ­ vÃ½stupy zatÃ­m vychÃ¡zÃ­me z toho, Å¾e se budou zobrazovat v terminÃ¡lu.
+    # Kdyby mÄ›ly bÃ½t pÅ™esmÄ›rovÃ¡ny do souboru, mohlo by bÃ½t vhodnÄ›jÅ¡Ã­ jinÃ© kÃ³dovÃ¡nÃ­,
+    # alespoÅˆ ve Windows, ale na to zatÃ­m kaÅ¡leme.
+    unless($standardni_kodovani_zapnuto)
+    {
+        # Zjistit, zda bÄ›Å¾Ã­me pod Windows.
         if(-d "C:\\")
         {
-            $kodovani{$soubor} = "cp852";
+            binmode(STDOUT, ":encoding(cp852)");
+            binmode(STDERR, ":encoding(cp852)");
         }
+        else
+        {
+            binmode(STDOUT, ":utf8");
+            binmode(STDERR, ":utf8");
+        }
+        $standardni_kodovani_zapnuto = 1;
+        # ZaÅ™Ã­dit autoflush takÃ© na STDOUT a STDERR.
+        my $old_fh = select(STDOUT);
+        $| = 1;
+        select(STDERR);
+        $| = 1;
+        select($old_fh);
     }
 }
 
 
 
 #------------------------------------------------------------------------------
-# Pøiøadí bì¾ícímu procesu èíslo, pod kterım bude ukládat své vıstupy. Není to
-# èíslo procesu, ale èíslo o 1 vy¹¹í ne¾ nejvy¹¹í dosud pou¾ité kladné èíslo ve
-# vıstupní slo¾ce.
+# PÅ™iÅ™adÃ­ bÄ›Å¾Ã­cÃ­mu procesu ÄÃ­slo, pod kterÃ½m bude uklÃ¡dat svÃ© vÃ½stupy. NenÃ­ to
+# ÄÃ­slo procesu, ale ÄÃ­slo o 1 vyÅ¡Å¡Ã­ neÅ¾ nejvyÅ¡Å¡Ã­ dosud pouÅ¾itÃ© kladnÃ© ÄÃ­slo ve
+# vÃ½stupnÃ­ sloÅ¾ce.
 #------------------------------------------------------------------------------
 sub zjistit_cislo_instance
 {
     return if($cislo_instance ne "");
-    # Projít vıstupní slo¾ku, vybrat soubory, jejich¾ jméno zaèíná èíslem a
-    # teèkou, a zjistit nejvy¹¹í takové èíslo.
+    # ProjÃ­t vÃ½stupnÃ­ sloÅ¾ku, vybrat soubory, jejichÅ¾ jmÃ©no zaÄÃ­nÃ¡ ÄÃ­slem a
+    # teÄkou, a zjistit nejvyÅ¡Å¡Ã­ takovÃ© ÄÃ­slo.
     my $max = 0;
     opendir(DIR, $::konfig{prac});
     while($_ = readdir(DIR))
@@ -129,37 +197,42 @@ sub zjistit_cislo_instance
 
 
 #------------------------------------------------------------------------------
-# Zaøídit, aby se kopie vıstupu poslala nìkam mailem. Neumím zaøídit, aby to
-# ¹lo provést kdykoli a aby se ji¾ vypsanı text zkopíroval. V mailu se tedy
-# objeví pouze text, kterı byl poslán na vıstup a¾ po zavolání této funkce!
+# ZaÅ™Ã­dit, aby se kopie vÃ½stupu poslala nÄ›kam mailem. NeumÃ­m zaÅ™Ã­dit, aby to
+# Å¡lo provÃ©st kdykoli a aby se jiÅ¾ vypsanÃ½ text zkopÃ­roval. V mailu se tedy
+# objevÃ­ pouze text, kterÃ½ byl poslÃ¡n na vÃ½stup aÅ¾ po zavolÃ¡nÃ­ tÃ©to funkce!
+# Pozor, v jednu chvÃ­li se mÅ¯Å¾e do mailu kopÃ­rovat jen jeden vÃ½stup. PÅ™i novÃ©m
+# volÃ¡nÃ­ funkce kopirovat_do_mailu() by se mÄ›l starÃ½ mail ihned odeslat a dalÅ¡Ã­
+# vÃ½stupy se stejnÃ½m identifikÃ¡torem uÅ¾ se do nÄ›j nedostanou!
 #------------------------------------------------------------------------------
 sub kopirovat_do_mailu
 {
     my $sendmail = "/usr/sbin/sendmail";
-    my $soubor = $_[0];
-    my $predmet = $_[1];
-    # Otevøít mail. Pokud to nejde, rovnou skonèit.
+    my $soubor = shift;
+    my $predmet = shift;
+    # OtevÅ™Ã­t mail. Pokud to nejde, rovnou skonÄit.
     if(-f $sendmail)
     {
-        # Zjistit, jestli je takovı soubor u¾ otevøen.
+        # Zjistit, jestli je takovÃ½ soubor uÅ¾ otevÅ™en.
         my $byl_uz_otevren = 1;
-        if(!exists($otevrene_vystupy{$soubor}))
+        unless($vystupy{$soubor}{otevreno})
         {
             $byl_uz_otevren = 0;
             otevrit_vystup($soubor);
         }
-        $subject{$soubor} = $predmet;
-        # Otevøít mail a vypsat jeho záhlaví.
+        $vystupy{$soubor}{kopirovat_do_mailu} = 1;
+        # OtevÅ™Ã­t mail a vypsat jeho zÃ¡hlavÃ­.
         open(MAIL, "|$sendmail zeman\@ufal.mff.cuni.cz");
+        binmode(MAIL, ":utf8");
         print MAIL ("From: Parser <zeman\@ufal.mff.cuni.cz>\n");
         print MAIL ("To: Daniel Zeman <zeman\@ufal.mff.cuni.cz>\n");
         print MAIL ("Subject: $predmet\n");
-        print MAIL ("Content-type: text/plain; charset=iso-8859-2\n");
+        print MAIL ("Content-type: text/plain; charset=utf-8\n");
+        print MAIL ("Content-transfer-encoding: 8bit\n");
         print MAIL ("\n");
     }
 }
 
 
 
-# Aby to fungovalo, musí modul vrátit pravdu.
+# Aby to fungovalo, musÃ­ modul vrÃ¡tit pravdu.
 1;

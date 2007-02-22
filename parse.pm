@@ -1,34 +1,35 @@
-package parse; # Knihovní funkce parseru potøebné jak pøi tréninku, tak pøi analıze.
+package parse; # KnihovnÃ­ funkce parseru potÅ™ebnÃ© jak pÅ™i trÃ©ninku, tak pÅ™i analÃ½ze.
+use utf8;
 use vystupy;
 
 
 
 #------------------------------------------------------------------------------
-# Pøeète konfiguraèní soubor.
+# PÅ™eÄte konfiguraÄnÃ­ soubor.
 #------------------------------------------------------------------------------
 sub precist_konfig
 {
     my $jmeno_souboru = shift;
-    my $konfig = shift; # odkaz na hash, kam ulo¾it konfiguraci
+    my $konfig = shift; # odkaz na hash, kam uloÅ¾it konfiguraci
     my $konfig_log;
     open(SOUBOR, $jmeno_souboru);
     while(<SOUBOR>)
     {
-        # V¹echny øádky konfiguraèního souboru si zatím pamatovat, aby bylo pozdìji mo¾né vypsat je do logu.
-        # Nemù¾eme je vypsat hned, proto¾e zpùsob vypisování je konfigurací také ovlivnìn.
+        # VÅ¡echny Å™Ã¡dky konfiguraÄnÃ­ho souboru si zatÃ­m pamatovat, aby bylo pozdÄ›ji moÅ¾nÃ© vypsat je do logu.
+        # NemÅ¯Å¾eme je vypsat hned, protoÅ¾e zpÅ¯sob vypisovÃ¡nÃ­ je konfiguracÃ­ takÃ© ovlivnÄ›n.
         $konfig_log .= $_;
-        # Smazat z konfiguraèního souboru komentáøe.
+        # Smazat z konfiguraÄnÃ­ho souboru komentÃ¡Å™e.
         s/#.*//;
-        # Zbytek má tvar "promìnná = hodnota".
+        # Zbytek mÃ¡ tvar "promÄ›nnÃ¡ = hodnota".
         if(m/(\w+)\s*=\s*(.*)/)
         {
             $konfig->{$1} = $2;
         }
     }
     close(SOUBOR);
-    # Konfiguraci ze souboru lze pøebít konfigurací z pøíkazového øádku.
-    # Libovolnı argument na pøíkazovém øádku mù¾e mít tvar jako øádek konfiguraèního souboru, napø. "stat=013.stat".
-    # Kromì toho existuje zkratka "-q" za "ticho=1".
+    # Konfiguraci ze souboru lze pÅ™ebÃ­t konfiguracÃ­ z pÅ™Ã­kazovÃ©ho Å™Ã¡dku.
+    # LibovolnÃ½ argument na pÅ™Ã­kazovÃ©m Å™Ã¡dku mÅ¯Å¾e mÃ­t tvar jako Å™Ã¡dek konfiguraÄnÃ­ho souboru, napÅ™. "stat=013.stat".
+    # KromÄ› toho existuje zkratka "-q" za "ticho=1".
     for(my $i = 0; $i<=$#main::ARGV; $i++)
     {
         if($main::ARGV[$i] eq "-q")
@@ -42,19 +43,38 @@ sub precist_konfig
         }
     }
     # Zaznamenat konfiguraci do logu.
-    # (Nemohlo se to udìlat rovnou, proto¾e samo zapisování do logu je konfigurací také ovlivnìno.)
-    # Zalo¾it hlavní záznam o parametrech vıpoètu.
+    # (Nemohlo se to udÄ›lat rovnou, protoÅ¾e samo zapisovÃ¡nÃ­ do logu je konfiguracÃ­ takÃ© ovlivnÄ›no.)
+    # ZaloÅ¾it hlavnÃ­ zÃ¡znam o parametrech vÃ½poÄtu.
     vypsat("konfig", ""); # zajistit zalozeni cisla instance
     my $pocitac = exists($ENV{HOST}) ? $ENV{HOST} : $ENV{COMPUTERNAME}; # HOST je v Linuxu, COMPUTERNAME je ve Windows.
-    vypsat("konfig", "Vıpoèet èíslo $vystupy::cislo_instance byl spu¹tìn v ".cas($::starttime)." na poèítaèi $pocitac jako proces èíslo $$.\n");
+    vypsat("konfig", "VÃ½poÄet ÄÃ­slo $vystupy::cislo_instance byl spuÅ¡tÄ›n v ".cas($::starttime)." na poÄÃ­taÄi $pocitac jako proces ÄÃ­slo $$.\n");
     vypsat("konfig", "\n$konfig_log\n");
+    # Upravit hodnoty atributÅ¯, kterÃ© zÃ¡visÃ­ na jinÃ½ch atributech.
+    if($konfig->{ukecanost}<0)
+    {
+        if($konfig->{rezim} eq "normal")
+        {
+            if($konfig->{ukecanost}==-1)
+            {
+                $konfig->{ukecanost} = 1;
+            }
+            elsif($konfig->{ukecanost}==-2)
+            {
+                $konfig->{ukecanost} = 0;
+            }
+        }
+        else
+        {
+            $konfig->{ukecanost} = 2;
+        }
+    }
 }
 
 
 
 #------------------------------------------------------------------------------
-# Vrátí aktuální èas jako øetìzec s polo¾kami oddìlenımi dvojteèkou. Délka
-# øetìzce je v¾dy stejná (8 znakù), co¾ lze vyu¾ít pøi sloupcovém formátování.
+# VrÃ¡tÃ­ aktuÃ¡lnÃ­ Äas jako Å™etÄ›zec s poloÅ¾kami oddÄ›lenÃ½mi dvojteÄkou. DÃ©lka
+# Å™etÄ›zce je vÅ¾dy stejnÃ¡ (8 znakÅ¯), coÅ¾ lze vyuÅ¾Ã­t pÅ™i sloupcovÃ©m formÃ¡tovÃ¡nÃ­.
 #------------------------------------------------------------------------------
 sub cas
 {
@@ -66,8 +86,8 @@ sub cas
 
 
 #------------------------------------------------------------------------------
-# Vypí¹e dobu, po kterou program bì¾el. K tomu potøebuje dostat èasové otisky
-# zaèátku a konce.
+# VypÃ­Å¡e dobu, po kterou program bÄ›Å¾el. K tomu potÅ™ebuje dostat ÄasovÃ© otisky
+# zaÄÃ¡tku a konce.
 #------------------------------------------------------------------------------
 sub vypsat_delku_trvani_programu
 {
@@ -82,8 +102,8 @@ sub vypsat_delku_trvani_programu
     my $hod = int($cas/3600);
     my $min = int(($cas%3600)/60);
     my $sek = $cas%60;
-    vypsat($soubor, "Vıpoèet skonèil v ".cas($stoptime).".\n");
-    vypsat($soubor, sprintf("Program bì¾el %02d:%02d:%02d hodin.\n", $hod, $min, $sek));
+    vypsat($soubor, "VÃ½poÄet skonÄil v ".cas($stoptime).".\n");
+    vypsat($soubor, sprintf("Program bÄ›Å¾el %02d:%02d:%02d hodin.\n", $hod, $min, $sek));
 }
 
 

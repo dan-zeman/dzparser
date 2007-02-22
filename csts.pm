@@ -1,15 +1,16 @@
-# Funkce pro naèítání lingvisticky anotovanıch textù ve formátu CSTS.
-# - naète podstatné informace o slovu z jednoho øádku CSTS (funkce zpracovat_slovo())
-#   - u¾ pøi naèítání nìkterá data zpracuje, napø. pøipraví upravenou morfologickou znaèku
-# - umí projít celou mno¾inu souborù na disku (pomocí glob masky; funkce projit_data()),
-#   postupnì je otvírat, naèítat slova a po zkompletování ka¾dé vìty zavolat funkci
-#   zpracovat_vetu(), kterou v¹ak tento modul nedefinuje - musí si ji definovat ten,
-#   kdo modul vyu¾ívá, a to v prostoru main::. Funkce dostane od modulu csts tøi
+# Funkce pro naÄÃ­tÃ¡nÃ­ lingvisticky anotovanÃ½ch textÅ¯ ve formÃ¡tu CSTS.
+# - naÄte podstatnÃ© informace o slovu z jednoho Å™Ã¡dku CSTS (funkce zpracovat_slovo())
+#   - uÅ¾ pÅ™i naÄÃ­tÃ¡nÃ­ nÄ›kterÃ¡ data zpracuje, napÅ™. pÅ™ipravÃ­ upravenou morfologickou znaÄku
+# - umÃ­ projÃ­t celou mnoÅ¾inu souborÅ¯ na disku (pomocÃ­ glob masky; funkce projit_data()),
+#   postupnÄ› je otvÃ­rat, naÄÃ­tat slova a po zkompletovÃ¡nÃ­ kaÅ¾dÃ© vÄ›ty zavolat funkci
+#   zpracovat_vetu(), kterou vÅ¡ak tento modul nedefinuje - musÃ­ si ji definovat ten,
+#   kdo modul vyuÅ¾Ã­vÃ¡, a to v prostoru main::. Funkce dostane od modulu csts tÅ™i
 #   parametry:
-#   - odkaz na hash s informacemi o aktuálním dokumentu, odstavci a vìtì;
-#   - odkaz na pole slov vìty a
-#   - odkaz na pole hashù s anotacemi slov.
+#   - odkaz na hash s informacemi o aktuÃ¡lnÃ­m dokumentu, odstavci a vÄ›tÄ›;
+#   - odkaz na pole slov vÄ›ty a
+#   - odkaz na pole hashÅ¯ s anotacemi slov.
 package csts;
+use utf8;
 
 
 
@@ -20,8 +21,8 @@ package csts;
 
 
 #------------------------------------------------------------------------------
-# Zpracuje promìnnou $_ jako øádek CSTS, obsahující informace o právì jednom
-# slovì. Vrátí hash s informacemi o slovì, urèenı k zaøazení do pole @anot.
+# Zpracuje promÄ›nnou $_ jako Å™Ã¡dek CSTS, obsahujÃ­cÃ­ informace o prÃ¡vÄ› jednom
+# slovÄ›. VrÃ¡tÃ­ hash s informacemi o slovÄ›, urÄenÃ½ k zaÅ™azenÃ­ do pole @anot.
 # %{$anot[$i]} ... jednotlive anotace
 #  (Ne vsechny polozky se uz plni a pouzivaji, ale kvuli pojmenovavaci koncepci
 #  jsou zde uvedeny.)
@@ -53,37 +54,49 @@ package csts;
 sub zpracovat_slovo
 {
     my $konfig = shift; # odkaz na hash
-    my %anot; # vıstupní hash
+    my %anot; # vÃ½stupnÃ­ hash
     #==========================================================================
-    # Index slova ve vìtì (CSTS znaèka <r>; nemusí nutnì odpovídat skuteènému
-    # poøadí slova ve vìtì a na tektogramatické rovinì ani nemusí bıt celoèí-
-    # selnı).
+    # Index slova ve vÄ›tÄ› (CSTS znaÄka <r>; nemusÃ­ nutnÄ› odpovÃ­dat skuteÄnÃ©mu
+    # poÅ™adÃ­ slova ve vÄ›tÄ› a na tektogramatickÃ© rovinÄ› ani nemusÃ­ bÃ½t celoÄÃ­-
+    # selnÃ½).
     #==========================================================================
     if(m/<r>(\d+)/)
     {
         $anot{ord} = $1;
     }
     #==========================================================================
-    # Mezera pøed slovem (CSTS znaèka <D>).
+    # Mezera pÅ™ed slovem (CSTS znaÄka <D>).
     #==========================================================================
     $anot{mezera} = !$bezmezery;
     #==========================================================================
-    # Pøeèíst slovní tvar.
+    # PÅ™eÄÃ­st slovnÃ­ tvar.
     #==========================================================================
-    m/<[fd]( [^>]*)?>([^<]+)/;
-    $anot{slovo} = $2;
-    $anot{slovo} =~ tr/AÁBCÈDÏEÉÌFGHIÍJKLMNÒOÓPQRØS©T«UÚÙVWXYİZ®/aábcèdïeéìfghiíjklmnòoópqrøs¹t»uúùvwxyız¾/;
+    if(m/<[fd]( [^>]*)?>([^<]*)/)
+    {
+        $anot{slovo} = lc($2);
+    }
+    else
+    {
+        $anot{slovo} = "";
+    }
     #==========================================================================
-    # Pøeèíst heslovı tvar.
+    # PÅ™eÄÃ­st heslovÃ½ tvar.
     #==========================================================================
-    m/<$konfig->{mzdroj0}l[^>]*>([^<]+)/;
-    #     heslo ... heslo ze zvoleneho zdroje (<MMl>, <MDl>, <l>)
-    #     lexkat ... poznamka za podtrzitkem, ze stejneho zdroje jako heslo
-    $anot{heslo} = $1;
-    $anot{heslo} =~ s/_(.*)$//;
-    $anot{lexkat} = $1;
+    if(m/<$konfig->{mzdroj0}l[^>]*>([^<]*)/)
+    {
+        #     heslo ... heslo ze zvoleneho zdroje (<MMl>, <MDl>, <l>)
+        #     lexkat ... poznamka za podtrzitkem, ze stejneho zdroje jako heslo
+        $anot{heslo} = $1;
+        $anot{heslo} =~ s/_(.*)$//;
+        $anot{lexkat} = $1;
+    }
+    else
+    {
+        $anot{heslo} = "";
+        $anot{lexkat} = "";
+    }
     #==========================================================================
-    # Pøeèíst morfologickou znaèku.
+    # PÅ™eÄÃ­st morfologickou znaÄku.
     #==========================================================================
     #  znacka - morfologicka, neupravovana!
     #     znacka ... morfologicka znacka ze zvoleneho zdroje (<MMt>, <MDt>, <t>)
@@ -93,28 +106,36 @@ sub zpracovat_slovo
     #     znacka_mdtb ... znacka podle taggeru b <MDt src="b">
     #     uznacka ... ze zvoleneho zdroje, ale upravena (jsou-li upravy povolene)
     #     zdznacka ... zdedena znacka (koren koordinace dedi od clenu)
-    # Pøeèíst seznam mo¾nıch znaèek ze slovníku.
+    # PÅ™eÄÃ­st seznam moÅ¾nÃ½ch znaÄek ze slovnÃ­ku.
     $anot{mozne_znacky} = "";
     my $schranka = $_;
-    while($schranka =~ s/<MMt[^>]*>(...............)//)
+    # Pozor, ne vÅ¡echny korpusy majÃ­ pÅ™esnÄ› 15znakovÃ© znaÄky!
+#    while($schranka =~ s/<MMt[^>]*>(...............)//)
+    while($schranka =~ s/<MMt[^>]*>([^<]*)//)
     {
         $anot{mozne_znacky} .= "|$1";
     }
     $anot{mozne_znacky} =~ s/^\|//;
-    # Pøeèíst znaèky pøiøazené èlovìkem a obìma taggery.
-    if($schranka =~ m/<t>(...............)/)
+    # PÅ™eÄÃ­st znaÄky pÅ™iÅ™azenÃ© ÄlovÄ›kem a obÄ›ma taggery.
+    # Pozor, ne vÅ¡echny korpusy majÃ­ pÅ™esnÄ› 15znakovÃ© znaÄky!
+#    if($schranka =~ m/<t>(...............)/)
+    if($schranka =~ m/<t>([^<]*)/)
     {
         $anot{znacka_clovek} = $1;
     }
-    if($schranka =~ m/<MDt[^>]*?src="a"[^>]*?>(...............)/)
+    # Pozor, ne vÅ¡echny korpusy majÃ­ pÅ™esnÄ› 15znakovÃ© znaÄky!
+#    if($schranka =~ m/<MDt.*?src="a".*?>(...............)/)
+    if($schranka =~ m/<MDt.*?src="a".*?>([^<]*)/)
     {
         $anot{znacka_mdta} = $1;
     }
-    if($schranka =~ m/<MDt[^>]*?src="b"[^>]*?>(...............)/)
+    # Pozor, ne vÅ¡echny korpusy majÃ­ pÅ™esnÄ› 15znakovÃ© znaÄky!
+#    if($schranka =~ m/<MDt.*?src="b".*?>(...............)/)
+    if($schranka =~ m/<MDt.*?src="b".*?>([^<]*)/)
     {
         $anot{znacka_mdtb} = $1;
     }
-    # Vybrat znaèku ze zdroje po¾adovaného v konfiguraci.
+    # Vybrat znaÄku ze zdroje poÅ¾adovanÃ©ho v konfiguraci.
     if($konfig->{mzdroj0} eq "MM")
     {
         $anot{znacka} = $anot{mozne_znacky};
@@ -135,7 +156,7 @@ sub zpracovat_slovo
         }
     }
     #==========================================================================
-    # Upravit morfologickou znaèku.
+    # Upravit morfologickou znaÄku.
     #==========================================================================
     if($konfig->{upravovat_mzn})
     {
@@ -149,10 +170,10 @@ sub zpracovat_slovo
     {
         $anot{uznacka} = join("|", sort(split(/\|/, $anot{znacka})));
     }
-    # Odstranit pøípadné duplikáty (kvùli tomu jsme znaèky tøídili).
-    while($anot{uznacka} =~ s/([^\|]+)\|\1/$1/g) {}
+    # Odstranit pÅ™Ã­padnÃ© duplikÃ¡ty (kvÅ¯li tomu jsme znaÄky tÅ™Ã­dili).
+    while($anot{uznacka} =~ s/(..)\|\1/$1/g) {}
     #==========================================================================
-    # Zjistit syntaktickou strukturu a syntaktickou znaèku.
+    # Zjistit syntaktickou strukturu a syntaktickou znaÄku.
     #==========================================================================
     if(m/<g>(\d+)/)
     {
@@ -161,13 +182,14 @@ sub zpracovat_slovo
     if(m/<A>([^<]+)/)
     {
         $anot{afun} = $1;
-        if($anot{afun}=~m/$konfig->{"vynech"}/)
+        if($anot{afun} =~ m/$konfig->{vynech}/)
         {
             $vynechat_vetu = 1;
         }
     }
-    # Dal¹í syntaktické anotace ulo¾it do obecného pole hashù.
-    if(m/<MDg src="(.*?)">(\d+)/)
+    # DalÅ¡Ã­ syntaktickÃ© anotace uloÅ¾it do obecnÃ©ho pole hashÅ¯.
+    $schranka = $_;
+    while($schranka =~ s/<MDg src="([^"]*?)">(\d+)//)
     {
         $anot{"mdg".$1} = $2;
     }
@@ -177,19 +199,19 @@ sub zpracovat_slovo
 
 
 #------------------------------------------------------------------------------
-# Pøeète ze vstupního øádku anotaci jednoho druhu. V¾dy vrátí pole, i kdyby
-# neexistovaly alternativní anotace tého¾ druhu.
+# PÅ™eÄte ze vstupnÃ­ho Å™Ã¡dku anotaci jednoho druhu. VÅ¾dy vrÃ¡tÃ­ pole, i kdyby
+# neexistovaly alternativnÃ­ anotace tÃ©hoÅ¾ druhu.
 #------------------------------------------------------------------------------
 sub zjistit_anotaci
 {
-    # Vstupní øádek tıkající se jednoho slova.
+    # VstupnÃ­ Å™Ã¡dek tÃ½kajÃ­cÃ­ se jednoho slova.
     my $radek = $_[0];
-    # Identifikace. Napø. "<MDt w="0.5" src="a">" se chytne na "MDt src=a".
-    # Identifikace nemusí fungovat dobøe, obsahuje-li více ne¾ jeden atribut.
+    # Identifikace. NapÅ™. "<MDt w="0.5" src="a">" se chytne na "MDt src=a".
+    # Identifikace nemusÃ­ fungovat dobÅ™e, obsahuje-li vÃ­ce neÅ¾ jeden atribut.
     my $ident = $_[1];
-    # Pøipravit regulární vıraz, podle kterého anotaci poznáme.
-    # Tato funkce se bude volat velmi èasto, proto cachovat ji¾ známé regulární
-    # vırazy.
+    # PÅ™ipravit regulÃ¡rnÃ­ vÃ½raz, podle kterÃ©ho anotaci poznÃ¡me.
+    # Tato funkce se bude volat velmi Äasto, proto cachovat jiÅ¾ znÃ¡mÃ© regulÃ¡rnÃ­
+    # vÃ½razy.
     my $regex;
     if(exists($anot_regex{$ident}))
     {
@@ -198,16 +220,16 @@ sub zjistit_anotaci
     else
     {
         $regex = $ident;
-        # Obalit hodnotu atributu volitelnımi uvozovkami, pokud tam nejsou.
+        # Obalit hodnotu atributu volitelnÃ½mi uvozovkami, pokud tam nejsou.
         $regex =~ s/(\w+)=(\w+)/$1=(?:$2|\"$2\"|\'$2\')/;
-        # Dovolit dal¹í atributy a mezery.
+        # Dovolit dalÅ¡Ã­ atributy a mezery.
         $regex =~ s/\s+/(?: [^>]*)? /g;
-        # Obalit celé skobièkami, pøidat past na vlastní anotaci.
+        # Obalit celÃ© skobiÄkami, pÅ™idat past na vlastnÃ­ anotaci.
         $regex = "<$regex>([^<\r\n]*)";
-        # Ulo¾it vytvoøenı regulární vıraz do cache.
+        # UloÅ¾it vytvoÅ™enÃ½ regulÃ¡rnÃ­ vÃ½raz do cache.
         $anot_regex{$ident} = $regex;
     }
-    # Pochytat v¹echny vıskyty anotace.
+    # Pochytat vÅ¡echny vÃ½skyty anotace.
     my @hodnoty;
     my $i = 0;
     while($radek =~ s/$regex//)
@@ -220,53 +242,53 @@ sub zjistit_anotaci
 
 
 #------------------------------------------------------------------------------
-# Upraví morfologickou znaèku. Volá se pøi ètení znaèky, tedy z funkce
-# zpracovat_slovo(). Zapisuje do globální promìnné $sloveso. Kontrolu vıskytu
-# slovesa je dobré dìlat tady, proto¾e jedno slovo mù¾e mít více znaèek a jen
-# nìkteré z nich mohou bıt slovesné.
+# UpravÃ­ morfologickou znaÄku. VolÃ¡ se pÅ™i ÄtenÃ­ znaÄky, tedy z funkce
+# zpracovat_slovo(). Zapisuje do globÃ¡lnÃ­ promÄ›nnÃ© $sloveso. Kontrolu vÃ½skytu
+# slovesa je dobrÃ© dÄ›lat tady, protoÅ¾e jedno slovo mÅ¯Å¾e mÃ­t vÃ­ce znaÄek a jen
+# nÄ›kterÃ© z nich mohou bÃ½t slovesnÃ©.
 #------------------------------------------------------------------------------
 sub upravit_mznacku()
 {
-    my $znacka = shift; # pùvodní pozièní znaèka z PDT (15 znakù)
-    my $lznacka = shift; # stylistické a vıznamové kategorie (z Hajièova lemmatu za podtr¾ítkem)
-    my $heslo = shift; # èást lemmatu pøed podtr¾ítkem (ale vèetnì pø. pomlèky a èísla)
-    my $slovo = shift; # slovní tvar
-    my $konfig = shift; # odkaz na hash s konfigurací
-    # Pou¾ít baltimorskou redukci znaèek, je-li to po¾adováno.
+    my $znacka = shift; # pÅ¯vodnÃ­ poziÄnÃ­ znaÄka z PDT (15 znakÅ¯)
+    my $lznacka = shift; # stylistickÃ© a vÃ½znamovÃ© kategorie (z HajiÄova lemmatu za podtrÅ¾Ã­tkem)
+    my $heslo = shift; # ÄÃ¡st lemmatu pÅ™ed podtrÅ¾Ã­tkem (ale vÄetnÄ› pÅ™. pomlÄky a ÄÃ­sla)
+    my $slovo = shift; # slovnÃ­ tvar
+    my $konfig = shift; # odkaz na hash s konfiguracÃ­
+    # PouÅ¾Ã­t baltimorskou redukci znaÄek, je-li to poÅ¾adovÃ¡no.
     if($konfig->{upravovat_mzn}==1)
     {
         return upravit_mznacku_baltimore($znacka);
     }
     #==========================================================================
-    # Kontrola vıskytu slovesa (kvùli závislostem na koøeni).
+    # Kontrola vÃ½skytu slovesa (kvÅ¯li zÃ¡vislostem na koÅ™eni).
     if($znacka =~ m/^V/)
     {
         $sloveso = 1;
     }
     #==========================================================================
-    # Øadovou èíslovku pova¾ovat za pøídavné jméno.
+    # Å˜adovou ÄÃ­slovku povaÅ¾ovat za pÅ™Ã­davnÃ© jmÃ©no.
     $znacka =~ s/^Cr/AA/;
-    # Zkrátit znaèku na dva znaky (slovní druh a pád nebo poddruh).
+    # ZkrÃ¡tit znaÄku na dva znaky (slovnÃ­ druh a pÃ¡d nebo poddruh).
     $znacka =~ m/^(.)(.)..(.)/;
     $znacka = $3=="-" ? $1.$2 : $1.$3;
     $znacka .= $osoba;
-    # Machinace se znaèkami.
+    # Machinace se znaÄkami.
     if($znacka=~m/^N/ && $lznacka=~m/Y/)
     {
         $znacka =~ s/^N/NY/;
     }
-    # Lexikalizace znaèek pro interpunkci.
+    # Lexikalizace znaÄek pro interpunkci.
     elsif($znacka eq "Z:")
     {
         $znacka = "Z".$slovo;
     }
-    # Selektivní lexikalizace znaèek.
+    # SelektivnÃ­ lexikalizace znaÄek.
     if($konfig->{selex})
     {
-        # Zájmena
+        # ZÃ¡jmena
         if($konfig->{selex_zajmena} && $znacka=~m/^P/)
         {
-            # Zvratná zájmena "se" a "si".
+            # ZvratnÃ¡ zÃ¡jmena "se" a "si".
             if($slovo=~m/(se|si)/)
             {
                 $znacka = "P".$slovo;
@@ -278,10 +300,10 @@ sub upravit_mznacku()
         }
         elsif($znacka=~m/^V/)
         {
-            # Pomocné sloveso bıt lexikalizovat tvarem, ne heslem.
-            # Je potøeba rozli¹it, kdy má bıt nahoøe a kdy dole.
-            # Pochopitelnì je to opatøení funkèní jen v èe¹tinì, ale jinde by nemìlo ¹kodit.
-            if($konfig->{selex_byt} && $heslo eq "bıt")
+            # PomocnÃ© sloveso bÃ½t lexikalizovat tvarem, ne heslem.
+            # Je potÅ™eba rozliÅ¡it, kdy mÃ¡ bÃ½t nahoÅ™e a kdy dole.
+            # PochopitelnÄ› je to opatÅ™enÃ­ funkÄnÃ­ jen v ÄeÅ¡tinÄ›, ale jinde by nemÄ›lo Å¡kodit.
+            if($konfig->{selex_byt} && $heslo eq "bÃ½t")
             {
                 my $byt = $slovo;
                 $byt =~ s/^ne//;
@@ -292,29 +314,29 @@ sub upravit_mznacku()
         }
         elsif($konfig->{selex_prislovce_100} && $znacka=~m/^D/)
         {
-            # Seznam pøíslovcí, která se vyskytla 100 a vícekrát.
+            # Seznam pÅ™Ã­slovcÃ­, kterÃ¡ se vyskytla 100 a vÃ­cekrÃ¡t.
             my @casta_prislovce =
-            ("tak", "jak", "u¾", "také", "ji¾", "je¹tì", "vèera", "tedy",
-            "pak", "více", "dnes", "pouze", "kde", "kdy", "napøíklad",
-            "toti¾", "pøedev¹ím", "velmi", "zatím", "nyní", "právì", "stále",
-            "zejména", "zcela", "dosud", "stejnì", "témìø", "letos", "dále",
-            "sice", "tu", "dokonce", "navíc", "zde", "rovnì¾", "zøejmì",
-            "pøitom", "napø", "vùbec", "tam", "èasto", "pøíli¹", "naopak",
-            "zároveò", "v¾dy", "ménì", "tøeba", "opìt", "loni", "spí¹e",
-            "snad", "dobøe", "proè", "zhruba", "pozdìji", "vlastnì", "mo¾ná",
-            "samozøejmì", "skuteènì", "znovu", "tehdy", "pøesto", "nakonec",
-            "spolu", "poté", "jinak", "proto", "døíve", "pøímo", "víc",
-            "teï", "nikdy", "teprve", "vìt¹inou", "pøece", "jistì",
-            "podobnì", "nìkdy", "hlavnì", "alespoò", "dost", "zase",
-            "údajnì", "souèasnì", "postupnì", "celkem", "prakticky", "co",
-            "hned", "dlouho", "nejvíce", "hodnì", "roènì", "nadále",
-            "rychle", "potom", "nejménì", "trochu", "mnohem", "tady",
-            "pomìrnì", "velice", "nedávno", "vıraznì", "takto", "nikoli",
-            "krátce", "ponìkud", "lépe", "pøesnì", "opravdu", "pøibli¾nì",
-            "tì¾ko", "pravdìpodobnì", "podstatnì", "moc", "doma", "koneènì",
-            "daleko", "zvlá¹tì", "prostì", "spoleènì", "pùvodnì", "mj",
-            "apod", "novì", "spí¹", "pøípadnì", "pøedem", "naprosto", "dál",
-            "úplnì", "rozhodnì", "veèer", "okam¾itì", "dennì", "nikoliv",
+            ("tak", "jak", "uÅ¾", "takÃ©", "jiÅ¾", "jeÅ¡tÄ›", "vÄera", "tedy",
+            "pak", "vÃ­ce", "dnes", "pouze", "kde", "kdy", "napÅ™Ã­klad",
+            "totiÅ¾", "pÅ™edevÅ¡Ã­m", "velmi", "zatÃ­m", "nynÃ­", "prÃ¡vÄ›", "stÃ¡le",
+            "zejmÃ©na", "zcela", "dosud", "stejnÄ›", "tÃ©mÄ›Å™", "letos", "dÃ¡le",
+            "sice", "tu", "dokonce", "navÃ­c", "zde", "rovnÄ›Å¾", "zÅ™ejmÄ›",
+            "pÅ™itom", "napÅ™", "vÅ¯bec", "tam", "Äasto", "pÅ™Ã­liÅ¡", "naopak",
+            "zÃ¡roveÅˆ", "vÅ¾dy", "mÃ©nÄ›", "tÅ™eba", "opÄ›t", "loni", "spÃ­Å¡e",
+            "snad", "dobÅ™e", "proÄ", "zhruba", "pozdÄ›ji", "vlastnÄ›", "moÅ¾nÃ¡",
+            "samozÅ™ejmÄ›", "skuteÄnÄ›", "znovu", "tehdy", "pÅ™esto", "nakonec",
+            "spolu", "potÃ©", "jinak", "proto", "dÅ™Ã­ve", "pÅ™Ã­mo", "vÃ­c",
+            "teÄ", "nikdy", "teprve", "vÄ›tÅ¡inou", "pÅ™ece", "jistÄ›",
+            "podobnÄ›", "nÄ›kdy", "hlavnÄ›", "alespoÅˆ", "dost", "zase",
+            "ÃºdajnÄ›", "souÄasnÄ›", "postupnÄ›", "celkem", "prakticky", "co",
+            "hned", "dlouho", "nejvÃ­ce", "hodnÄ›", "roÄnÄ›", "nadÃ¡le",
+            "rychle", "potom", "nejmÃ©nÄ›", "trochu", "mnohem", "tady",
+            "pomÄ›rnÄ›", "velice", "nedÃ¡vno", "vÃ½raznÄ›", "takto", "nikoli",
+            "krÃ¡tce", "ponÄ›kud", "lÃ©pe", "pÅ™esnÄ›", "opravdu", "pÅ™ibliÅ¾nÄ›",
+            "tÄ›Å¾ko", "pravdÄ›podobnÄ›", "podstatnÄ›", "moc", "doma", "koneÄnÄ›",
+            "daleko", "zvlÃ¡Å¡tÄ›", "prostÄ›", "spoleÄnÄ›", "pÅ¯vodnÄ›", "mj",
+            "apod", "novÄ›", "spÃ­Å¡", "pÅ™Ã­padnÄ›", "pÅ™edem", "naprosto", "dÃ¡l",
+            "ÃºplnÄ›", "rozhodnÄ›", "veÄer", "okamÅ¾itÄ›", "dennÄ›", "nikoliv",
             "obvykle", "kam", "atd");
             for(my $i = 0; $i<=$#casta_prislovce; $i++)
             {
@@ -329,7 +351,7 @@ sub upravit_mznacku()
         {
             $znacka = "R".$heslo;
         }
-        elsif($konfig->{selex_podradici_spojky} && $znacka=~m/^J/ && $slovo=~m/(¾e|aby|zda)/)
+        elsif($konfig->{selex_podradici_spojky} && $znacka=~m/^J/ && $slovo=~m/(Å¾e|aby|zda)/)
         {
             $znacka = "J".$slovo;
             $znacka =~ s/zdali/zda/;
@@ -341,18 +363,18 @@ sub upravit_mznacku()
 
 
 #------------------------------------------------------------------------------
-# Upraví morfologickou znaèku pøibli¾nì tak, jak jsem to dìlal v Baltimoru.
-# Tenkrát jsem na to mìl funkci, která manipulovala s jednotlivımi mluvnickımi
-# kategoriemi. Dnes mám pouze seznam neredukovanıch znaèek a jejich redukova-
-# nıch protìj¹kù. Chybí v nìm v¹ak manipulace se znaèkami interpunkce, které
-# byly naopak u¾ tehdy selektivnì lexikalizovány, a také nìkteré zmìny, které
-# vedly na neexistující znaèku, tak¾e program, kterım jsem si pozdìji vyrábìl
-# konverzní slovníèek, u¾ si s nimi neumìl poradit.
+# UpravÃ­ morfologickou znaÄku pÅ™ibliÅ¾nÄ› tak, jak jsem to dÄ›lal v Baltimoru.
+# TenkrÃ¡t jsem na to mÄ›l funkci, kterÃ¡ manipulovala s jednotlivÃ½mi mluvnickÃ½mi
+# kategoriemi. Dnes mÃ¡m pouze seznam neredukovanÃ½ch znaÄek a jejich redukova-
+# nÃ½ch protÄ›jÅ¡kÅ¯. ChybÃ­ v nÄ›m vÅ¡ak manipulace se znaÄkami interpunkce, kterÃ©
+# byly naopak uÅ¾ tehdy selektivnÄ› lexikalizovÃ¡ny, a takÃ© nÄ›kterÃ© zmÄ›ny, kterÃ©
+# vedly na neexistujÃ­cÃ­ znaÄku, takÅ¾e program, kterÃ½m jsem si pozdÄ›ji vyrÃ¡bÄ›l
+# konverznÃ­ slovnÃ­Äek, uÅ¾ si s nimi neumÄ›l poradit.
 #------------------------------------------------------------------------------
 sub upravit_mznacku_baltimore()
 {
-    my $znacka = shift; # pùvodní pozièní znaèka z PDT (15 znakù)
-    # Jestli¾e dosud nebyl naèten pøevodní slovníèek, naèíst ho.
+    my $znacka = shift; # pÅ¯vodnÃ­ poziÄnÃ­ znaÄka z PDT (15 znakÅ¯)
+    # JestliÅ¾e dosud nebyl naÄten pÅ™evodnÃ­ slovnÃ­Äek, naÄÃ­st ho.
     unless(exists($redukce_baltimore{"NNMSX-----A----"}))
     {
         open(SLOVNIK, "vyzkum/znacky/stara_redukce_pozicnich.txt")
@@ -379,45 +401,71 @@ sub upravit_mznacku_baltimore()
 
 
 ###############################################################################
-# Procházení dat
+# ProchÃ¡zenÃ­ dat
 ###############################################################################
 
 
 
 #------------------------------------------------------------------------------
-# Projde trénovací nebo testovací data a na ka¾dou vìtu zavolá funkci
-# zpracovat_vetu(). Tato funkce je callback, tj. musí bıt definována u toho,
-# kdo po¾ádal o projití dat.
-# Parametrem je cesta k souborùm s daty. Mù¾e obsahovat zástupné znaky.
-# Zatím se pou¾ívá globální pole @soubory, proto¾e zpracovat_vetu() v train.pl
-# chce seznam souborù znát. Mìlo by se to ale rozdìlit. Globální $isoubor.
+# Projde trÃ©novacÃ­ nebo testovacÃ­ data a na kaÅ¾dou vÄ›tu zavolÃ¡ funkci
+# zpracovat_vetu(). Tato funkce je callback, tj. musÃ­ bÃ½t definovÃ¡na u toho,
+# kdo poÅ¾Ã¡dal o projitÃ­ dat.
+# Parametrem je cesta k souborÅ¯m s daty. MÅ¯Å¾e obsahovat zÃ¡stupnÃ© znaky.
+# ZatÃ­m se pouÅ¾Ã­vÃ¡ globÃ¡lnÃ­ pole @soubory, protoÅ¾e zpracovat_vetu() v train.pl
+# chce seznam souborÅ¯ znÃ¡t. MÄ›lo by se to ale rozdÄ›lit. GlobÃ¡lnÃ­ $isoubor.
 #------------------------------------------------------------------------------
 sub projit_data
 {
-    my $maska = shift; # cesta ke vstupním souborùm, s maskou (napø. *.csts)
-    my $konfig = shift; # odkaz na hash s konfigurací
-    @soubory = glob($maska);
-    # Vygenerovat událost "zaèátek ètení sady souborù".
+    my $maska = shift; # cesta ke vstupnÃ­m souborÅ¯m, s maskou (napÅ™. *.csts)
+    my $konfig = shift; # odkaz na hash s konfiguracÃ­
+    my $zpracovat_vetu = shift; # odkaz na funkci pro zpracovÃ¡nÃ­ vÄ›ty
+    if($zpracovat_vetu eq "")
+    {
+        $zpracovat_vetu = \&main::zpracovat_vetu;
+    }
+    my @soubory = glob($maska);
+    # Vygenerovat udÃ¡lost "zaÄÃ¡tek ÄtenÃ­ sady souborÅ¯".
     if(exists($konfig->{hook_zacatek_cteni}))
     {
         &{$konfig->{hook_zacatek_cteni}}($maska, \@soubory);
     }
-    my %stav; # rùzné informace o tom, kde v datech se nacházíme
+    my %stav; # rÅ¯znÃ© informace o tom, kde v datech se nachÃ¡zÃ­me
+    my @anot; # pole hashÅ¯ s anotacemi pro kaÅ¾dÃ© slovo aktuÃ¡lnÃ­ vÄ›ty
     vymazat_vetu(\%stav, \@anot);
     for(my $isoubor = 0; $isoubor<=$#soubory; $isoubor++)
     {
-        # Neplést se $stav{doksoubor}, ten uchovává jméno souboru, ve kterém zaèal aktuální dokument.
+        # NeplÃ©st se $stav{doksoubor}, ten uchovÃ¡vÃ¡ jmÃ©no souboru, ve kterÃ©m zaÄal aktuÃ¡lnÃ­ dokument.
         $stav{soubor} = $soubory[$isoubor];
-        $stav{novy_soubor} = 1; # Vynuluje se po první vìtì souboru.
-        open(SOUBOR, $soubory[$isoubor]) or die("Nelze otevrit soubor $soubory[$isoubor]: $!\n");
+        # Odstranit z nÃ¡zvu souboru cestu a pÅ™Ã­ponu.
+        $stav{soubor} =~ s/^.*[\/\\]//;
+        $stav{soubor} =~ s/\.csts$//;
+        $stav{novy_soubor} = 1; # Vynuluje se po prvnÃ­ vÄ›tÄ› souboru.
+        # Aktualizovat ÄÃ­slo aktuÃ¡lnÃ­ vÄ›ty v rÃ¡mci aktuÃ¡lnÃ­ho souboru.
+        $stav{cvvrs} = 1;
+        if($soubory[$isoubor] eq "-")
+        {
+            *SOUBOR = *STDIN;
+        }
+        else
+        {
+            open(SOUBOR, $soubory[$isoubor]);
+        }
+        # Nastavit kÃ³dovÃ¡nÃ­ vstupu. RadÄ›ji nenastavovat Å¾Ã¡dnÃ© vÃ½chozÃ­
+        # kÃ³dovÃ¡nÃ­, kdyÅ¾ konfiguraÄnÃ­ soubor mlÄÃ­, protoÅ¾e jedinÃ½
+        # kandidÃ¡t by bylo UTF-8, ale vstup nemusÃ­ bÃ½t dobÅ™e utvoÅ™enÃ©
+        # UTF-8.
+        if($konfig->{kodovani_data} ne "")
+        {
+            binmode(SOUBOR, ":encoding($konfig->{kodovani_data})");
+        }
         while(<SOUBOR>)
         {
-            # Zapamatovat si zaèátek dokumentu.
+            # Zapamatovat si zaÄÃ¡tek dokumentu.
             # <doc file="s/inf/j/1994/cmpr9406" id="001">
             if(m/<doc\s+file=\"(.*?)\"\s+id=\"(.*?)\">/)
             {
                 my $novy_identifikator_dokumentu = "$1/$2";
-                skoncila_veta(\%stav, \@anot);
+                skoncila_veta(\%stav, \@anot, $zpracovat_vetu);
                 if($novy_identifikator_dokumentu ne $stav{dokid})
                 {
                     $stav{predel} = "D";
@@ -427,13 +475,13 @@ sub projit_data
                     $stav{doksoubor} = $soubory[$isoubor];
                 }
             }
-            # Zapamatovat si zaèátek odstavce.
+            # Zapamatovat si zaÄÃ¡tek odstavce.
             # <p n=1>
             elsif(m/<p\s+n=(\d+)>/)
             {
                 my $nove_cislo_odstavce = $1;
-                skoncila_veta(\%stav, \@anot);
-                # Ze znaèky zaèátku dokumentu automaticky vyplıvá i zaèátek odstavce.
+                skoncila_veta(\%stav, \@anot, $zpracovat_vetu);
+                # Ze znaÄky zaÄÃ¡tku dokumentu automaticky vyplÃ½vÃ¡ i zaÄÃ¡tek odstavce.
                 if($stav{predel} ne "D")
                 {
                     if($nove_cislo_odstavce!=$stav{odstid})
@@ -444,59 +492,81 @@ sub projit_data
                     }
                 }
             }
-            elsif(m/^<s(?: id="(.*?)")?>/)
+            elsif(m/^<s(?: id=(?:"(.*?)"|([^\s>]*)))?>/)
             {
-                $stav{vetid} = $1;
-                skoncila_veta(\%stav, \@anot);
+                $stav{vetid} = "$1$2";
+                skoncila_veta(\%stav, \@anot, $zpracovat_vetu);
             }
             elsif(m/<D>/)
             {
-                # Globální promìnná!
+                # GlobÃ¡lnÃ­ promÄ›nnÃ¡!
                 $bezmezery = 1;
             }
             elsif(m/^<[fd][ >]/)
             {
                 push(@anot, zpracovat_slovo($konfig));
-                # Globální promìnná!
+                # GlobÃ¡lnÃ­ promÄ›nnÃ¡!
                 $bezmezery = 0;
             }
         }
-        close(SOUBOR);
+        unless($soubory[$isoubor] eq "-")
+        {
+            close(SOUBOR);
+        }
     }
-    if($#anot>0)
-    {
-        # Nastavit pøíznak poslední vìty, aby funkce zpracovat_vetu() provedla
-        # naposledy i v¹echny akce, které dìlá v¾dy jednou za èas.
-        $stav{posledni_veta} = 1;
-        skoncila_veta(\%stav, \@anot);
-    }
+    # Nastavit pÅ™Ã­znak poslednÃ­ vÄ›ty, aby funkce zpracovat_vetu() provedla
+    # naposledy i vÅ¡echny akce, kterÃ© dÄ›lÃ¡ vÅ¾dy jednou za Äas.
+    $stav{posledni_veta} = 1;
+    skoncila_veta(\%stav, \@anot, $zpracovat_vetu);
 }
 
 
 
 #------------------------------------------------------------------------------
-# Uzlovı bod, volá se v¾dy, kdy¾ musí skonèit vìta, pokud tedy nìjaká vùbec
-# zaèala. Volá se na zaèátku dokumentu, odstavce a vìty a na konci dat.
+# UzlovÃ½ bod, volÃ¡ se vÅ¾dy, kdyÅ¾ musÃ­ skonÄit vÄ›ta, pokud tedy nÄ›jakÃ¡ vÅ¯bec
+# zaÄala. VolÃ¡ se na zaÄÃ¡tku dokumentu, odstavce a vÄ›ty a na konci dat.
 #------------------------------------------------------------------------------
 sub skoncila_veta
 {
-    my $stav = shift; # rùzné informace o tom, kde v datech se nacházíme
-    my $anot = shift; # odkaz na pole hashù s informacemi o slovech vìty (0 je koøen)
-    if($#{$anot}>0)
+    my $stav = shift; # rÅ¯znÃ© informace o tom, kde v datech se nachÃ¡zÃ­me
+    my $anot = shift; # odkaz na pole hashÅ¯ s informacemi o slovech vÄ›ty (0 je koÅ™en)
+    my $zpracovat_vetu = shift; # odkaz na funkci pro zpracovÃ¡nÃ­ vÄ›ty
+    if($zpracovat_vetu eq "")
     {
-        # Upravit znaèku koncové interpunkce (to nemù¾eme udìlat, dokud
-        # nevíme, ¾e dotyèné slovo je poslední).
+        $zpracovat_vetu = \&main::zpracovat_vetu;
+    }
+    # MÅ¯Å¾e se stÃ¡t, Å¾e uzly nebyly na vstupu seÅ™azenÃ© podle ordu (<r>).
+    # ZpracovatelskÃ© funkci to nedÄ›lÃ¡ dobÅ™e, proto je teÄ radÄ›ji seÅ™adÃ­me.
+    @{$anot} = sort{$a->{ord}<=>$b->{ord}}(@{$anot});
+    # Zpracovat vÄ›tu.
+    if($#{$anot}>0 || $stav->{posledni_veta})
+    {
+        # Upravit znaÄku koncovÃ© interpunkce (to nemÅ¯Å¾eme udÄ›lat, dokud
+        # nevÃ­me, Å¾e dotyÄnÃ© slovo je poslednÃ­).
         if($anot->[$#{$anot}]{uznacka}=~m/^Z/)
         {
             $anot->[$#{$anot}]{slovo} .= "K";
             $anot->[$#{$anot}]{heslo} .= "K";
             $anot->[$#{$anot}]{uznacka} .= "K";
         }
-        # Zdìdit morfologické znaèky u koordinací a apozic.
+        # ZdÄ›dit morfologickÃ© znaÄky u koordinacÃ­ a apozic.
         zjistit_znacky_podstromu($anot);
-        # Provést vlastní zpracování definované aplikací.
-        main::zpracovat_vetu($stav, $anot);
-        # Pøipravit se na ètení dal¹í vìty.
+        # ProvÃ©st vlastnÃ­ zpracovÃ¡nÃ­ definovanÃ© aplikacÃ­.
+        if($vynechat_vetu)
+        {
+            if($stav->{posledni_veta})
+            {
+                # NesmÃ­ dojÃ­t ke skuteÄnÃ©mu zpracovÃ¡nÃ­, jen ukonÄovacÃ­ operace: tj. nepÅ™edat $anot.
+                # BohuÅ¾el se pak dÄ›jÃ­ divnÃ© vÄ›ci, takÅ¾e zatÃ­m radÄ›ji pÅ™edat $anot a zpracovat navÃ­c
+                # jednu vÄ›tu, kterÃ¡ se zpracovat nemÃ¡.
+                &{$zpracovat_vetu}($stav);
+            }
+        }
+        else
+        {
+            &{$zpracovat_vetu}($stav, $anot);
+        }
+        # PÅ™ipravit se na ÄtenÃ­ dalÅ¡Ã­ vÄ›ty.
         vymazat_vetu($stav, $anot);
         return 1;
     }
@@ -509,49 +579,49 @@ sub skoncila_veta
 
 
 ###############################################################################
-# Dìdìní morfologickıch znaèek u koordinací a apozic.
-# Vztahuje se ke slovùm, ale zji¹»uje se a¾ po naètení celé vìty.
+# DÄ›dÄ›nÃ­ morfologickÃ½ch znaÄek u koordinacÃ­ a apozic.
+# Vztahuje se ke slovÅ¯m, ale zjiÅ¡Å¥uje se aÅ¾ po naÄtenÃ­ celÃ© vÄ›ty.
 ###############################################################################
 
 
 
 #------------------------------------------------------------------------------
-# Projde strom a zjistí ke ka¾dému slovu morfologickou znaèku reprezentující
-# jeho podstrom. Tato zdola zdìdìná znaèka se nemusí shodovat se znaèkou koøene
-# podstromu. Napø. koøeny koordinací jsou obvykle souøadící spojky, tedy slova
-# se znaèkou J^, ale celá koordinace dostane znaèku podle svıch èlenù, tedy
-# napø. koordinace podstatnıch jmen v 1. pádì dostane znaèku N1.
-# Funkce ète globální pole @anot. Plní globální hash @anot[$i]{mznpodstrom} a
+# Projde strom a zjistÃ­ ke kaÅ¾dÃ©mu slovu morfologickou znaÄku reprezentujÃ­cÃ­
+# jeho podstrom. Tato zdola zdÄ›dÄ›nÃ¡ znaÄka se nemusÃ­ shodovat se znaÄkou koÅ™ene
+# podstromu. NapÅ™. koÅ™eny koordinacÃ­ jsou obvykle souÅ™adÃ­cÃ­ spojky, tedy slova
+# se znaÄkou J^, ale celÃ¡ koordinace dostane znaÄku podle svÃ½ch ÄlenÅ¯, tedy
+# napÅ™. koordinace podstatnÃ½ch jmen v 1. pÃ¡dÄ› dostane znaÄku N1.
+# Funkce Äte globÃ¡lnÃ­ pole @anot. PlnÃ­ globÃ¡lnÃ­ hash @anot[$i]{mznpodstrom} a
 # @anot[$i]{coordmember}.
 #------------------------------------------------------------------------------
 sub zjistit_znacky_podstromu
 {
-    my $anot = shift; # odkaz na pole hashù
+    my $anot = shift; # odkaz na pole hashÅ¯
     for(my $i = 0; $i<=$#{$anot}; $i++)
     {
         $anot->[$i]{coordmember} = 0;
     }
     for(my $i = 1; $i<=$#{$anot}; $i++)
     {
-        # Koordinace a apozice dìdí znaèky svıch èlenù (nikoli v¹ech svıch
-        # dìtí). Vnoøené koordinace a apozice se procházejí opakovanì (jednou
-        # kvùli své morfologické znaèce a jednou nebo víckrát kvùli znaèkám
-        # svıch nadøízenıch), ale rezignuju na efektivitu vıpoètu ve prospìch
-        # efektivity programování: hlavnì kdy¾ to bude jednoduché a snadno
-        # roz¹iøitelné.
+        # Koordinace a apozice dÄ›dÃ­ znaÄky svÃ½ch ÄlenÅ¯ (nikoli vÅ¡ech svÃ½ch
+        # dÄ›tÃ­). VnoÅ™enÃ© koordinace a apozice se prochÃ¡zejÃ­ opakovanÄ› (jednou
+        # kvÅ¯li svÃ© morfologickÃ© znaÄce a jednou nebo vÃ­ckrÃ¡t kvÅ¯li znaÄkÃ¡m
+        # svÃ½ch nadÅ™Ã­zenÃ½ch), ale rezignuju na efektivitu vÃ½poÄtu ve prospÄ›ch
+        # efektivity programovÃ¡nÃ­: hlavnÄ› kdyÅ¾ to bude jednoduchÃ© a snadno
+        # rozÅ¡iÅ™itelnÃ©.
 #        if($anot->[$i]{afun}=~m/^(Coord|Apos)/)
         if($anot->[$i]{afun}=~m/^Coord/)
         {
             my @clenove = zjistit_skutecne_cleny_koordinace($anot, $i);
             for(my $j = 0; $j<=$#clenove; $j++)
             {
-                # A¾ se bude dìdit i jinde ne¾ u koordinací a apozic, bude asi
-                # potøeba tady brát zdìdìnou znaèku místo pùvodní, to se pak
-                # ale bude taky muset o¹etøit, které dìdìní probìhne døív.
+                # AÅ¾ se bude dÄ›dit i jinde neÅ¾ u koordinacÃ­ a apozic, bude asi
+                # potÅ™eba tady brÃ¡t zdÄ›dÄ›nou znaÄku mÃ­sto pÅ¯vodnÃ­, to se pak
+                # ale bude taky muset oÅ¡etÅ™it, kterÃ© dÄ›dÄ›nÃ­ probÄ›hne dÅ™Ã­v.
                 $anot->[$i]{mznpodstrom} .= "|".$anot->[$clenove[$j]]{uznacka};
                 $anot->[$clenove[$j]]{coordmember} = 1;
             }
-            # Odstranit svislítko pøed první znaèkou.
+            # Odstranit svislÃ­tko pÅ™ed prvnÃ­ znaÄkou.
             $anot->[$i]{mznpodstrom} =~ s/^\|//;
         }
         else
@@ -564,60 +634,60 @@ sub zjistit_znacky_podstromu
 
 
 #------------------------------------------------------------------------------
-# Vrátí seznam indexù èlenù koordinace, nebo apozice. Jako parametr po¾aduje
-# index koøene dotyèné koordinace nebo apozice. Podstrom projde rekurzivnì,
-# tak¾e u vnoøenıch koordinací nebo apozic vrátí seznam jejich èlenù, nikoli
-# index jejich koøene (vhodné pro posuzování morfologickıch znaèek èlenù).
-# Ví i o tom, ¾e u pøedlo¾ek a podøadících spojek není informace o jejich
-# èlenství v koordinacích nebo apozicích ulo¾ena a ¾e je pøesunuta do syntak-
-# tické znaèky jejich dítìte. Pokud v¹ak jejich dítì skuteènì vykazuje pøíslu¹-
-# nost ke koordinaci nebo apozici, funkce nevrátí index tohoto dítìte, ale
-# index pøedlo¾ky èi podøadící spojky, která ho øídí.
+# VrÃ¡tÃ­ seznam indexÅ¯ ÄlenÅ¯ koordinace, nebo apozice. Jako parametr poÅ¾aduje
+# index koÅ™ene dotyÄnÃ© koordinace nebo apozice. Podstrom projde rekurzivnÄ›,
+# takÅ¾e u vnoÅ™enÃ½ch koordinacÃ­ nebo apozic vrÃ¡tÃ­ seznam jejich ÄlenÅ¯, nikoli
+# index jejich koÅ™ene (vhodnÃ© pro posuzovÃ¡nÃ­ morfologickÃ½ch znaÄek ÄlenÅ¯).
+# VÃ­ i o tom, Å¾e u pÅ™edloÅ¾ek a podÅ™adÃ­cÃ­ch spojek nenÃ­ informace o jejich
+# ÄlenstvÃ­ v koordinacÃ­ch nebo apozicÃ­ch uloÅ¾ena a Å¾e je pÅ™esunuta do syntak-
+# tickÃ© znaÄky jejich dÃ­tÄ›te. Pokud vÅ¡ak jejich dÃ­tÄ› skuteÄnÄ› vykazuje pÅ™Ã­sluÅ¡-
+# nost ke koordinaci nebo apozici, funkce nevrÃ¡tÃ­ index tohoto dÃ­tÄ›te, ale
+# index pÅ™edloÅ¾ky Äi podÅ™adÃ­cÃ­ spojky, kterÃ¡ ho Å™Ã­dÃ­.
 #------------------------------------------------------------------------------
 sub zjistit_skutecne_cleny_koordinace
 {
-    my $anot = shift; # odkaz na pole hashù
-    my $koren = shift; # index koøene koordinace
+    my $anot = shift; # odkaz na pole hashÅ¯
+    my $koren = shift; # index koÅ™ene koordinace
     my @clenove;
-    # Projít v¹echny uzly stromu, hledat dìti koøene.
+    # ProjÃ­t vÅ¡echny uzly stromu, hledat dÄ›ti koÅ™ene.
     for(my $i = 1; $i<=$#{$anot}; $i++)
     {
-        # Èleny koordinace mohou bıt nìkteré dìti koøene.
+        # ÄŒleny koordinace mohou bÃ½t nÄ›kterÃ© dÄ›ti koÅ™ene.
         if($anot->[$i]{rodic_vzor}==$koren)
         {
-            # Èlen koordinace se pozná podle syntaktické znaèky konèící na _Co.
-            # Èlen apozice se pozná podle syntaktické znaèky konèící na _Ap.
+            # ÄŒlen koordinace se poznÃ¡ podle syntaktickÃ© znaÄky konÄÃ­cÃ­ na _Co.
+            # ÄŒlen apozice se poznÃ¡ podle syntaktickÃ© znaÄky konÄÃ­cÃ­ na _Ap.
             if($anot->[$i]{afun} =~ m/_(Co|Ap)$/)
             {
-                # Pokud je èlenem vnoøená koordinace nebo apozice, zajímají nás
-                # její èleny, ne její koøen.
+                # Pokud je Älenem vnoÅ™enÃ¡ koordinace nebo apozice, zajÃ­majÃ­ nÃ¡s
+                # jejÃ­ Äleny, ne jejÃ­ koÅ™en.
                 if($anot->[$i]{afun} =~ m/^(Coord|Apos)/)
                 {
                     splice(@clenove, $#clenove+1, 0,
                     zjistit_skutecne_cleny_koordinace($anot, $i));
                 }
-                # Jinak pøidat do seznamu pøímo dotyèné dítì.
+                # Jinak pÅ™idat do seznamu pÅ™Ã­mo dotyÄnÃ© dÃ­tÄ›.
                 else
                 {
                     $clenove[++$#clenove] = $i;
                 }
             }
-            # Pøedlo¾ky a podøadící spojky mohou bıt èleny koordinace nebo apo-
-            # zice, ale nikdy nepøibírají pøíponu _Co nebo _Ap. Tu místo toho
-            # dostane jejich (obvykle jediné) dítì. Vyu¾ijeme znalosti vnitø-
-            # ního provedení této funkce (zejména toho, ¾e nekontroluje, ¾e
-            # koøen koordinace nebo apozice má s-znaèku Coord, resp. Apos) a
-            # necháme rekurzivnì vyhledat v¹echny èleny "koordinace øízené
-            # pøedlo¾kou (podøadící spojkou)".
+            # PÅ™edloÅ¾ky a podÅ™adÃ­cÃ­ spojky mohou bÃ½t Äleny koordinace nebo apo-
+            # zice, ale nikdy nepÅ™ibÃ­rajÃ­ pÅ™Ã­ponu _Co nebo _Ap. Tu mÃ­sto toho
+            # dostane jejich (obvykle jedinÃ©) dÃ­tÄ›. VyuÅ¾ijeme znalosti vnitÅ™-
+            # nÃ­ho provedenÃ­ tÃ©to funkce (zejmÃ©na toho, Å¾e nekontroluje, Å¾e
+            # koÅ™en koordinace nebo apozice mÃ¡ s-znaÄku Coord, resp. Apos) a
+            # nechÃ¡me rekurzivnÄ› vyhledat vÅ¡echny Äleny "koordinace Å™Ã­zenÃ©
+            # pÅ™edloÅ¾kou (podÅ™adÃ­cÃ­ spojkou)".
             elsif($anot->[$i]{afun} =~ m/Aux[PC]/)
             {
-                # Zjistit, zda alespoò jedno dítì pøedlo¾ky má s-znaèku konèící
+                # Zjistit, zda alespoÅˆ jedno dÃ­tÄ› pÅ™edloÅ¾ky mÃ¡ s-znaÄku konÄÃ­cÃ­
                 # na _Co nebo _Ap.
                 my @clenove_pod_predl = zjistit_skutecne_cleny_koordinace($anot, $i);
-                # Pokud se takové dítì najde, je to dùkaz, ¾e tato vìtev je
-                # èlenem koordinace a ne jejím rozvitím. Ale pro nás, na rozdíl
-                # od anotátorù PDT, bude èlenem koøen této vìtve, tedy
-                # pøedlo¾ka, ne její dítì!
+                # Pokud se takovÃ© dÃ­tÄ› najde, je to dÅ¯kaz, Å¾e tato vÄ›tev je
+                # Älenem koordinace a ne jejÃ­m rozvitÃ­m. Ale pro nÃ¡s, na rozdÃ­l
+                # od anotÃ¡torÅ¯ PDT, bude Älenem koÅ™en tÃ©to vÄ›tve, tedy
+                # pÅ™edloÅ¾ka, ne jejÃ­ dÃ­tÄ›!
                 if($#clenove_pod_predl>=0)
                 {
                     push(@clenove, $i);
@@ -631,18 +701,20 @@ sub zjistit_skutecne_cleny_koordinace
 
 
 #------------------------------------------------------------------------------
-# Vyma¾e v¹echny globální promìnné popisující vìtu, které vznikly v proceduøe
-# zpracovat_slovo. Typicky se volá na zaèátku procedury zpracovat_vetu, aby
-# bylo kam naèítat dal¹í vìtu. Tato funkce také rovnou vyplní nìkteré údaje o
-# koøeni, proto¾e ty jsou ve v¹ech vìtách stejné, ale z dat se je nedozvíme.
+# VymaÅ¾e vÅ¡echny globÃ¡lnÃ­ promÄ›nnÃ© popisujÃ­cÃ­ vÄ›tu, kterÃ© vznikly v proceduÅ™e
+# zpracovat_slovo. Typicky se volÃ¡ na zaÄÃ¡tku procedury zpracovat_vetu, aby
+# bylo kam naÄÃ­tat dalÅ¡Ã­ vÄ›tu. Tato funkce takÃ© rovnou vyplnÃ­ nÄ›kterÃ© Ãºdaje o
+# koÅ™eni, protoÅ¾e ty jsou ve vÅ¡ech vÄ›tÃ¡ch stejnÃ©, ale z dat se je nedozvÃ­me.
 #------------------------------------------------------------------------------
 sub vymazat_vetu
 {
-    my $stav = shift; # rùzné informace o tom, kde v datech se nacházíme
-    my $anot = shift; # odkaz na pole hashù s informacemi o slovech vìty (0 je koøen)
-    $stav->{predel} = "S"; # D pro dokument, P pro odstavec, S pro vìtu (default), K pro poslední vìtu
-    # Jestli¾e to byla první vìta souboru, o pøí¹tí vìtì u¾ se nesmí tvrdit toté¾.
+    my $stav = shift; # rÅ¯znÃ© informace o tom, kde v datech se nachÃ¡zÃ­me
+    my $anot = shift; # odkaz na pole hashÅ¯ s informacemi o slovech vÄ›ty (0 je koÅ™en)
+    $stav->{predel} = "S"; # D pro dokument, P pro odstavec, S pro vÄ›tu (default), K pro poslednÃ­ vÄ›tu
+    # JestliÅ¾e to byla prvnÃ­ vÄ›ta souboru, o pÅ™Ã­Å¡tÃ­ vÄ›tÄ› uÅ¾ se nesmÃ­ tvrdit totÃ©Å¾.
     $stav->{novy_soubor} = 0;
+    # ZvÃ½Å¡it ÄÃ­slo aktuÃ¡lnÃ­ vÄ›ty v rÃ¡mci aktuÃ¡lnÃ­ho souboru.
+    $stav->{cvvrs}++;
     splice(@{$anot});
     $anot->[0]{slovo} = "#";
     $anot->[0]{heslo} = "#";
@@ -650,29 +722,29 @@ sub vymazat_vetu
     $anot->[0]{uznacka} = "#";
     $anot->[0]{rodic_vzor} = -1;
     $anot->[0]{afun} = "AuxS";
-    # Informace o vìtì.
-    $sloveso = 0; # Zda vìta obsahuje sloveso.
+    # Informace o vÄ›tÄ›.
+    $sloveso = 0; # Zda vÄ›ta obsahuje sloveso.
     $vynechat_vetu = 0;
 }
 
 
 
 #------------------------------------------------------------------------------
-# Strom je v souboru reprezentován èíselnımi odkazy od závislého uzlu k øídící-
-# mu. Takto lze ov¹em zapsat i struktury, které nejsou stromy. Pokud se bojíme,
-# ¾e naèítaná data mohou bıt nekorektní, tato funkce je zkontroluje.
+# Strom je v souboru reprezentovÃ¡n ÄÃ­selnÃ½mi odkazy od zÃ¡vislÃ©ho uzlu k Å™Ã­dÃ­cÃ­-
+# mu. Takto lze ovÅ¡em zapsat i struktury, kterÃ© nejsou stromy. Pokud se bojÃ­me,
+# Å¾e naÄÃ­tanÃ¡ data mohou bÃ½t nekorektnÃ­, tato funkce je zkontroluje.
 #------------------------------------------------------------------------------
 sub je_strom
 {
     my $anot = shift;
-    my $zdroj = shift; # pokud je více struktur, která se má kontrolovat?
+    my $zdroj = shift; # pokud je vÃ­ce struktur, kterÃ¡ se mÃ¡ kontrolovat?
     $zdroj = "rodic_vzor" if($zdroj eq "");
-    # Zjistit, zda v¹echny odkazy vedou na existující uzel, zda v¹echny konèí
-    # v nule, a netvoøí tudí¾ cykly ani nejde o nesouvislı les.
+    # Zjistit, zda vÅ¡echny odkazy vedou na existujÃ­cÃ­ uzel, zda vÅ¡echny konÄÃ­
+    # v nule, a netvoÅ™Ã­ tudÃ­Å¾ cykly ani nejde o nesouvislÃ½ les.
     for(my $i = 1; $i<=$#{$anot}; $i++)
     {
-        # Kvùli cyklùm si evidovat v¹echny uzly, kterımi jsme pro¹li na cestì
-        # ke koøeni. Do cyklu toti¾ mù¾eme vstoupit a¾ u nìkterého pøedka!
+        # KvÅ¯li cyklÅ¯m si evidovat vÅ¡echny uzly, kterÃ½mi jsme proÅ¡li na cestÄ›
+        # ke koÅ™eni. Do cyklu totiÅ¾ mÅ¯Å¾eme vstoupit aÅ¾ u nÄ›kterÃ©ho pÅ™edka!
         my @evidence;
         for(my $j = $i; $j>0; $j = $anot->[$j]{$zdroj})
         {

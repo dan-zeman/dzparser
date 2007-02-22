@@ -1,1 +1,1 @@
-nohup train.pl -q > /dev/null &
+nohup train.pl -q $* > /dev/null &

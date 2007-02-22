@@ -1,35 +1,33 @@
-# Modul s funkcemi umo¾òujícími vyu¾ít pøi parsingu model n-tic vedle sebe le¾ících slov.
+# Modul s funkcemi umoÅ¾ÅˆujÃ­cÃ­mi vyuÅ¾Ã­t pÅ™i parsingu model n-tic vedle sebe leÅ¾Ã­cÃ­ch slov.
 package ntice;
-require 5.000;
-require Exporter;
+use utf8;
 use vystupy;
 
 
 
 #------------------------------------------------------------------------------
-# Uèení n-tic. Projde v¹echny n-tice po sobì jdoucích slov ve vìtì, zjistí
-# jejich morfologickı vzor a zapamatuje si jejich syntaktickou strukturu.
+# UÄenÃ­ n-tic. Projde vÅ¡echny n-tice po sobÄ› jdoucÃ­ch slov ve vÄ›tÄ›, zjistÃ­
+# jejich morfologickÃ½ vzor a zapamatuje si jejich syntaktickou strukturu.
 #------------------------------------------------------------------------------
 sub ucit
 {
-    my $n = shift; # jak velké n-tice se mají hledat
-    # Zatím globální promìnné.
-    my $anot = \@main::anot;
-    # Pozdìji by to mohlo jít zobecnit na trojice slo¾ek, které se ocitly vedle
-    # sebe v prùbìhu analızy. (Pøi tréninku znamená "vedle sebe" dìti jednoho rodièe. V¹echny dìti?)
-    # Pozor. První nástøel poèítal s trojicemi po sobì jdoucích slov, které v¹ak mohly mít i dvoupatrovou strukturu.
-    # Druhı nápad poèítá s trojicemi (n-ticemi) slov, která nemusejí ve vìtì le¾et vedle sebe, ale zase to musejí bıt
-    # dìti jednoho rodièe, tj. struktura je v¾dy jednopatrová. Obecnı DOP model by uvolnil obojí, tj. jak vzdálenost
-    # slov, tak hloubku struktury. Zatím ale nevím, zda a jak je realizovatelnı.
+    my $n = shift; # jak velkÃ© n-tice se majÃ­ hledat
+    my $anot = shift;
+    # PozdÄ›ji by to mohlo jÃ­t zobecnit na trojice sloÅ¾ek, kterÃ© se ocitly vedle
+    # sebe v prÅ¯bÄ›hu analÃ½zy. (PÅ™i trÃ©ninku znamenÃ¡ "vedle sebe" dÄ›ti jednoho rodiÄe. VÅ¡echny dÄ›ti?)
+    # Pozor. PrvnÃ­ nÃ¡stÅ™el poÄÃ­tal s trojicemi po sobÄ› jdoucÃ­ch slov, kterÃ© vÅ¡ak mohly mÃ­t i dvoupatrovou strukturu.
+    # DruhÃ½ nÃ¡pad poÄÃ­tÃ¡ s trojicemi (n-ticemi) slov, kterÃ¡ nemusejÃ­ ve vÄ›tÄ› leÅ¾et vedle sebe, ale zase to musejÃ­ bÃ½t
+    # dÄ›ti jednoho rodiÄe, tj. struktura je vÅ¾dy jednopatrovÃ¡. ObecnÃ½ DOP model by uvolnil obojÃ­, tj. jak vzdÃ¡lenost
+    # slov, tak hloubku struktury. ZatÃ­m ale nevÃ­m, zda a jak je realizovatelnÃ½.
     for(my $i = 0; $i<=$#{$anot}-$n+1; $i++)
     {
-        # Získat morfologickı a syntaktickı vzorec n-tice.
-        # Morfologickım myslím posloupnost upravenıch znaèek, syntaktickım posloupnost indexù rodièù.
-        # U syntaktickıch je indexem "X", pokud závislost vede ven z n-tice, a také pokud uzel "visí"
-        # sám na sobì (nemìlo by se stát jinde ne¾ u koøene, tj. uzlu s indexem 0).
+        # ZÃ­skat morfologickÃ½ a syntaktickÃ½ vzorec n-tice.
+        # MorfologickÃ½m myslÃ­m posloupnost upravenÃ½ch znaÄek, syntaktickÃ½m posloupnost indexÅ¯ rodiÄÅ¯.
+        # U syntaktickÃ½ch je indexem "X", pokud zÃ¡vislost vede ven z n-tice, a takÃ© pokud uzel "visÃ­"
+        # sÃ¡m na sobÄ› (nemÄ›lo by se stÃ¡t jinde neÅ¾ u koÅ™ene, tj. uzlu s indexem 0).
         my @mvzor = map{$_->{uznacka}}(@{$anot}[$i..$i+$n-1]);
         my @svzor;
-        # Spoèítat závislosti, které vedou ze skupiny ven.
+        # SpoÄÃ­tat zÃ¡vislosti, kterÃ© vedou ze skupiny ven.
         my $ven;
         for(my $j = 0; $j<$n; $j++)
         {
@@ -46,9 +44,9 @@ sub ucit
         }
         my $mvzor = join(" ", @mvzor);
         my $svzor;
-        # Jestli¾e ven vede více ne¾ jedna závislost, skupina je roztr¾ená a asi nemá smysl se pokou¹et
-        # nìkdy ji rekonstruovat. I tak si ale musíme zapamatovat vıskyt mvzoru, proto¾e nám sní¾í váhu
-        # tìch vıskytù, pøi nich¾ skupina roztr¾ená nebyla.
+        # JestliÅ¾e ven vede vÃ­ce neÅ¾ jedna zÃ¡vislost, skupina je roztrÅ¾enÃ¡ a asi nemÃ¡ smysl se pokouÅ¡et
+        # nÄ›kdy ji rekonstruovat. I tak si ale musÃ­me zapamatovat vÃ½skyt mvzoru, protoÅ¾e nÃ¡m snÃ­Å¾Ã­ vÃ¡hu
+        # tÄ›ch vÃ½skytÅ¯, pÅ™i nichÅ¾ skupina roztrÅ¾enÃ¡ nebyla.
         if($ven>1)
         {
             $svzor = join(",", map{"X"}[0..$n-1]);
@@ -57,13 +55,13 @@ sub ucit
         {
             $svzor = join(",", @svzor);
         }
-        # Promìnné globální v rámci tohoto modulu: %ntice a %priklady.
-        # Zapamatovat si vıskyt dané dvojice vzorù.
+        # PromÄ›nnÃ© globÃ¡lnÃ­ v rÃ¡mci tohoto modulu: %ntice a %priklady.
+        # Zapamatovat si vÃ½skyt danÃ© dvojice vzorÅ¯.
         $ntice{$mvzor}{$svzor}++;
-        # Jestli¾e neznáme pøíklad, zapamatovat si také pøíklad.
+        # JestliÅ¾e neznÃ¡me pÅ™Ã­klad, zapamatovat si takÃ© pÅ™Ã­klad.
         unless(exists($priklady{$mvzor}))
         {
-            $priklady{$mvzor} = join(" ", @{$anot}[$i..$i+$n-1]);
+            $priklady{$mvzor} = join(" ", map{$_->{slovo}}(@{$anot}[$i..$i+$n-1]));
         }
     }
 }
@@ -71,7 +69,7 @@ sub ucit
 
 
 #------------------------------------------------------------------------------
-# Ulo¾í nauèené vzory n-tic morfologickıch znaèek.
+# UloÅ¾Ã­ nauÄenÃ© vzory n-tic morfologickÃ½ch znaÄek.
 #------------------------------------------------------------------------------
 sub vypsat
 {
@@ -79,12 +77,12 @@ sub vypsat
     print STDERR ("Mame ", $#mvzory+1, " mvzoru.\n");
     for(my $i = 0; $i<=$#mvzory; $i++)
     {
-        # Seøadit øe¹ení sestupnì podle èetnosti.
+        # SeÅ™adit Å™eÅ¡enÃ­ sestupnÄ› podle Äetnosti.
         my $svzhsh = $ntice{$mvzory[$i]};
         my @svzory = sort{$svzhsh->{$b}<=>$svzhsh->{$a}}(keys(%{$svzhsh}));
-        # Zjistit celkovı poèet vıskytù n-tice. Øídkım n-ticím radìji nevìøit.
-        # Souèasnì zjistit, zda jeden názor na øe¹ení dostateènì pøeva¾uje a
-        # zda pøeva¾ující "øe¹ení" není pøípad, kdy byla n-tice roztr¾ena.
+        # Zjistit celkovÃ½ poÄet vÃ½skytÅ¯ n-tice. Å˜Ã­dkÃ½m n-ticÃ­m radÄ›ji nevÄ›Å™it.
+        # SouÄasnÄ› zjistit, zda jeden nÃ¡zor na Å™eÅ¡enÃ­ dostateÄnÄ› pÅ™evaÅ¾uje a
+        # zda pÅ™evaÅ¾ujÃ­cÃ­ "Å™eÅ¡enÃ­" nenÃ­ pÅ™Ã­pad, kdy byla n-tice roztrÅ¾ena.
         my $celkem;
         my $max;
         my $jmax;
@@ -99,7 +97,7 @@ sub vypsat
             }
         }
         next if($celkem<5 || $max/$celkem<0.9 || $svzory[$jmax] !~ m/\d/);
-        # Jestli¾e n-tice pro¹la filtrem, ulo¾it si její vıstup. Na konci vıstupy seøadíme a vypí¹eme.
+        # JestliÅ¾e n-tice proÅ¡la filtrem, uloÅ¾it si jejÃ­ vÃ½stup. Na konci vÃ½stupy seÅ™adÃ­me a vypÃ­Å¡eme.
         my $vystup = "MVZOR $mvzory[$i]\t\t\t($priklady{$mvzory[$i]})\n";
         for(my $j = 0; $j<=$#svzory; $j++)
         {
@@ -111,7 +109,7 @@ sub vypsat
         push(@vystupy, \%zaznam);
     }
     print STDERR ("Pro vystup zbylo ", $#vystupy+1, " vzoru.\n");
-    # Seøadit a vypsat záznamy.
+    # SeÅ™adit a vypsat zÃ¡znamy.
     @vystupy = sort{$a->{vyznam}<=>$b->{vyznam}}(@vystupy);
     for(my $i = 0; $i<=$#vystupy; $i++)
     {
@@ -122,33 +120,72 @@ sub vypsat
 
 
 #------------------------------------------------------------------------------
-# Naète nauèené vzory n-tic morfologickıch znaèek.
+# UloÅ¾Ã­ nauÄenÃ© vzory n-tic morfologickÃ½ch znaÄek do centrÃ¡lnÃ­ho souboru se
+# statistikou.
+#------------------------------------------------------------------------------
+sub vypsat_do_stat
+{
+    # Parametry pro filtrovÃ¡nÃ­ n-tic.
+    my $min_vyskytu = 5;
+    my $min_uspesnost = 0.9;
+    my @mvzory = sort(keys(%ntice));
+    foreach $mvzor (@mvzory)
+    {
+        # SeÅ™adit Å™eÅ¡enÃ­ sestupnÄ› podle Äetnosti.
+        my $svzhsh = $ntice{$mvzor};
+        my @svzory = sort{$svzhsh->{$b}<=>$svzhsh->{$a}}(keys(%{$svzhsh}));
+        # Zjistit celkovÃ½ poÄet vÃ½skytÅ¯ n-tice. Å˜Ã­dkÃ½m n-ticÃ­m radÄ›ji nevÄ›Å™it.
+        # SouÄasnÄ› zjistit, zda jeden nÃ¡zor na Å™eÅ¡enÃ­ dostateÄnÄ› pÅ™evaÅ¾uje a
+        # zda pÅ™evaÅ¾ujÃ­cÃ­ "Å™eÅ¡enÃ­" nenÃ­ pÅ™Ã­pad, kdy byla n-tice roztrÅ¾ena.
+        my $celkem;
+        my $max;
+        my $jmax;
+        for(my $j = 0; $j<=$#svzory; $j++)
+        {
+            my $tento = $svzhsh->{$svzory[$j]};
+            $celkem += $tento;
+            if($max eq "" || $tento>$max)
+            {
+                $max = $tento;
+                $jmax = $j;
+            }
+        }
+        # Ignorovat mvzory, kterÃ© se vyskytly mÃ¡lokrÃ¡t, kterÃ© nemajÃ­ jasnÃ©ho vÃ­tÄ›ze
+        # mezi svzory nebo jejichÅ¾ svzor nenÃ­ souvislÃ½ strom.
+        next if($celkem<$min_vyskytu || $max/$celkem<$min_uspesnost || $svzory[$jmax] !~ m/\d/);
+        # JestliÅ¾e n-tice proÅ¡la filtrem, uloÅ¾it si jejÃ­ vÃ½stup. Na konci vÃ½stupy seÅ™adÃ­me a vypÃ­Å¡eme.
+        vystupy::vypsat("stat", "NTC MVZOR $mvzor SVZOR $svzory[$jmax]\t$svzhsh->{$svzory[$jmax]}\n");
+    }
+}
+
+
+
+#------------------------------------------------------------------------------
+# NaÄte nauÄenÃ© vzory n-tic morfologickÃ½ch znaÄek.
 #------------------------------------------------------------------------------
 sub cist
 {
-    my $soubor = shift;
-    # 8.3.2004: Ignoruje se jméno souboru dodané volajícím. Místo toho se
-    # postupnì ètou soubory 2ice.txt a¾ 10ice.txt v aktuální slo¾ce.
+    my @soubory = @_;
     my %ntice;
-    for(my $i = 2; $i<=10; $i++)
+    foreach my $soubor (@soubory)
     {
-        $soubor = $i."ice.txt";
-    open(NTICE, $soubor) or die("Nelze otevøít soubor $soubor: $!\n");
-    my $mvzor;
-    while(<NTICE>)
-    {
-        if(m/^MVZOR (.*?)\t/)
+        open(NTICE, $soubor) or die("Nelze otevÅ™Ã­t soubor $soubor: $!\n");
+        binmode(NTICE, ":encoding(iso-8859-2)");
+        my $mvzor;
+        while(<NTICE>)
         {
-        $mvzor = $1;
+            if(m/^MVZOR (.*?)\t/)
+            {
+                $mvzor = $1;
+            }
+            elsif(m/SVZOR (.*?)\t/)
+            {
+                $ntice{$mvzor} = $1;
+                # Zajistit, aby se k mvzoru zapsalo pouze prvnÃ­ (nejlepÅ¡Ã­) Å™eÅ¡enÃ­: ostatnÃ­ pÅ™esmÄ›rovat do kanÃ¡lu.
+                $mvzor = "";
+            }
         }
-        elsif(m/SVZOR (.*?)\t/)
-        {
-        $ntice{$mvzor} = $1;
-        # Zajistit, aby se k mvzoru zapsalo pouze první (nejlep¹í) øe¹ení: ostatní pøesmìrovat do kanálu.
-        $mvzor = "";
-        }
-    }
-    close(NTICE);
+        close(NTICE);
     }
     return \%ntice;
 }
@@ -156,19 +193,46 @@ sub cist
 
 
 #------------------------------------------------------------------------------
-# Pokusí se na vìtu aplikovat vzory n-tic. Vrátí èásteènì rozebranou vìtu.
-# (Pøedpokládá, ¾e byla nasazena pøed v¹emi ostatními nástroji, tj. ¾e ¾ádná
-# èást vìty je¹tì rozebraná není.)
+# Projde statistiku, vybere z nÃ­ nauÄenÃ© vzory n-tic morfologickÃ½ch znaÄek a
+# uloÅ¾Ã­ je ve stravitelnÄ›jÅ¡Ã­m tvaru.
+#------------------------------------------------------------------------------
+sub cist_ze_stat
+{
+    my $stat = shift; # odkaz na hash se statistikou
+    my @udalosti = keys(%{$stat});
+    my %ntice;
+    foreach my $ud (@udalosti)
+    {
+        if($ud =~ m/^NTC/)
+        {
+            if($ud =~ m/^NTC MVZOR (.*) SVZOR (\S*)/)
+            {
+                my $mvzor = $1;
+                my $svzor = $2;
+                $ntice{$mvzor} = $svzor;
+            }
+            delete($stat->{$ud});
+        }
+    }
+    return \%ntice;
+}
+
+
+
+#------------------------------------------------------------------------------
+# PokusÃ­ se na vÄ›tu aplikovat vzory n-tic. VrÃ¡tÃ­ ÄÃ¡steÄnÄ› rozebranou vÄ›tu.
+# (PÅ™edpoklÃ¡dÃ¡, Å¾e byla nasazena pÅ™ed vÅ¡emi ostatnÃ­mi nÃ¡stroji, tj. Å¾e Å¾Ã¡dnÃ¡
+# ÄÃ¡st vÄ›ty jeÅ¡tÄ› rozebranÃ¡ nenÃ­.)
 #------------------------------------------------------------------------------
 sub nasadit
 {
     my $ntice = shift; # odkaz na hash
-    my $anot = shift; # odkaz na pole hashù s anotacemi jednotlivıch slov
-    my @rodice; # vıstupní pole
+    my $anot = shift; # odkaz na pole hashÅ¯ s anotacemi jednotlivÃ½ch slov
+    my @rodice; # vÃ½stupnÃ­ pole
     my @mzn = map{$_->{uznacka}}(@{$anot});
-    # Pøednost vzorù pøi konfliktu: zatím ten, kterı se ve vìtì najde první (tj. nejdel¹í vzor, a nebo, pokud jsou stejnì dlouhé, vzor nejvíc vlevo).
-    ### Mìlo by to bıt spí¹ tak, ¾e nejúspì¹nìj¹í pravidlo má nejvìt¹í pøednost!
-    ### Nebo by se od n-tic mìlo upustit tam, kde jsou v konfliktu.
+    # PÅ™ednost vzorÅ¯ pÅ™i konfliktu: zatÃ­m ten, kterÃ½ se ve vÄ›tÄ› najde prvnÃ­ (tj. nejdelÅ¡Ã­ vzor, a nebo, pokud jsou stejnÄ› dlouhÃ©, vzor nejvÃ­c vlevo).
+    ### MÄ›lo by to bÃ½t spÃ­Å¡ tak, Å¾e nejÃºspÄ›Å¡nÄ›jÅ¡Ã­ pravidlo mÃ¡ nejvÄ›tÅ¡Ã­ pÅ™ednost!
+    ### Nebo by se od n-tic mÄ›lo upustit tam, kde jsou v konfliktu.
     for(my $n = 10; $n>=2; $n--)
     {
     for(my $i = 0; $i<=$#mzn-2; $i++)
@@ -176,12 +240,12 @@ sub nasadit
         my $mvzor = join(" ", @mzn[$i..$i+$n-1]);
         next if(!exists($ntice->{$mvzor}));
         my @svzor = split(",", $ntice->{$mvzor});
-        # Ulo¾it nalezené øe¹ení do seznamu rodièù.
+        # UloÅ¾it nalezenÃ© Å™eÅ¡enÃ­ do seznamu rodiÄÅ¯.
         for(my $j = 0; $j<=$#svzor; $j++)
         {
         unless($svzor[$j] eq "X")
         {
-            # Zapamatovat si konflikty mezi pøekrıvajícími se n-ticemi.
+            # Zapamatovat si konflikty mezi pÅ™ekrÃ½vajÃ­cÃ­mi se n-ticemi.
                     if($rodice[$i+$j] ne "" && $rodice[$i+$j]!=$i+$svzor[$j])
             {
             $main::ntice_konflikty++;
@@ -200,16 +264,16 @@ sub nasadit
 
 
 #------------------------------------------------------------------------------
-# Porovná vzorovou, úplnou a èásteènou analızu té¾e vìty. Pøedpokládá, ¾e
-# úplná analıza je "pùvodní" bez n-tic, zatímco èásteèná je "nová", s n-ticemi.
-# Tam, kde se èásteèná analıza uplatnila, zjistí, zda jde o zlep¹ení apod.
+# PorovnÃ¡ vzorovou, Ãºplnou a ÄÃ¡steÄnou analÃ½zu tÃ©Å¾e vÄ›ty. PÅ™edpoklÃ¡dÃ¡, Å¾e
+# ÃºplnÃ¡ analÃ½za je "pÅ¯vodnÃ­" bez n-tic, zatÃ­mco ÄÃ¡steÄnÃ¡ je "novÃ¡", s n-ticemi.
+# Tam, kde se ÄÃ¡steÄnÃ¡ analÃ½za uplatnila, zjistÃ­, zda jde o zlepÅ¡enÃ­ apod.
 #------------------------------------------------------------------------------
 sub zhodnotit
 {
-    my $vzor = shift; # odkaz na vzorové pole indexù rodièù
-    my $ntc0 = shift; # odkaz na pole indexù rodièù dodané pùvodním parserem
-    my $ntc1 = shift; # odkaz na pole indexù rodièù dodané novım parserem
-    my $ntc = shift; # odkaz na pole indexù rodièù podle n-tic umo¾òuje poznat, kde n-tice pøímo zasáhly
+    my $vzor = shift; # odkaz na vzorovÃ© pole indexÅ¯ rodiÄÅ¯
+    my $ntc0 = shift; # odkaz na pole indexÅ¯ rodiÄÅ¯ dodanÃ© pÅ¯vodnÃ­m parserem
+    my $ntc1 = shift; # odkaz na pole indexÅ¯ rodiÄÅ¯ dodanÃ© novÃ½m parserem
+    my $ntc = shift; # odkaz na pole indexÅ¯ rodiÄÅ¯ podle n-tic umoÅ¾Åˆuje poznat, kde n-tice pÅ™Ã­mo zasÃ¡hly
     for(my $i = 0; $i<=$#{$ntc1}; $i++)
     {
         if($ntc->[$i] ne "")
@@ -218,17 +282,6 @@ sub zhodnotit
             my $dobre0 = $ntc0->[$i]==$vzor->[$i];
             my $dobre1 = $ntc1->[$i]==$vzor->[$i];
             my $stejne = $ntc1->[$i]==$ntc0->[$i];
-            if(!$dobre1 && 0)
-            {
-                my $anot = \@main::anot;
-                print("\n");
-                for(my $j = 0; $j<=$#{$anot}; $j++)
-                {
-                    print("$j:$anot->[$j]{slovo} ");
-                }
-                print("\n");
-                print("i=$i, vzor=$vzor->[$i], ntc0=$ntc0->[$i], ntc1=$ntc1->[$i]\n");
-            }
             if($dobre0)
             {
                 if($dobre1)
@@ -256,8 +309,8 @@ sub zhodnotit
                 }
             }
         }
-        # Tento uzel nebyl zavì¹en podle modelu n-tic, ale jeho zavì¹ení mohlo bıt ovlivnìno
-        # novou situací, která po èásteèném rozboru vìty pomocí n-tic nastala.
+        # Tento uzel nebyl zavÄ›Å¡en podle modelu n-tic, ale jeho zavÄ›Å¡enÃ­ mohlo bÃ½t ovlivnÄ›no
+        # novou situacÃ­, kterÃ¡ po ÄÃ¡steÄnÃ©m rozboru vÄ›ty pomocÃ­ n-tic nastala.
         else
         {
             $main::ntice_neprimo++;
@@ -297,25 +350,25 @@ sub zhodnotit
 
 
 #------------------------------------------------------------------------------
-# Vytvoøí hlá¹ení na základì svıch statistik. Nikam ho nevypisuje, jen ho vrátí
-# volajícímu. Je na volajícím, aby rozhodl, na kterı vıstup ho po¹le.
+# VytvoÅ™Ã­ hlÃ¡Å¡enÃ­ na zÃ¡kladÄ› svÃ½ch statistik. Nikam ho nevypisuje, jen ho vrÃ¡tÃ­
+# volajÃ­cÃ­mu. Je na volajÃ­cÃ­m, aby rozhodl, na kterÃ½ vÃ½stup ho poÅ¡le.
 #------------------------------------------------------------------------------
 sub vytvorit_hlaseni
 {
     my $hlaseni = "------- Model n-tic -------\n";
-    $hlaseni .= sprintf("%7d   rozhodnutıch slov\n", $main::ntice_celkem);
-    $hlaseni .= sprintf("%7d   konfliktù mezi pøekrıvajícími se n-ticemi\n", $main::ntice_konflikty);
-    $hlaseni .= sprintf("%7d   zlep¹ení oproti pùvodnímu modelu\n", $main::ntice_lepsi);
-    $hlaseni .= sprintf("%7d   zhor¹ení oproti pùvodnímu modelu\n", $main::ntice_horsi);
-    $hlaseni .= sprintf("%7d   stejnì dobrıch jako pùvodní model\n", $main::ntice_dobre);
-    $hlaseni .= sprintf("%7d   stejnì ¹patnıch jako pùvodní model\n", $main::ntice_stejne_spatne);
-    $hlaseni .= sprintf("%7d   jinıch ne¾ pùvodní model, ale také ¹patnıch\n", $main::ntice_ruzne_spatne);
+    $hlaseni .= sprintf("%7d   rozhodnutÃ½ch slov\n", $main::ntice_celkem);
+    $hlaseni .= sprintf("%7d   konfliktÅ¯ mezi pÅ™ekrÃ½vajÃ­cÃ­mi se n-ticemi\n", $main::ntice_konflikty);
+    $hlaseni .= sprintf("%7d   zlepÅ¡enÃ­ oproti pÅ¯vodnÃ­mu modelu\n", $main::ntice_lepsi);
+    $hlaseni .= sprintf("%7d   zhorÅ¡enÃ­ oproti pÅ¯vodnÃ­mu modelu\n", $main::ntice_horsi);
+    $hlaseni .= sprintf("%7d   stejnÄ› dobrÃ½ch jako pÅ¯vodnÃ­ model\n", $main::ntice_dobre);
+    $hlaseni .= sprintf("%7d   stejnÄ› Å¡patnÃ½ch jako pÅ¯vodnÃ­ model\n", $main::ntice_stejne_spatne);
+    $hlaseni .= sprintf("%7d   jinÃ½ch neÅ¾ pÅ¯vodnÃ­ model, ale takÃ© Å¡patnÃ½ch\n", $main::ntice_ruzne_spatne);
     $hlaseni .= sprintf("%7d   slov mimo n-tice\n", $main::ntice_neprimo);
-    $hlaseni .= sprintf("%7d   nepøímıch zlep¹ení oproti pùvodnímu modelu\n", $main::ntice_neprimo_lepsi);
-    $hlaseni .= sprintf("%7d   nepøímıch zhor¹ení oproti pùvodnímu modelu\n", $main::ntice_neprimo_horsi);
-    $hlaseni .= sprintf("%7d   nepøímo stejnì dobrıch jako pùvodní model\n", $main::ntice_neprimo_dobre);
-    $hlaseni .= sprintf("%7d   nepøímo stejnì ¹patnıch jako pùvodní model\n", $main::ntice_neprimo_stejne_spatne);
-    $hlaseni .= sprintf("%7d   nepøímo jinıch ne¾ pùvodní model, ale také ¹patnıch\n", $main::ntice_neprimo_ruzne_spatne);
+    $hlaseni .= sprintf("%7d   nepÅ™Ã­mÃ½ch zlepÅ¡enÃ­ oproti pÅ¯vodnÃ­mu modelu\n", $main::ntice_neprimo_lepsi);
+    $hlaseni .= sprintf("%7d   nepÅ™Ã­mÃ½ch zhorÅ¡enÃ­ oproti pÅ¯vodnÃ­mu modelu\n", $main::ntice_neprimo_horsi);
+    $hlaseni .= sprintf("%7d   nepÅ™Ã­mo stejnÄ› dobrÃ½ch jako pÅ¯vodnÃ­ model\n", $main::ntice_neprimo_dobre);
+    $hlaseni .= sprintf("%7d   nepÅ™Ã­mo stejnÄ› Å¡patnÃ½ch jako pÅ¯vodnÃ­ model\n", $main::ntice_neprimo_stejne_spatne);
+    $hlaseni .= sprintf("%7d   nepÅ™Ã­mo jinÃ½ch neÅ¾ pÅ¯vodnÃ­ model, ale takÃ© Å¡patnÃ½ch\n", $main::ntice_neprimo_ruzne_spatne);
     return $hlaseni;
 }
 
