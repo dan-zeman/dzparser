@@ -7,6 +7,7 @@ use csts;
 use model; # kvůli zjistit_smer_a_delku()
 use vystupy;
 use ntice;
+use ud;
 
 
 
@@ -15,6 +16,8 @@ my $inisoubor = "parser.ini"; # jméno souboru s konfigurací
 # train.pl --i parser2.ini
 GetOptions('ini=s' => \$inisoubor);
 parse::precist_konfig($inisoubor, \%konfig);
+# Nastavit, který výstup půjde na STDOUT. Ostatní půjdou na STDERR.
+$vystupy::vystupy{stat}{stdout} = 1;
 
 
 
@@ -644,31 +647,17 @@ sub projit_kratkou_vetu
 #------------------------------------------------------------------------------
 sub ud
 {
-    my @alt; # seznam alternativních událostí
-    $alt[0] = $_[0];
-    my $i;
-    my $n = $_[1];
+    my $ud = shift; # událost, jejíž četnost chceme zvýšit
+    my $n = shift; # počet výskytů, o který chceme zvýšit četnost
+    my $statref = shift; # odkaz na hash, do nějž se četnosti ukládají
     $n = 1 if($n eq "");
-    # Rozdělit alternativy do samostatných událostí.
-    for($i = 0; $i<=$#alt; $i++)
+    ###!!! Tohle by ale fakt mělo být jinde!!!
+    # Koordinace započítat třikrát, je to jakési primitivní zvýšení jejich váhy.
+    if($ud =~ m/^KZZ/)
     {
-        while($alt[$i] =~ s/^(.*?)([^\s\|]+)\|(\S+)(.*)$/$1$2$4/)
-        {
-            $alt[++$#alt] = $1.$3.$4;
-        }
+        $n *= 3;
     }
-    # Každé dílčí události započítat poměrnou část výskytu.
-    my $dil = $n/($#alt+1);
-    for($i = 0; $i<=$#alt; $i++)
-    {
-        $stat{$alt[$i]} += $dil;
-        # Koordinace započítat dvakrát, je to jakési primitivní zvýšení jejich
-        # váhy.
-        if($alt[$i] =~ m/^KZZ/)
-        {
-            $stat{$alt[$i]} += 2*$dil;
-        }
-    }
+    ud::ulozit($ud, $n, $statref);
 }
 
 

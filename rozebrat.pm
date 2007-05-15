@@ -74,7 +74,6 @@ sub backtrack
         my $evidence = subkat::najit_valencni_rezervy($anot, $stav, $konfig->{nacteny_subkategorizacni_slovnik});
         if(join("", @{$evidence}) =~ m/1/)
         {
-            print("\n", join("", @{$evidence}), "\n");
             # Tady si budeme pamatovat zpracované i záložní stavy.
             my %prehled;
             # Nejdřív zopakovat analýzu a zapamatovat si stavy, ke kterým bychom se mohli vrátit.
@@ -112,14 +111,11 @@ sub backtrack
             my $puvodni_vysledny_stav = $stav;
             my @fronta_stavu;
             my $n_navratu;
-            print("\n");
             while(subkat::najit_nenaplnene_ramce($anot, $konfig->{nacteny_subkategorizacni_slovnik}, $stav))
             {
-                print("NAVRAT CISLO ", ++$n_navratu, "\n");
                 # Seřadit záložní stavy sestupně podle váhy (pozor, odfiltrovat zpracované stavy!)
                 @fronta_stavu = keys(%prehled);
                 my $n_stavu_celkem = $#fronta_stavu+1;
-                print("V prehledu je $n_stavu_celkem stavu.\n");
                 @fronta_stavu = grep{!$prehled{$_}{zpracovano}}(@fronta_stavu);
                 # Projít nezpracované stavy a označit ty, které nám neslibují nic
                 # nového, za zpracované.
@@ -159,7 +155,6 @@ sub backtrack
                 }
                 # Znova vyházet z fronty zpracované stavy.
                 @fronta_stavu = grep{!$prehled{$_}{zpracovano}}(@fronta_stavu);
-                print("Z toho ", $#fronta_stavu+1, " jeste nebylo zpracovano.\n");
                 @fronta_stavu = sort{$prehled{$b}{vaha}<=>$prehled{$a}{vaha}}(@fronta_stavu);
                 # Jestliže nezbývají žádné záložní stavy a stále není splněna valenční podmínka, vrátit se k původnímu výsledku.
                 # Totéž udělat, jestliže jsme dosáhli maximálního povoleného počtu návratů
@@ -168,7 +163,6 @@ sub backtrack
                    $konfig->{valence1_maxnavratu} ne "" && $n_navratu>$konfig->{valence1_maxnavratu} ||
                    $konfig->{valence1_maxgenstav} ne "" && $n_stavu_celkem>$konfig->{valence1_maxgenstav})
                 {
-                    print("Buď došly stavy, nebo byl překročen povolený počet návratů.\n");
                     $stav = $puvodni_vysledny_stav;
                     last;
                 }
@@ -229,8 +223,6 @@ sub backtrack
                 # Označit ho, nebo ho budeme dostávat pořád dokola!
                 $stav->{zpracovano} = 1;
             }
-            print("Jsme venku z valencni smycky. Pokud nedosly stavy, valence je naplnena!\n");
-            print("zasmyckou:", join(",", @{$stav->{rodic}}), "\n");
         }
     }
 konec_valencniho_backtrackingu:

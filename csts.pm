@@ -55,6 +55,8 @@ sub zpracovat_slovo
 {
     my $konfig = shift; # odkaz na hash
     my %anot; # výstupní hash
+    # Odstranit znak konce řádku, není součástí anotace.
+    s/\r?\n$//;
     #==========================================================================
     # Index slova ve větě (CSTS značka <r>; nemusí nutně odpovídat skutečnému
     # pořadí slova ve větě a na tektogramatické rovině ani nemusí být celočí-
@@ -73,20 +75,35 @@ sub zpracovat_slovo
     #==========================================================================
     if(m/<[fd]( [^>]*)?>([^<]*)/)
     {
-        $anot{slovo} = lc($2);
+        # Parser pracuje se slovním tvarem převedeným na malá písmena, ale musíme
+        # si uložit i původní tvar, abychom ho mohli na výstup poslat nezprzněný.
+        $anot{form} = $2;
+        # Dekódovat entity (počítáme jen se třemi nejzákladnějšími, bez kterých se neobejdeme).
+        $anot{form} =~ s/&lt;/</g;
+        $anot{form} =~ s/&gt;/>/g;
+        $anot{form} =~ s/&amp;/&/g;
+        $anot{slovo} = lc($anot{form});
     }
     else
     {
-        $anot{slovo} = "";
+        $anot{form} = $anot{slovo} = "";
     }
     #==========================================================================
     # Přečíst heslový tvar.
     #==========================================================================
     if(m/<$konfig->{mzdroj0}l[^>]*>([^<]*)/)
     {
+        # Kvůli výstupu si zapamatovat i původní lemma, ze kterého nebyla
+        # odtržena část za podtržítkem a ke kterému nebylo přidáno "K", pokud
+        # jde o koncovou interpunkci.
+        $anot{lemma} = $1;
+        # Dekódovat entity (počítáme jen se třemi nejzákladnějšími, bez kterých se neobejdeme).
+        $anot{lemma} =~ s/&lt;/</g;
+        $anot{lemma} =~ s/&gt;/>/g;
+        $anot{lemma} =~ s/&amp;/&/g;
         #     heslo ... heslo ze zvoleneho zdroje (<MMl>, <MDl>, <l>)
         #     lexkat ... poznamka za podtrzitkem, ze stejneho zdroje jako heslo
-        $anot{heslo} = $1;
+        $anot{heslo} = $anot{lemma};
         $anot{heslo} =~ s/_(.*)$//;
         $anot{lexkat} = $1;
     }
@@ -538,6 +555,26 @@ sub skoncila_veta
     # Může se stát, že uzly nebyly na vstupu seřazené podle ordu (<r>).
     # Zpracovatelské funkci to nedělá dobře, proto je teď raději seřadíme.
     @{$anot} = sort{$a->{ord}<=>$b->{ord}}(@{$anot});
+    # Může se stát, že graf závislostí na vstupu není strom, protože obsahuje
+    # cyklus. Zpracovatelská funkce by se kvůli tomu mohla zacyklit, proto
+    # raději cykly kontrolujeme a odstraňujeme. Pro každý uzel zjistit, jestli
+    # se z něj dá dojít do něj samého. Pokud ano, převěsit ho na kořen.
+    for(my $i = 1; $i<=$#{$anot}; $i++)
+    {
+        # Nestačí hlídat, že se nevrátíme do $i. Někde výše může být cyklus, který
+        # teprve čeká na opravu (protože leží napravo od nás), v něm bychom se
+        # mohli chytit a kontrola by nikdy neskončila. Musíme vyvolat poplach,
+        # jakmile narazíme na uzel, ve kterém už jsme byli, i když to není $i.
+        my @stopy;
+        for(my $j = $i; $j!=0; $j = $anot->[$j]{rodic_vzor})
+        {
+            $stopy[$j] = 1;
+            if($stopy[$anot->[$j]{rodic_vzor}])
+            {
+                $anot->[$j]{rodic_vzor} = 0;
+            }
+        }
+    }
     # Zpracovat větu.
     if($#{$anot}>0 || $stav->{posledni_veta})
     {

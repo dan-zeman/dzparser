@@ -2,6 +2,7 @@ package model;
 use utf8;
 use povol;
 use plodnost;
+use ud;
 
 
 
@@ -521,32 +522,7 @@ sub ud
 {
     my $ud = shift; # událost, jejíž četnost chceme znát
     my $statref = shift; # odkaz na hash, v němž se má hledat
-    my @alt; # seznam alternativních událostí
-    $alt[0] = $ud;
-    # Jestliže volající nedodal statistický model, použít globální proměnnou.
-    if(!$statref)
-    {
-        $statref = \%main::stat;
-    }
-    # Rozdělit alternativy do samostatných událostí.
-    for(my $i = 0; $i<=$#alt; $i++)
-    {
-        while($alt[$i] =~ m/([\S^\|]+)\|(\S+)/)
-        {
-            my $alt0 = $1;
-            my $zbytek = $2;
-            $alt[++$#alt] = $alt[$i];
-            $alt[$i] =~ s/$alt0\|$zbytek/$alt0/;
-            $alt[$#alt] =~ s/$alt0\|$zbytek/$zbytek/;
-        }
-    }
-    # Sečíst výskyty jednotlivých dílčích událostí.
-    my $n;
-    for(my $i = 0; $i<=$#alt; $i++)
-    {
-        $n += $statref->{$alt[$i]};
-    }
-    return $n;
+    return ud::zjistit($ud, $statref);
 }
 
 

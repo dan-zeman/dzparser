@@ -2,6 +2,18 @@
 # Načte natrénované statistiky a s jejich pomocí analyzuje věty na vstupu.
 # Analýzy nikam nevypisuje, místo toho je rovnou porovnává se vzorovými
 # a počítá si úspěšnost.
+# (c) 1995-2007 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# Licence: GNU GPL
+
+sub usage
+{
+    print STDERR ("Usage: parse.pl [-i config] [-m model] < input > output\n");
+    print STDERR ("  config: path to configuration file\n");
+    print STDERR ("  model:  path to trained model\n");
+    print STDERR ("  input:  CSTS file to parse\n");
+    print STDERR ("  output: parsed CSTS file\n");
+}
+
 use utf8;
 use Getopt::Long;
 use debug;
@@ -23,8 +35,14 @@ use vyhodnoceni;
 $starttime = time();
 my $inisoubor = "parser.ini"; # jméno souboru s konfigurací
 # parse.pl --i parser2.ini
-GetOptions('ini=s' => \$inisoubor);
+GetOptions('model=s' => \$model, 'ini=s' => \$inisoubor);
 parse::precist_konfig($inisoubor, \%konfig);
+if($model ne "")
+{
+    $konfig{stat} = $model;
+}
+# Nastavit, který výstup půjde na STDOUT. Ostatní půjdou na STDERR.
+$vystupy::vystupy{csts}{stdout} = 1;
 
 
 
@@ -172,7 +190,8 @@ sub zpracovat_vetu
         my $jmeno_souboru_do_hlaseni = $stav_cteni->{soubor};
         $jmeno_souboru_do_hlaseni =~ s-^.*/([^/]*)$-$1-;
         $jmeno_souboru_do_hlaseni =~ s/\.(?:csts|amm)$//i;
-        vypsat("prubeh", parse::cas()." $jmeno_souboru_do_hlaseni Analyzuje se veta $veta ...");
+        my $n_slov = scalar(@{$anot});
+        vypsat("prubeh", parse::cas()." $jmeno_souboru_do_hlaseni Analyzuje se věta $veta (", sprintf("%3d", $n_slov), ") ...");
         # Povolit ladící výpisy jen u prvních 50 vět.
         $dbglog = $veta<=50;
         ###############################################
@@ -296,11 +315,21 @@ sub vypsat_strom
     vypsat("csts", "<s id=\"$vetid\" w=\"$pstrom\">\n");
     for(my $i = 1; $i<=$#{$strom}; $i++)
     {
-        my $uzel = "<f>$anot->[$i]{slovo}";
-        $uzel .= "<l>$anot->[$i]{heslo}";
-        $uzel .= "<t>$anot->[$i]{znacka}";
+        my %uzel;
+        foreach my $atribut (qw(form lemma znacka afun))
+        {
+            $uzel{$atribut} = $anot->[$i]{$atribut};
+            # Zakódovat znaky, které mají v CSTS zvláštní význam.
+            $uzel{$atribut} =~ s/&/&amp;/g;
+            $uzel{$atribut} =~ s/</&lt;/g;
+            $uzel{$atribut} =~ s/>/&gt;/g;
+        }
+        my $uzel = "<f>$uzel{form}";
+        $uzel .= "<l>$uzel{lemma}";
+        $uzel .= "<t>$uzel{znacka}";
         $uzel .= "<r>$i";
         $uzel .= "<g>$anot->[$i]{rodic_vzor}";
+        $uzel .= "<A>$uzel{afun}";
         $uzel .= "<MDg src=\"dz\">$strom->[$i]";
         vypsat("csts", "$uzel\n");
     }

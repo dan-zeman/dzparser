@@ -12,7 +12,7 @@ use Encode;
 # Funkce pro obsluhu výstupů.
 
 our $cislo_instance; # číslo odlišující naše výstupy od stejných výstupů jiných procesů
-my %vystupy;
+%vystupy; # momentálně do tohoto hashe mohou psát jiné moduly a definovat vlastnosti svých výstupů; později by na to měly být spíš funkce a tahle proměnná by měla být opět "my", aby se v ní přímo nikdo nehrabal
 # V následující proměnné si pamatujeme, jestli už jsme správně zapnuli kódování
 # pro STDOUT a STDERR.
 our $standardni_kodovani_zapnuto;
@@ -28,34 +28,53 @@ our $standardni_kodovani_zapnuto;
 sub vypsat
 {
     my $soubor = shift(@_);
-    # Zjistit, jestli je takový soubor už otevřen.
-    unless($vystupy{$soubor}{otevreno})
+    # POSTARU VYPNUTO
+    if(0)
     {
-        otevrit_vystup($soubor);
+        # Zjistit, jestli je takový soubor už otevřen.
+        unless($vystupy{$soubor}{otevreno})
+        {
+            otevrit_vystup($soubor);
+        }
+        # Za jistých okolností se některé výstupy neposílají do souboru, ale pouze
+        # na STDOUT, STDERR, případně úplně do černé díry. Proto následujíc podmínka.
+        if($vystupy{$soubor}{psat_do_souboru})
+        {
+            print $soubor (@_);
+        }
+        # Pokud se výstupy posílané do tohoto souboru mají kopírovat i na
+        # standardní výstup (tj. většinou na obrazovku), udělat to.
+        if($vystupy{$soubor}{kopirovat_na_stdout})
+        {
+            print @_;
+        }
+        # Pokud se výstupy posílané do tohoto souboru mají kopírovat i na
+        # standardní chybový výstup (tj. většinou na obrazovku), udělat to.
+        if($vystupy{$soubor}{kopirovat_na_stderr})
+        {
+            print STDERR @_;
+        }
+        # Pokud se výstupy posílané do tohoto souboru mají kopírovat i do mailu,
+        # kopírovat.
+        if($vystupy{$soubor}{kopirovat_do_mailu})
+        {
+            print MAIL @_;
+        }
     }
-    # Za jistých okolností se některé výstupy neposílají do souboru, ale pouze
-    # na STDOUT, STDERR, případně úplně do černé díry. Proto následujíc podmínka.
-    if($vystupy{$soubor}{psat_do_souboru})
+    else # MOMENTALNE SE VUBEC NELOGUJE DO SOUBORU. VYRESIT CO KDYZ NASTAVIM LOGOVANI SOUBORU AZ PO JEHO OTEVRENI? (NECO JAKO OTVIRANI BYCH TOTIZ CHTEL I U STDOUT, NAPR. ABY SE ZAPNUL AUTOFLUSH)
     {
-        print $soubor (@_);
-    }
-    # Pokud se výstupy posílané do tohoto souboru mají kopírovat i na
-    # standardní výstup (tj. většinou na obrazovku), udělat to.
-    if($vystupy{$soubor}{kopirovat_na_stdout})
-    {
-        print @_;
-    }
-    # Pokud se výstupy posílané do tohoto souboru mají kopírovat i na
-    # standardní chybový výstup (tj. většinou na obrazovku), udělat to.
-    if($vystupy{$soubor}{kopirovat_na_stderr})
-    {
-        print STDERR @_;
-    }
-    # Pokud se výstupy posílané do tohoto souboru mají kopírovat i do mailu,
-    # kopírovat.
-    if($vystupy{$soubor}{kopirovat_do_mailu})
-    {
-        print MAIL @_;
+        if($vystupy{$soubor}{stdout})
+        {
+            print(@_);
+            if($vystupy{$soubor}{stderr})
+            {
+                print STDERR (@_);
+            }
+        }
+        else
+        {
+            print STDERR (@_);
+        }
     }
 }
 
