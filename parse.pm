@@ -13,6 +13,7 @@ sub precist_konfig
     my $konfig = shift; # odkaz na hash, kam uložit konfiguraci
     my $konfig_log;
     open(SOUBOR, $jmeno_souboru);
+    binmode(SOUBOR, ":utf8");
     while(<SOUBOR>)
     {
         # Všechny řádky konfiguračního souboru si zatím pamatovat, aby bylo později možné vypsat je do logu.

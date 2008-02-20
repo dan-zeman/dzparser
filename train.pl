@@ -1,7 +1,12 @@
 #!/usr/bin/perl
 # Natrénuje statistiky z treebanku a uloží je.
+# (c) 1995-2008 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# License: GNU GPL
+
 use utf8;
 use Getopt::Long;
+# Zařídit, aby Perl hledal knihovny také ve složce, ve které se nachází tento skript.
+BEGIN {my $path = `dirname $0`; $path =~ s/\r?\n$//; unshift(@INC, $path) unless(grep {$_ eq $path} @INC)}
 use parse;
 use csts;
 use model; # kvůli zjistit_smer_a_delku()

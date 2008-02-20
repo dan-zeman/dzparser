@@ -2,7 +2,7 @@
 # Načte natrénované statistiky a s jejich pomocí analyzuje věty na vstupu.
 # Analýzy nikam nevypisuje, místo toho je rovnou porovnává se vzorovými
 # a počítá si úspěšnost.
-# (c) 1995-2007 Dan Zeman <zeman@ufal.mff.cuni.cz>
+# (c) 1995-2008 Dan Zeman <zeman@ufal.mff.cuni.cz>
 # Licence: GNU GPL
 
 sub usage
@@ -16,6 +16,8 @@ sub usage
 
 use utf8;
 use Getopt::Long;
+# Zařídit, aby Perl hledal knihovny také ve složce, ve které se nachází tento skript.
+BEGIN {my $path = `dirname $0`; $path =~ s/\r?\n$//; unshift(@INC, $path) unless(grep {$_ eq $path} @INC)}
 use debug;
 use parse;
 use csts;
