@@ -62,11 +62,12 @@
 
 
 \title{Maximum Spanning Malt: Hiring World's Leading Dependency Parsers to Plant Indian Trees%
+% Tohle nechat zakomentované, je to jen tahák, jak udělat acknowledgement grantu při nedostatku místa. Jinak ale mám momentálně na konci opravdovou sekci Acknowledgements.
 %\thanks{ \hspace{.6em}The research has been supported by the grant 
 %MSM0021620838 (Czech Ministry of Education).}
 }
 
-% Tady je posuzování taky slepé? Až odtajním autora, nezapomenout odtajnit i grant!
+% Tady je posuzování taky slepé? Až odtajním autora, nezapomenout odtajnit i acknowledgements!
 \author{%Daniel Zeman\\
 %Univerzita Karlova v Praze, Ústav formální a aplikované lingvistiky\\
 %Malostranské náměstí 25, CZ-11800, Praha, Czechia\\ 
@@ -97,8 +98,13 @@ We present our system used for participation in the ICON 2009 NLP Tools Contest:
 \section{Introduction}
 \label{sec:intro}
 
-Introduction goes here.
-\XXX Sections: Brief system description, Error analysis, Results, Conclusion
+Dependency parsing, i.e. sentence analysis that outputs tree of word-on-word dependencies (as opposed to constituent trees of context-free derivations), gained growing attention and popularity recently. There are data-driven dependency parsers that can be trained on syntactically annotated corpora (treebanks) and new, previously unseen material can be parsed very efficiently \citep{nivre:2009:ACLIJCNLP}.
+
+Most of the successful parsers employ discriminative learning techniques to sort out vast sets of potentially useful features observed in the input text. Thus, for every new training treebank, smart feature engineering is the key to getting the most out of the existing parsers, regardless how well they performed on other data sets and languages. Now that there are new treebanks available for two Indo-Aryan and one Dravidian language, we took three existing dependency parsers and explored the possibilities of tuning them for the new training data. Both parser configuration and data preprocessing are relevant approaches to the tuning. In addition, we used parser combination to further improve the results.
+
+Throughout the paper we focus mainly on the unlabeled attachment score. Although the parsers produce labeled dependencies, we do not optimize the system towards label accuracy.
+
+The rest of the paper is organized as follows: In \Sref{sec:system}, we describe the respective parsers and the combined parsing system. In \Sref{sec:experiments}, we report on the experiments we performed, discuss various results on the development set and analyze the errors. We conclude by summarizing the best configuration we were able to find, and future implications.
 
 \section{System Description}
 \label{sec:system}
@@ -124,21 +130,16 @@ Malt Parser has participated in both CoNLL-X and CoNLL 2007 shared tasks, and al
 \label{sec:dz}
 In order to combine the two above parsers, we needed a third parser. We picked DZ Parser \citep{dzparser}, which is also reasonably fast and freely available.\footnote{\url{http://ufal.mff.cuni.cz/~zeman/projekty/parser/}} Although its accuracy, if compared to MST or Malt, is worse by a wide margin, this parser proved useful because its only role was to help to form a majority whenever MST and Malt disagreed.
 
-\XXX Acknowledgements: poděkovat Joakimovi a Ryanovi za zveřejnění parserů.
-\XXX other dependency parsers available for download include the isbn parser by titov
-\microsection{Tides}
-\label{sec:tides}
-We are happy
-to share our cleaning tools to make the experiments reproducible.\footnote{\url{https://wiki.ufal.ms.mff.cuni.cz/pub-company:icon2009}; accept the certificate.}
+DZ Parser builds a model of bigrams of words that occur together in a dependency; most of the time, words are identified by their part of speech tags and morphological features. The parser was originally developed for Czech but it can be re-trained for any other language.\footnote{Of course there are other dependency parsers that successfully participated in the CoNLL shared tasks and are available for download. One alternative worth mentioning is the ISBN Parser \citep{titov-henderson:2007:EMNLP-CoNLL2007} at \url{http://flake.cs.uiuc.edu/~titov/}.}
 
-\microsection{Daniel Pipes}
-\label{sec:dpipes}
-A journalist Daniel Pipes' website:\footnote{\url{http://www.danielpipes.org/}} limited-domain articles about the Middle East. 
-The articles are originally written in English, many of them are translated to
-up to 25 other languages, including Hindi (322 articles, 6,761 sentence
-pairs).
+\subsection{Voting Superparser}
+\label{sec:voting}
+The three parsers are combined using a simple weighted-voting approach similar to \citet{biblio:ZeZaImprovingParsing2005}, except that the output is guaranteed to be cycle-free. We start by evaluating every parser separately on the development data. The UAS of each parser is subsequently used as the weight of that parser's vote. Dependencies are parent-child relations, and for every node there are up to three candidates for its parent (if all three parsers disagree). Candidates get weighted votes -- e.g., if parsers with weights $w_1 = 0.8$ and $w_2 = 0.7$ agree on the candidate, the candidate gets 1.5 votes. Since we have only three parsers, in practice this means that the candidate of the best parser looses only if 1. the other two parsers agree on someone else, or 2. if attaching the child to this candidate would create a cycle.
 
-\subsection{Normalization}
+The tree is constructed from the root down. We repeatedly add nodes whose winning parent candidates are already in the tree. If none of the remaining nodes meet this condition, we have to break a cycle. We do so by removing the candidate (for parentship of any remaining node) with least weighted votes. Then we go on with adding nodes until all nodes are attached or there is another cycle to break.
+
+\section{Experiments}
+\label{sec:experiments}
 
 blabla
 
@@ -176,12 +177,6 @@ aff\textit{xxx} -- Affisix
 \label{tab:morph}
 \end{table}
 
-
-\section{Hierarchical Phrase-Based Models}
-\label{joshua}
-
-Joshua
-
 \begin{table}[ht]
 \begin{centering}
 \begin{tabular}{l|l|l}
@@ -197,20 +192,26 @@ Tides+DP+Dict & 12.43±0.79 & 11.90±0.78\\
 \end{centering}
 \end{table}
 
+\section{Parser Unique Errors (Oracle Accuracy)}
+
+\section{How many times a candidate lost due to cycle prevention, and how many times this introduced an error?}
+
+\section{Learning Curve}
 
 \section{Conclusion}
 \label{sec:concl}
 
-On the other hand, we have shown that our hand-crafted word classes and some
+\XXX On the other hand, we have shown that our hand-crafted word classes and some
 additional data help Moses achieve significantly better results than reported
 previously. Hierarchical decoder Joshua can capture word order even better than
 Moses. Its results are always slightly better. And as far as we know, our
 current results are the best that have been reported on this dataset.
 
-%\XXX -- někde zmínit, že "čištění" (ve smyslu Mosese, tedy dlouhých vět)
-%výsledky kazí, protože nám zmenšuje trénovací data. O to víc je vlastně
-%zvláštní, že přidání trénovacích dat typu Emille výsledky taky kazí.
+\section*{Acknowledgements}
 
+\XXX Acknowledgements: poděkovat Joakimovi a Ryanovi za zveřejnění parserů.
+The research has been supported by the grant 
+MSM0021620838 (Czech Ministry of Education).
 
 \begin{small}
 \bibliography{paper}
