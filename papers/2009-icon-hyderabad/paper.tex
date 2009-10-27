@@ -104,7 +104,7 @@ Most of the successful parsers employ discriminative learning techniques to sort
 
 Throughout the paper we focus mainly on the unlabeled attachment score. Although the parsers produce labeled dependencies, we do not optimize the system towards label accuracy.
 
-The rest of the paper is organized as follows: In \Sref{sec:system}, we describe the respective parsers and the combined parsing system. In \Sref{sec:experiments}, we report on the experiments we performed, discuss various results on the development set and analyze the errors. We conclude by summarizing the best configuration we were able to find, and future implications.
+The rest of the paper is organized as follows: In \Sref{sec:system}, we describe the respective parsers and the combined parsing system. In \Sref{sec:experiments}, we report on the experiments we performed, discuss various results on the development set and analyze the errors. In \Sref{sec:evaluation} we present the official results on the test data. We conclude by summarizing the best configuration we were able to find, and future implications.
 
 \section{System Description}
 \label{sec:system}
@@ -141,62 +141,134 @@ The tree is constructed from the root down. We repeatedly add nodes whose winnin
 \section{Experiments}
 \label{sec:experiments}
 
-blabla
+The final test data are blind, any error analysis is therefore impossible. That is why all scores given in this section were measured on the development data. All three treebanks follow the same annotation scheme and each of them is available in two flavors:
 
 \begin{compactitem}
-\item \hi{स्टैंडर्डज} \textit{(sṭaiṁḍarḍaja)} \translit{(sṭaiṁḍarḍaja)}
-\item \hi{स्टैंडर्डस} \textit{(sṭaiṁḍarḍasa)}
-\item \hi{स्टैंडर्ड्स} \textit{(sṭaiṁḍarḍsa)}
-\item \bn{সরিয়ে} Tohle je bengálsky.
-\item \te{వాడుతున్నాం} Tohle je telugsky.
+\item \textit{nomorph} variety contains word forms, chunk labels, dependency links and dependency labels
+\item \textit{morph} variety is augmented by automatically assigned lemmas, part of speech tags and values of morphological features (gender, number, person, case, postposition and tam -- tense+aspect+modality)
 \end{compactitem}
 
-\begin{table}[t]
-\begin{center}
-\small
-\begin{tabular}{l  l | ll}
-factor & BLEU &
-factor & BLEU\\
-\hline
-tag & 12.03±0.75 &	hitbsuf & 11.58±0.74\\
-wc50 & 11.97±0.73 &	hindomor2 & 11.55±0.74\\
-wc10 & 11.76±0.74 &	hindomor1 & 11.54±0.71\\
-lcsuf3 & 11.66±0.75 &	affddf & 11.50±0.7\\
-lcsuf1 & 11.63±0.72 &	affbdf & 11.33±0.72\\
-hindomor3 & 11.60±0.73 &	lcsuf2 & 11.14±0.74\\
-\end{tabular}
-\end{center}
-\caption{Target side morphology: Using different additional factors for second
-language model of MT system and its  effect on BLEU score. Trained on
-IIIT-TIDES only. 
-tag -- POS tags; wc\textit{n} -- \textit{n} word classes from mkcls; hitbsuf --
-word classes created by hand; lcsuf\textit{n} -- simple
-n-character suffixes; hindomor\textit{n};
-aff\textit{xxx} -- Affisix
-} 
-\label{tab:morph}
-\end{table}
+\Tref{tab:baseline} shows baseline results on the \textit{nomorph} data.
 
 \begin{table}[ht]
 \begin{centering}
-\begin{tabular}{l|l|l}
-\textbf{Parallel data} & \textbf{Joshua} & \textbf{Moses} \\
+%\small
+\begin{tabular}{l|l|l|l}
+& \textbf{MST} & \textbf{Malt} & \textbf{DZ} \\
 \hline
-Tides & 12.27±0.83 & 11.46±0.72\\
-Tides+DP & \textbf{12.58±0.77} & 11.93±0.75\\
-Tides+DP+Emille & 11.32±0.74 & 10.06±0.72\\
-Tides+DP+Dict & 12.43±0.79 & 11.90±0.78\\
+hi & 80.32 & \textbf{81.84} & 62.00\\
+bn & 82.00 & \textbf{84.71} & 71.02\\
+te & 77.63 & \textbf{80.89} & 70.52\\
 \end{tabular}
-\caption{Results of Joshua compared with Moses}
-\label{tab:joshua}
+\caption{Baseline UAS of the three parsers on \textit{nomorph} development data. Language codes follow ISO 639: hi = Hindi, bn = Bangla, te = Telugu.}
+\label{tab:baseline}
 \end{centering}
 \end{table}
 
-\section{Parser Unique Errors (Oracle Accuracy)}
+\XXX what configuration of MST and Malt led to the baseline results?
 
-\section{How many times a candidate lost due to cycle prevention, and how many times this introduced an error?}
+Using the \textit{morph} data substantially deteriorates the accuracy. It could be caused by tagging errors (recall: morphological information has been disambiguated automatically) but data sparseness seems to be a more likely reason.
 
-\section{Learning Curve}
+\begin{table}[ht]
+\begin{centering}
+%\small
+\begin{tabular}{l|r|r|r|r|r|r}
+& \textbf{occ} & \textbf{frm} & \textbf{lem} & \textbf{cl} & \textbf{pos} & \textbf{feat} \\
+\hline
+hi & 13779 & 3973 & 3134 & 10 & \XXX & 714\\
+bn & 6449 & 2997 & 2336 & 14 & \XXX & 367\\
+te & 5494 & 2462 & 1403 & 12 & \XXX & 453\\
+\end{tabular}
+\caption{Size of the training corpora: occ -- word occurrences, frm -- distinct forms, lem -- lemmas, cl -- chunk labels, pos -- part of speech tags, feat -- feature value combinations.}
+\label{tab:corpus}
+\end{centering}
+\end{table}
+
+%\begin{table}[ht]
+%\begin{centering}
+%\small
+%\begin{tabular}{l|l|l|l}
+%& \textbf{MST} & \textbf{Malt} & \textbf{DZ} \\
+%\hline
+%hi & - & \textbf{-} & 44.32\\
+%bn & - & \textbf{-} & 50.31\\
+%te & - & \textbf{-} & 36.89\\
+%\end{tabular}
+%\caption{UAS on morph data (POS tag and features concatenated to one tag).}
+%\label{tab:baselinemorph}
+%\end{centering}
+%\end{table}
+
+\begin{table}[ht]
+\begin{centering}
+%\small
+\begin{tabular}{l|l|l|l}
+& \textbf{MST} & \textbf{Malt} & \textbf{DZ} \\
+\hline
+hi & - & \textbf{-} & 44.32\\
+bn & - & \textbf{-} & 50.31\\
+te & - & \textbf{-} & 36.89\\
+\end{tabular}
+\caption{UAS on morph data (POS tag and features concatenated to one tag).}
+\label{tab:poscasevib}
+\end{centering}
+\end{table}
+
+\XXX Otevřít soubor eval.txt. Mám v něm další výsledky, zejména u všech parserů natrénování na pos+pád+vibhakti.
+
+%\begin{compactitem}
+%\item \hi{स्टैंडर्डज} \textit{(sṭaiṁḍarḍaja)} \translit{(sṭaiṁḍarḍaja)}
+%\item \hi{स्टैंडर्डस} \textit{(sṭaiṁḍarḍasa)}
+%\item \hi{स्टैंडर्ड्स} \textit{(sṭaiṁḍarḍsa)}
+%\item \bn{সরিয়ে} Tohle je bengálsky.
+%\item \te{వాడుతున్నాం} Tohle je telugsky.
+%\end{compactitem}
+
+\subsection{Nonprojectivity}
+\label{sec:nonprojectivity}
+
+Nonprojectivity is a property of the dependency structure and the word order \citep{neproj} that makes parsing more difficult. All three parsers can produce nonprojective structures and all three treebanks are nonprojective. However, except for Hindi, the proportion of nonprojective dependencies is so small that one can hardly imagine that running the parsers in nonprojective mode would bring any improvement. A quick experiment with Malt Parser switched to the nonprojective Stack method revealed that it actually hurts the results even for Hindi.
+
+\begin{table}[ht]
+\begin{centering}
+%\small
+\begin{tabular}{l|ll}
+& \textbf{Edges} & \textbf{Sentences} \\
+\hline
+hi & 01.83 & 13.93\\
+bn & 00.96 & 05.49\\
+te & 00.45 & 01.31\\
+\end{tabular}
+\caption{Percentage of nonprojective dependencies, and of sentences containing at least one nonprojectivity.}
+\label{tab:nonprojectivity}
+\end{centering}
+\end{table}
+
+\subsection{Parser Unique Errors (Oracle Accuracy)}
+
+\subsection{How many times a candidate lost due to cycle prevention, and how many times this introduced an error?}
+
+\subsection{Learning Curve}
+
+\section{Official Evaluation}
+\label{sec:evaluation}
+
+Finally, we present the official evaluation of our voting superparser, as measured by the organizers on the test data. For this purpose, the parsing system has been retrained on both the training data and the development data. The results are shown in \Tref{tab:evaluation}.
+
+\begin{table}[ht]
+\begin{centering}
+\small
+\begin{tabular}{l|l|l|l}
+& \textbf{UAS} & \textbf{LAA} & \textbf{LAS} \\
+\hline
+hi & 88.58 (3:90.31) & 72.66 (4:76.38) & 68.60 (4:74.48)\\
+bn & 86.06 (4:90.32) & 71.28 (4:81.27) & 66.70 (5:79.81)\\
+te & 80.27 (4:86.28) & 54.20 (4:61.58) & 49.91 (4:60.55)\\
+\end{tabular}
+\caption{Official scores on the test data: unlabeled attachment score (UAS), label assignment accuracy (LAA) and labeled attachment score (LAS). The numbers in parentheses are the rank of our system and the score of the best system w.r.t. the given metric.}
+\label{tab:evaluation}
+\end{centering}
+\end{table}
 
 \section{Conclusion}
 \label{sec:concl}
