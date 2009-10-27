@@ -1,0 +1,768 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+% File acl-ijcnlp2009.tex
+%
+% Contact  jshin@csie.ncnu.edu.tw
+%%
+%% Based on the style files for EACL-2009 and IJCNLP-2008...
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+
+\documentclass[11pt]{article}
+\usepackage{acl-ijcnlp2009}
+\usepackage[	
+   pdfdisplaydoctitle, breaklinks, colorlinks, linkcolor=black, citecolor=black, filecolor=black, urlcolor=black, 
+   backref, hyperfootnotes]{hyperref} % backref a modre URL asi nakonec zrusime 
+%\usepackage{times}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{color} %pro korektury
+\usepackage{paralist} % for better itemize and enumerate
+
+% a footer required for the first page
+\usepackage{fancyhdr}
+\fancyhead{} % clear all header fields
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{Proceedings of ICON-2009: 7th International Conference on Natural Language Processing, Macmillan Publishers, India. Also accessible from http://ltrc.iiit.ac.in/proceedings/ICON-2009}
+
+% xelatex
+\usepackage{fontspec, xunicode, xltxtra}
+\defaultfontfeatures{Mapping=tex-text}
+\setmainfont{Times New Roman}
+\setmonofont[Scale=MatchLowercase]{Luxi Mono}
+\setmathsf{Lohit Hindi}%\XXX
+\newfontinstance\hi[Script=Devanagari]{Lohit Hindi}
+\newcommand{\hindi}[1]{{\hi #1}}
+\newfontinstance\tl{Gentium}
+\newcommand{\translit}[1]{{\tl \textit{#1}}}
+
+% natbib
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\bibpunct{(}{)}{;}{a}{,}{,}
+
+% our defs
+\def\perscite#1{\citet{#1}}  
+\def\parcite#1{\citep{#1}} 
+%ps: Did you mean \citep and \citet (in-parentheses and textual reference)? There is even more, see `texdoc natbib`.
+%obo: your def seems right.
+\def\Sref#1{Section~\ref{#1}}
+\def\Tref#1{Table~\ref{#1}}
+\def\Fref#1{Figure~\ref{#1}}
+\newcommand{\red}[1]{\textcolor{red}{#1}} % komentare (TODO)
+\newcommand{\XXX}{\textcolor{red}{XXX }} % komentare (TODO)
+
+
+\title{English-Hindi Translation -- Obtaining Mediocre Results\\with Bad Data and
+Fancy Models%
+\thanks{ \hspace{.6em}The research has been supported by the grants GAAV ČR 1ET201120505 (Grant Agency of the Academy of Sciences of the Czech Republic), 
+MSM0021620838 (Czech Ministry of Education),
+FP7-ICT-2007-3-231720 (EuroMatrix Plus), and GAUK 4307/2009 (Grant agency of the Charles University).
+}
+}
+
+% oboXXX nedat Gaurava az za Michaly?
+% dz: jsem spíš proti. Konečný přínos Michalů je možná větší, ale pro Gaurava to byla ty 3 měsíce hlavní náplň činnosti a dělal přímo na samotném překladu, ne na "doplňcích".
+\author{Ondřej Bojar, Pavel Straňák, Daniel Zeman, Gaurav Jain, Michal Hrušecký, Michal Richter, Jan Hajič\\
+Univerzita Karlova v Praze, Ústav formální a aplikované lingvistiky,\\
+Malostranské náměstí 25, 118 00, Praha, Czech Republic\\ 
+\texttt{\{bojar,stranak,zeman,hajic\}@ufal.mff.cuni.cz}\\
+\texttt{gauravjain@cse.iitb.ac.in}, \texttt{michal@hrusecky.net}, \texttt{michalisek@gmail.com}
+}
+%end author
+%\title{Instructions for ACL-IJCNLP 2009 Proceedings}
+%
+%\author{First Author\\
+%  Affiliation / Address line 1\\
+%  Affiliation / Address line 2\\
+%  {\tt email@domain}  \And
+%  Second Author\\
+%  Affiliation / Address line 1\\
+%  Affiliation / Address line 2\\
+%  {\tt  email@domain}}
+
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\begin{abstract}
+We describe our attempt to improve on previous English to Hindi machine
+translation results, using two open-source phrase-based MT systems: Moses and
+Joshua. We use several approaches to morphological tagging: from automatic word
+classes, through stem-suffix segmentation, to a POS tagger.
+%We also experiment
+%with factored language models.
+We evaluate various combinations of training data
+sets and other existing English-Hindi resources. To our knowledge, the BLEU
+score we obtained is currently the best published result for the IIIT-TIDES
+dataset.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Machine translation is a challenging task and more so with significant
+differences in word order of the languages in question and with the target
+language explicitly marking more details in word forms than the source language
+does. Precisely this holds for the English-Hindi pair we study.
+
+We try to
+explore the problems on several fronts: \Sref{sec:data} describes our
+careful cleanup and a few additions to the training data. \Sref{morf} is devoted
+to several additional variants of morphological representation of the target
+side.
+%and in \Sref{flm} we study the impact of using factored language models
+%\parcite{bilmes:kirchhoff:factored:2003} instead of independent standard
+%$n$-gram models for ensuring
+%output coherence.
+\Sref{joshua} evaluates the impact of using a hiearchical
+instead of phrase-based model. \Sref{human} concludes our experiments by
+providing a preliminary human evaluation of translation quality.
+
+\section{Data}
+\label{sec:data}
+
+\def\microsection#1{{\bf #1.}}
+
+\microsection{Tides}
+\label{sec:tides}
+A dataset originally collected for the DARPA-TIDES surprise-language contest in
+2002, later refined at IIIT Hyderabad and provided for the NLP Tools Contest at
+ICON 2008 \citep{nlptoolscontest:2008:summary}: 50K sentence pairs for training,
+1K development and 1K test data (1~reference translation per sentence).
+
+The corpus is a general domain dataset with news articles forming the greatest
+proportion. It is aligned on sentence level, and tokenized to some extent.
+We found the tokenization insufficient
+%(e.g. \textit{anglo-american} would be 1
+%token instead of 3, making the data sparseness problem more severe)
+and ran our own tokenizer on top of it.
+Cleaning was also necessary due to significant noise in the data, often caused
+by misconversion of Latin script.
+    
+We used Tides as our primary dataset and all reported scores are measured on its
+test data. However, note that due to the processing we applied to both training
+and test data, our results are not directly comparable to the results of the
+2008 NLP Tools Contest.\footnote{For instance, the Joshua BLEU score of a model
+trained on Tides only, as we present it later in \Tref{tab:joshua}, is 12.27 on
+the cleaned data, and 11.10 on the raw data; see also \Tref{tab:previous}.} We are happy
+to share our cleaning tools to make the experiments reproducible.\footnote{\url{https://wiki.ufal.ms.mff.cuni.cz/pub-company:icon2009}; accept the certificate.}
+
+\microsection{Daniel Pipes}
+\label{sec:dpipes}
+A journalist Daniel Pipes' website:\footnote{\url{http://www.danielpipes.org/}} limited-domain articles about the Middle East. 
+The articles are originally written in English, many of them are translated to
+up to 25 other languages, including Hindi (322 articles, 6,761 sentence
+pairs).
+
+\microsection{Emille}
+\label{sec:emille}
+EMILLE corpus \citep{baker:2002} consists of three components: monolingual,
+parallel and annotated corpora.
+%There are fourteen monolingual corpora,
+%including both written and (for some languages) spoken data for fourteen South
+%Asian languages.''
+%: Assamese, Bengali, Gujarati, Hindi, Kannada, Kashmiri,
+%Malayalam, Marathi, Oriya, Punjabi, Sinhala, Tamil, Telegu and Urdu.
+%The EMILLE
+%monolingual corpora contain approximately 92,799,000  words (including 2,627,000
+%words of transcribed spoken data for Bengali, Gujarati, Hindi, Punjabi and
+%Urdu).''
+The parallel corpus consists of 200,000 words of text in English and
+its accompanying translations in Hindi and other languages. Whenever we mention
+Emille, we mean the parallel English-Hindi section.
+
+The original Emille turned out to be very badly aligned and had spelling errors,
+so we worked with a manually cleaned and aligned subset of 3,501 sentence
+pairs.\footnote{We are very grateful to Om Dammani and his colleagues from IIT
+Mumbai for making their corrected subset of Emille available to us.}
+
+%\subsection{Other Data}
+\label{sec:data-o}
+
+We also tried various other small datasets:
+
+ \microsection{ACL 2005}
+ A subset of Emille, used in the shared task of the
+ ACL 2005 workshop on ``Building and Using Parallel Texts: Data Driven Machine
+ Translation and Beyond''.\footnote{Downloaded from the workshop website at
+ \url{http://www.cse.unt.edu/~rada/wpt05/}. We used this dataset on the
+ assumption that it might be better aligned, compared to the original Emille
+ parallel corpus.}
+
+ \microsection{Wiki NEs} 
+ We have extracted English titles of Wikipedia
+ entries, that are translations (or rather transcriptions) of Hindi, Marathi and
+ Sanskrit named entities (names of persons, artifacts, places, etc.), and their
+ translations in Devanagari.
+% We used XML abstracts of English Wikipedia; the
+% begining of an entry looks something like this, so it is easy to parse it with
+% a regular expression: 
+ 
+%\hspace{1em} \textbf{Mumbai} (Marathi: \hindi{मुंबई}, \textit{Mumbaī}\ldots 
+ 
+% We took not only Hindi, but also Marathi and Sanskrit entities on the
+% assumption that these are also commonly used in Hindi texts. See for example
+% Mumbai (Bombay) above.
+ 
+ \microsection{Shabdanjali}
+ A GPL-licensed collaborative English-Hindi dictionary, containing about 26,000
+ entries, available on the web.
+% Available on the web in various formats and encodings. It is formatted
+% similarly to printed bilingual dictionaries, so several filters had to be
+% applied to refine a simple list of word pairs out of it.
+
+ \microsection{Agriculture domain parallel corpus}
+ English-Hindi-Marathi-UNL parallel corpus from Resource Center for Indian
+ Language Technology
+ Solutions.\footnote{\url{http://www.cfilt.iitb.ac.in/download/corpus/parallel/agriculture_domain_parallel_corpus.zip}}
+ It contains 17,105 English and 13,248 Hindi words.
+ 
+The impact of adding additional data to the Tides training data is partially
+illustrated by \Tref{tab:joshua} and \Tref{tab:human:more}. Adding other data
+has similar results.
+
+\subsection{Normalization}
+
+As always with statistical approaches, we want our training data to match the
+test data as closely as possible. There are style variations throughout our data
+that can and should be normalized automatically. For instance, the Tides corpus
+usually (except for some conversion errors) terminates a sentence with the
+period (``.''). However, some of our additional data sets use the traditional
+Devanagari sign called \textit{danda} (``\hindi{।}'') instead. Our normalization
+procedure replaces all dandas by periods, converts Devanagari digits to ASCII
+digits and performs other minor reductions of the character set (e.g.
+normalizing
+non-ASCII punctuation). Some changes affect the English data as well. 
+
+\subsection{Lessons Learnt}
+
+Hindi as the target language possesses some features that negatively influence
+MT performance: richer morphology than English, greater noise in training data
+and harder sparse-data problem due to vocabulary that combines words from
+various etymological sources.
+
+One common cause of data sparseness is unstable orthography of English and other
+loanwords (or even transcribed citations), cf. the following counterparts of the
+English word ``standards'', all present in the data:
+
+\begin{compactitem}
+\item \hindi{स्टैंडर्डज} \textit{(sṭaiṁḍarḍaja)} \translit{(sṭaiṁḍarḍaja)}
+\item \hindi{स्टैंडर्डस} \textit{(sṭaiṁḍarḍasa)}
+\item \hindi{स्टैंडर्ड्स} \textit{(sṭaiṁḍarḍsa)}
+\end{compactitem}
+
+Also common is the case where genuine English text has been (during some
+processing at the site of the data provider) interpreted as Devanagari encoded
+using Latin letters. Thus, \hindi{ईन्ङोर्मटिओन् छोम्मिसिओनेर्} \textit{(īnṅormaṭion
+chommisioner)} should actually read (even in the Hindi text) \textit{Information
+Commis(s)ioner}. If transcribed to Devanagari, it would be
+% Zdá se, že font Madan neobsahuje nuktu ani znaky s ní.
+% i+n+virám+f+o...
+%\hindi{इन्फ़ोर्मेशन कोमिशनेर}
+% i+n+virám+ph+nukta+o...
+\hindi{इन्फ़ोर्मेशन कोमिशनेर}
+\textit{(informeśana komiśanera)}.
+
+\section{Target-Side Morphology}
+\label{morf}
+Richer morphology on the target side means that besides selecting the
+\textit{lexically correct} Hindi equivalent of an English word (such as
+\textit{book $\rightarrow$} \hindi{किताब} \textit{(kitāba)}), the system also
+must correctly guess the \textit{grammatical features} (such as the direct vs.
+oblique case in \textit{books $\rightarrow$} \hindi{किताबें} \textit{(kitābeṁ)} vs.
+\hindi{किताबों} \textit{(kitāboṁ)}).
+% Tu následující větu o shodě lze při nedostatku místa vynechat.
+Moreover, grammatical agreement (such as
+\hindi{मॆरी किताब} \textit{(merī kitāba)} ``my book'' vs. \hindi{मॆरा कमरा}
+\textit{(merā kamarā)} ``my room'') further multiplies possible translations
+of an English word.
+A separate model of target-language morphology may help the system select the
+correct translation.
+
+We have tried two supervised and four unsupervised approaches to Hindi
+morphology, see below.
+%
+%a full POS tagging
+%with a morphology and POS tagger from IIT Mumbai (\Sref{sec:tagger}) and
+%suffixes learned from a textbook (\Sref{sec:textbook}). We also tried several
+%unsupervised methods. A short comparison of the morphological factors is given
+%in the \Tref{tab:morph}.
+%
+The results in \Tref{tab:morph} and \Tref{tab:human} show that we were not able
+to achieve any improvements by using real POS tags
+%(see \Sref{sec:tagger})
+compared to automatic word classes produced by \texttt{mkcls} or classes created
+by hand.
+%(\Sref{sec:textbook}).
+
+\subsection{Supervised Morphology} 
+\label{sec:pos}
+
+\microsection{POS tagger}
+\label{sec:tagger}
+The only Hindi POS tagger we were able to find on the web, download and use is a part of the
+GATE framework \citep{Cunningham:2002rw}. That is however more of a
+demonstration, than a real tagger.
+%Other than that, we found no usable tagger.
+%That is probably one of the reasons that lead researchers to pursue
+%unsupervised
+%approaches to morphology; see e.g. \citet{BoStEnglishHindiTranslation2008}.
+Fortunately, we also had the opportunity to work with a CRF-based tagger from IIT
+Mumbai \citep{Kuhoo-Gupta:2006gd}.\footnote{Many thanks to Pushpak
+Bhattacharyya for making this tool available to us.}
+%dz 14.10.2009: následující URL možná už nefunguje?
+%\footnote{\url{http://www.cfilt.iitb.ac.in/tools/Hindi_POStagger.zip}}
+
+%The java application providing morphological analyses turned out to be a good
+%detector of dirty input data, because it crashed on various characters that
+%(mostly) did not belong to the input text. Most of these characters probably
+%appeared in the input text because of failed transcription as described in
+%\Sref{sec:tides}. However, since it crashes on occurrences of \% or \$, or
+%square brackets, which morphology uses for its own purpose, it can pose a
+%problem when these characters occur legitimately in the input text. 
+
+%Once we cleaned-up and normalized the input data, morphology and POS tagger ran smoothly. 
+
+\microsection{Textbook suffixes}
+\label{sec:textbook}
+Since the main morphological device of Hindi is alternating word suffixes,
+one can model suffixes instead of morphological tags.
+Our unsupervised approaches (see below) automatically acquire long but noisy
+lists of Hindi suffixes, some of which may bear grammatical meaning.
+As an alternative, we compiled a short list of 31 suffixes (including
+duplicates) for regular declension of nouns, verb formation etc.
+The cost of such a list was negligible: one of the authors (who does not speak
+Hindi) spent less then two hours with a Hindi textbook
+\citep{teach_yourself_hindi}, looking for grammar-describing sections.
+
+\subsection{Unsupervised Morphology} 
+We have tried two simple unsupervised methods:
+\begin{itemize}
+\item Automatic classes created by \texttt{mkcls}\footnote{\url{http://www.fjoch.com/mkcls.html}} tool contained in GIZA++ installation. 
+\item simple n-character long suffixes
+\end{itemize}
+and two more elaborate methods:
+%Affisix and Hindomor.
+
+\label{sec:aff}
+{\bf Affisix} is an open source tool for unsupervised recognition of affixes in a
+given language. It takes a large list of words and generates a list
+of possible suffixes or prefixes scored according to a selected method or a
+combination of methods. In this case, we used it to obtain the 100 top scoring
+suffixes
+using backward entropy and backward difference entropy methods (see
+\cite{affisixtsd2008} for details). The longest possible suffix seen in a word
+was then treated as the morphological tag of the word, leaving some words with a
+blank tag.
+
+\label{sec:hindomor}
+{\bf Hindomor} is another tool for unsupervised segmentation of words into
+morphemes. It was originally published in the context of information
+retrieval \citep{Zeman:2008}.
+
+The tool has been trained on the word types of the Hindi side of the Tides
+corpus. For every word the algorithm searches for positions where it can be cut
+in two parts: the stem and the suffix. Then it tries to filter the stem and
+suffix candidates so that real stems and suffixes remain. The core idea is that
+real stems occur with multiple suffixes and real suffixes occur with multiple
+stems.
+
+Given the lists of stems and suffixes obtained during training, we want to find
+the stem-suffix boundary in a word of the same language. Theoretically, we could
+use the learned stem-suffix combinations to require that both stem and suffix be
+known. However, this approach proved too restrictive, so we ended up in using
+just the list of suffixes. If a word ends in a string equal to a known suffix,
+the morpheme boundary is placed at the beginning of that substring.
+
+
+\begin{table}[t]
+\begin{center}
+\small
+\begin{tabular}{l  l | ll}
+factor & BLEU &
+factor & BLEU\\
+\hline
+tag & 12.03±0.75 &	hitbsuf & 11.58±0.74\\
+wc50 & 11.97±0.73 &	hindomor2 & 11.55±0.74\\
+wc10 & 11.76±0.74 &	hindomor1 & 11.54±0.71\\
+lcsuf3 & 11.66±0.75 &	affddf & 11.50±0.7\\
+lcsuf1 & 11.63±0.72 &	affbdf & 11.33±0.72\\
+hindomor3 & 11.60±0.73 &	lcsuf2 & 11.14±0.74\\
+\end{tabular}
+\end{center}
+\caption{Target side morphology: Using different additional factors for second
+language model of MT system and its  effect on BLEU score. Trained on
+IIIT-TIDES only. 
+tag -- POS tags; wc\textit{n} -- \textit{n} word classes from mkcls; hitbsuf --
+word classes created by hand; lcsuf\textit{n} -- simple
+n-character suffixes; hindomor\textit{n};
+aff\textit{xxx} -- Affisix
+} 
+\label{tab:morph}
+\end{table}
+
+
+The best BLEU score we achieved with Moses while making experiments with different
+factors for target side morphology was 12.22±0.78:
+trained on Tides and Daniel Pipes data with \texttt{hitbsuf}
+as the additional factor.
+
+
+\section{Hierarchical Phrase-Based Models}
+\label{joshua}
+
+One of the major differences between English and Hindi is the word order.
+Massive reordering must take place during translation.
+That is why we conducted several experiments with hierarchical
+translation models \citep{chiang:2007}, namely with Joshua \citep{joshua:2009},
+and compared the results with classical phrase-based models \citep[Moses, ][]{moses:2007}.
+
+Hierarchical phrase-based translation is based on synchronous context-free grammars (SCFG).
+Like phrase-based translation, pairs of corresponding source- and target-language phrases
+(sequences of tokens) are learnt from training data. The difference is that in hierarchical
+models, phrases may contain ``gaps'', represented by nonterminal symbols of the SCFG.
+If a source phrase $f$ contains a nonterminal $X_1$, then its translation $e$ also
+contains that nonterminal, and the decoder can replace the nonterminal by any phrase $f_1$
+and its translation $e_1$, respectively. An illustrative rule for English-to-Hindi translation is
+
+%Zatím neumíme hindštinu uvnitř matematiky, ale neškodilo by, kdybysme ji tam nějak dostali.
+%$$X \rightarrow \langle X_1 of X_2 , X_2 \hindi{का} X_1 \rangle$$
+
+\begin{center}
+$X \rightarrow \langle X_1\cdot of\cdot X_2\rangle , \langle X_2\cdot \mathsf{का} \cdot X_1 \rangle$
+\end{center}
+
+where the Hindi word \hindi{का} \textit{(kā)} is one of several grammatical forms of the Hindi equivalent
+of ``of'', and the subscripts on the nonterminals cause the two (noun) phrases around \textit{of}
+to be reordered around \hindi{का} in the translation.
+
+Hierarchical models have been known to produce better results than classical phrase-based
+models \citep{chiang:etal:2005}.
+
+In our experiments we used the Joshua implementation of the hierarchical phrase-based
+algorithms.\footnote{Many thanks to the team at Johns Hopkins University for creating
+Joshua and making it publicly available.} We set the maximum phrase length to 5,
+MERT worked with 300 best translation hypotheses per iteration, and the number of
+iterations was limited to 5.
+
+Unless stated otherwise, our experiments use a trigram language model trained on the
+target side of the Tides training data. In accord with \citet{BoStEnglishHindiTranslation2008},
+we found additional out-of-domain language models damaging to BLEU score.
+
+Symmetrical word alignments for grammar extraction were obtained using Giza++
+and the scripts accompanying Moses. Alignments were computed on first four
+(lowercased) characters of each training token, and the \textit{grow-diag-final-and}
+symmetrization heuristic was used.
+
+The results of the hierarchical models trained on various datasets,
+compared with classical phrase-based models are shown in \Tref{tab:joshua}.
+
+% - Popsat důležité varianty experimentů, které jsme zkoušeli:
+% -- Oficiální testování Ondrovým počítadlem (Ondra se zaručil, že na tokenizaci to nesahá):
+%    cp ~bojar/diplomka/granty/hindi/statmt/playground/exp.mert.SRCtides.train+en+lc.TGT+hi+for.c9ce7fbc.-fe.r0-0DEVtides.dev.Sbeam.20090806-1700/testbleu .
+%    gunzip -c /net/projects/hindi/data/augmented_corpora/tides.test/hi.gz > test.hi
+%    testbleu test.hi < /net/projects/hindi/experiments/joshua/josh11-tmtides-lmtides-lm3-preicon2-prenorm-pretokdz/eval/test.joshua.hi
+% -- baseline: trénování na tides (srovnat s Mosesem letos i loni)
+%    josh11-tmtides-lmtides-lm3-prebase = 11.28 (Ondra naměřil 11.10±0.79) (pozor, tenhle výsledek nemám s Ondrovým alignmentem lcstem4!)
+%    josh11-tmtides-lmtides-lm3-preicon2-prenorm-pretokdz = 12.27 (po normalizaci - kruci, měli bychom ukázat i nějaký výsledek před normalizací, jinak naše tvrzení, že jsme lepší než kdokoli loni, není zajímavé)
+%    testbleu: 12.27±0.83
+%    Moses: 1*LM 2*tides.train                                                     	11.46±0.72
+% -- trénování na tides a daniel pipes
+%    ac-tmtides+dpipes-lmtides-lm3 (allcstem4, ale tehdy jsem to ještě do názvu pokusu nepsal)
+%    = 12.58
+%    testbleu: 12.58±0.77
+%    Moses: 1*LM 2*tides.train 1*dani                                              	11.93±0.75
+% -- trénování na tides, daniel pipes a emille
+%    ac-allcstem4-tmtides+dpipes+omille-lmtides-lm3 = 11.32
+%    testbleu: 11.32±0.74
+%    Moses: 1*LM 2*tides.train 1*dani 1*emille-om                                  	10.06±0.72
+% -- trénování na tides, daniel pipes a slovník (zkusit ještě ten opravený?!!!)
+%    ac-allcstem4-tmtides+dpipes+dictfilt-lmtides-lm3 = 12.43 (to je starý neopravený a malý slovník)
+%    testbleu: 12.43±0.79
+%    Moses: 1*LM 2*tides.train 1*dani 1*dictfilt                                   	11.90±0.78
+% -- ke všem číselným výsledkům v této kapitole by to chtělo hned vedle vidět odpovídající výsledky Mosese.
+% PS: V sekci o Joshuovi by se mi libilo, kdybys to nejak propojil s lonskym reorderingek: ze vlastne podstata SCFG je svym zpusobem syntakticky transfer, tedy to, co jsme vloni hrube resili reorderingovymi pravidly.
+
+\begin{table}[ht]
+\begin{centering}
+\begin{tabular}{l|l|l}
+\textbf{Parallel data} & \textbf{Joshua} & \textbf{Moses} \\
+\hline
+Tides & 12.27±0.83 & 11.46±0.72\\
+Tides+DP & \textbf{12.58±0.77} & 11.93±0.75\\
+Tides+DP+Emille & 11.32±0.74 & 10.06±0.72\\
+Tides+DP+Dict & 12.43±0.79 & 11.90±0.78\\
+\end{tabular}
+\caption{Results of Joshua compared with Moses}
+\label{tab:joshua}
+\end{centering}
+\end{table}
+
+
+
+\section{Results}
+\label{results}
+
+As far as automatic evaluation is concerned, the best result reported on in
+this paper is the 12.58 BLEU of Joshua trained on Tides and Daniel Pipes
+(\Tref{tab:joshua}). Moses was not able to outperform this score despite
+its ability to learn factored models. The best Moses score is 12.22 (morphology).
+%(in
+%tandem with the Mumbai tagger, see \Tref{tab:morph}) 
+
+The greatest mystery is the fact that adding Emille to the training data
+does not improve results with either system.
+% Joshua: tides+dpipes+omille: 0.1298 dev, 0.1132 test.
+% Joshua/Emille/Gaurav:        0.1285 dev, 0.1045 test.
+% Bez omilla (tides+dpipes):   0.1124 dev, 0.1258 test.
+Although we are not able to explain this in full, we made a few observations:
+%\begin{itemize}
+%  \item
+
+{\bf 1.}
+When asked to extract its SFCG, Joshua needs to see the source
+        (English) side of the data to be decoded, and extracts only the rules
+        relevant to the dataset. Thus we extract one grammar for the
+        development data (used for minimum error rate training) and another
+        for the test data. While the development grammar changes when Emille
+        is added, the test grammar remains the same. As if Emille was unable
+        to approximate the test data in any way.
+%  \item
+
+{\bf 2.}
+MERT optimizes 5 feature weights of Joshua: the language model
+        probability, the word penalty (preference for shorter translations),
+        and three translation features: $P(e|f)$, $P_{lex}(f|e)$ and
+        $P_{lex}(e|f)$. When Emille is involved, MERT always pushes the
+        non-lexical translation probability extraordinarily high, and causes
+        overfitting. While for other experiments we usually saw better BLEU
+        scores on test data than on development data, the opposite was the case
+        with Emille.
+%\end{itemize}
+
+\section{Related Research}
+
+
+% Tohle zamlcime, stejne jsme v tabulce.
+%\perscite{BoStEnglishHindiTranslation2008} tried to improve a statistical
+%phrase-based baseline MT
+%system by adding more data, standard lexicalized and a heuristical rule-based
+%reordering and an explicit modeling of (unsupervised) morphological coherence
+%on the target side. Neither of the approaches helped much.
+
+\perscite{pushpak:2009} improve Hindi morphology by transfering additional
+information from English parse tree and semantic roles, in addition to some
+hard-coded syntax-based reordering. However, they use an unspecified corpus
+making their results incomparable.
+
+% XXX reorderingy? no jen jednoho zastupce, a jako ze Joshua leccos resi sam
+
+%\subsection{Previous Work}
+\label{previous}
+
+The ICON 2008 NLP Tools Contest \citep{nlptoolscontest:2008:summary}
+included translation of Tides test data. Although our retokenized and cleaned
+data make a direct comparison impossible, our preliminary experiments on the
+unclean data are comparable. In \Tref{tab:previous} we compare four results
+presented at ICON 2008 with our hierarchical model trained on (unclean) Tides,
+with a Tides trigram language model.
+
+\begin{table}[ht]
+\begin{centering}
+\begin{tabular}{l|r}
+\textbf{System} & \textbf{BLEU} \\
+\hline
+Mumbai \citep{Damani:2008} & 8.53\\
+Kharagpur \citep{goswami:2008} & 9.76\\
+Prague \citep{BoStEnglishHindiTranslation2008} & 10.17\\
+Dublin \citep{srivastava:2008} & 10.49\\
+present Joshua & 11.10\\
+\end{tabular}
+\caption{Previous work compared to our hierarchical model (Joshua) on unclean data}
+\label{tab:previous}
+\end{centering}
+\end{table}
+
+
+
+\section{Human Evaluation}
+\label{human}
+
+
+
+The richer morphology and a high degree of reordering are known to render BLEU
+unreliable. While we still optimize for BLEU, our manual analysis reveals
+relatively low correlation. An extensive study similar to
+\cite{callisonburch-EtAl:2009:WMT} would be very valuable.
+
+We were able to conduct three small-scale manual evaluations. Our
+annotator was given the source English text and four or five Hindi translations in a
+randomized order of 100
+sentences (each time a different subset of the full test set). He assigned a
+mark to each of the four Hindi translations: giving no
+mark  (``0'') indicates a completely incomprehensible translation. A single star
+(``*'') denotes sentences with severe errors and hard to understand but still
+related to the input. Two stars (``**'') are assigned to more or less
+acceptable translations, possibly with many errors but understandable and
+conveying most of the original meaning.
+
+\Tref{tab:human} evaluates some basic configurations of Moses. For a comparison,
+we include the reference translations (REF) among the hypotheses (due to the
+randomization, the annotator cannot be entirely sure which of the hypotheses is
+the reference but often it can be guessed from the striking difference in
+quality). We see that even 6 reference translations were marked as inadequate
+and 11 as very bad. Because the test set is a part of the Tides corpus, these
+figures give a rough estimate of the overall corpus quality.
+
+The remaining figures in \Tref{tab:human} document that (while somewhat
+suspicious by itself), the Tides training data are most informative with respect
+to the (Tides) test set: a system trained completely out-of-domain on everything
+except Tides was able to deliver only 3 acceptable translations (OOD). The TIDP
+and WC10 systems compare the effect of adding more parallel data (TIDP for
+Tides+DanielPipes) vs. adding the unsupervised morphological factor (WC10, 10
+word classes). We observe that the difference indicated by human evaluation is
+rather convincing: nearly twice as many acceptable sentences in TIDP, but
+negligible in BLEU. This confirms our doubts about the utility of BLEU scores
+for languages with rich morphology and the neccessity to regularly run manual
+evaluations.
+
+
+\begin{table}[ht]
+\begin{centering}
+\begin{tabular}{l|r|r|r|r}
+{\bf System} & {\bf 0} & {\bf*} & {\bf**} & {\bf BLEU}\\
+\hline
+REF  &  6    &  11  &   83   &  -- \\
+OOD &   80  &   17   &  3   &   1.85±0.24\\
+TIDP &  26  &   44   &  30   &  11.93±0.75\\
+WC10 &  38   &  46   &  16   &  11.76±0.74\\
+\end{tabular}
+\caption{Manual evaluation of some basic Moses setups: training out of domain
+(OOD) and adding either more parallel data (TIDP) or a factor for morphological
+coherence (WC10) compared to the quality of the reference translation (REF).
+}
+\label{tab:human}
+\end{centering}
+\end{table}
+
+In \Tref{tab:human:mojo}, we evaluate the difference between phrase-based
+(Moses) and hierarchical (Joshua) translation model. Both systems are trained in
+identical conditions: both the translation and the language model are trained on
+Tides and DanielPipes. For Moses, we wanted to confirm the observation that more
+data are more important than ensuring morphological coherence on another 100
+manually judged sentences. Therefore, we report also Moses-DPipes+POStags, a
+setup trained on Tides only but including the supervised morphology of Mumbai
+tagger.
+
+We see that while the BLEU scores indicate the superiority of the hierarchical
+model over the phrase-based model with lexicalized reordering, the difference in
+manual judgments seems less convincing. Only 3
+sentences were ranked better. On the other hand, we confirm that even the
+supervised morphology is less important than a good parallel data source.
+
+\begin{table}[ht]
+\begin{small}
+\begin{centering}
+\begin{tabular}{l|r|r|r|r}
+{\bf System} & {\bf 0} & {\bf*} & {\bf**} & {\bf BLEU}\\
+\hline
+REF   &  6   &   10    &  84   &  -- \\ 
+Joshua  &  32   &  37   &  31   &   12.58±0.77\\
+Moses  &  35  &   35   &  30   &  11.93±0.75\\
+%Moses+DPipesR  &  33  &   42  &   25  &   11.80±0.73\\
+% Moses+DPipesR je reduced English, zatajuju
+Moses-DPipes+POStags  & 32  &   42   &  26   &  12.03±0.75\\
+\end{tabular}
+\caption{%
+Manual judgements of hierarchical (Joshua) vs. phrase-based (Moses) translation.
+}
+\label{tab:human:mojo}
+\end{centering}
+\end{small}
+\end{table}
+
+\Tref{tab:human:more} provides manual analysis of our baseline Moses setup
+(simple
+phrase-based translation, lexicalized reordering, language model trained on the
+full target side of the parallel data) trained on various subsets of
+our parallel data. We start with the combination of Tides and DanielPipes
+(TIDP), add Emille (EM), all other corpus sources (oth) and finally the
+dictionary Shabdanjali in two variants: full (DICTFull) and filtered to contain
+only Hindi words confirmed in a big monolingual corpus (DICTFilt). The BLEU
+scores indicate that Emille hurts the performance when tested on Tides test
+set. This surprising result was indeed confirmed by the manual analysis: only 12
+instead of 19 sentences were translated acceptably. Adding further data reduces
+the detrimental effect of Emille (not observed in BLEU scores) but the best
+performance is achieved by
+Tides+DanielPipes only.  Note that this final manual evaluation was based on a
+smaller dataset of 53 sentences only.
+
+\begin{table}[ht]
+\begin{small}
+\begin{centering}
+\begin{tabular}{l|r|r|r|r}
+{\bf System} & {\bf 0} & {\bf *} & {\bf**} & {\bf BLEU}\\
+\hline
+REF         &  0 &          8   &   45   & -- \\
+TIDP           &  20 &       14   &  19   &11.89±0.76\\
+TIDPEM        &   22 &          19   &   12   &9.61±0.75\\
+TIDPEMoth      &   17 &         25  &    11   & 10.97±0.79\\
+TIDPEMothDICTFilt     &    23 &  17  &    13  & 10.96±0.75\\
+TIDPEMothDICTFull    &    22 &   16  &    15  & 10.89±0.69 \\
+\end{tabular}
+\caption{The effect of additional (out-of-domain) parallel data in phrase-based
+translation.}
+\label{tab:human:more}
+\end{centering}
+\end{small}
+\end{table}   
+
+
+\section{Conclusions and Future Work}
+\label{sec:concl}
+%Do závěru bychom mohli plácnout něco jako ``We believe that most techniques
+%described in this paper are straightforwardly generalizable to other Indian SOV
+%languages.''
+
+We have tried several ways to improve state-of-the-art in English-Hindi SMT,
+however results are mixed: 
+
+There are quite a few strange results: 
+\begin{itemize}
+\item POS tagging does not give better results than automatic word classes.
+Hindi textbook-based manual word classes were even better.
+\item Adding more training data to Tides either helps insignificantly, or (more
+often) hurts BLEU score. 
+\item BLEU may not correlate with human judgement. Our limited experiments show
+that adding training data may hurt BLEU but improve quality by human judgement.
+%\item It has been shown before by \citet{BoStEnglishHindiTranslation2008} that 
+%big monolingual Hindi data for LM didn't help either.
+\end{itemize}
+
+In our future work we want to further explore problems with existing datasets,
+the use of morphology, and the relation of output quality measured in terms of
+BLEU vs.
+human
+judgement. We also believe that there is room for improvement in the quality and
+amount of available parallel data.
+
+On the other hand, we have shown that our hand-crafted word classes and some
+additional data help Moses achieve significantly better results than reported
+previously. Hierarchical decoder Joshua can capture word order even better than
+Moses. Its results are always slightly better. And as far as we know, our
+current results are the best that have been reported on this dataset.
+
+%\XXX -- někde zmínit, že "čištění" (ve smyslu Mosese, tedy dlouhých vět)
+%výsledky kazí, protože nám zmenšuje trénovací data. O to víc je vlastně
+%zvláštní, že přidání trénovacích dat typu Emille výsledky taky kazí.
+
+
+\begin{small}
+\bibliography{paper}
+\end{small}
+
+\end{document}

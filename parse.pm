@@ -5,6 +5,61 @@ use vystupy;
 
 
 #------------------------------------------------------------------------------
+# Nastaví výchozí hodnoty parametrů, které jsou nezbytné pro chod programu.
+#------------------------------------------------------------------------------
+sub vychozi_konfig
+{
+    # Parametry lze rozdělit jednak podle míry závislosti na jazyku, použité
+    # sadě morfologických a syntaktických značek, jednak podle toho, zda daný
+    # parametr ovlivňuje pouze parsing, nebo zda je při změně jeho hodnoty
+    # potřeba přetrénovat.
+    # Následující hash neobsahuje všechny existující parametry. Vynechány byly
+    # zejména parametry, jejichž výchozí hodnota má být prázdná nebo nulová.
+    # Chcete-li komentovaný přehled parametrů, podívejte se do konfiguračního
+    # souboru parser.ini.
+    my %konfig =
+    (
+        # Obecné parametry volání programu.
+        "train" => "-", # STDIN
+        "test"  => "-", # STDIN
+        "kodovani_data" => "utf8", # jinak train zkazí kódování při ukládání statistiky
+        # Parametry nezávislé na značkách ani na jazyku.
+        "vzdalenost" => 3,
+        "vzdalenost_delitel" => 1,
+        "komponentove" => 1,
+        "vyberzav" => "relativni-cetnost",
+        "model" => "ls*slova+lz*znacky",
+        "ls" => 0.734375,
+        "lokon" => 1,
+        "krvety" => 1,
+        "ntice" => 1,
+        # Parametry závislé na sadě morfologických značek (při sadě odlišné od PDT nebudou fungovat správně).
+        "upravovat_mzn" => 0,
+#        "predlozky" => 1,
+#        "pseudoval" => 1,
+        "selex" => 0,
+        "selex_predlozky" => 1,
+        "selex_podradici_spojky" => 1,
+        "selex_zajmena" => 1,
+        # Parametry závislé na jazyku (ve zdrojáku jsou přímo uvedena některá česká slova).
+        "selex_prislovce_100" => 1,
+        "selex_byt" => 1,
+        # Parametry závislé na sadě syntaktických značek nebo na pravidlech zavěšování uzlů.
+#        "nevlastni_predlozky" => 1,
+#        "pod_korenem_sloveso_misto_smeru" => 1,
+#        "koordinace" => 1,
+#        "nekoord" => 1,
+#        "koncint" => 1,
+#        "koren_2_deti" => 1,
+#        "mezicarkove_useky" => 1,
+#        "carka_je_list" => 1,
+    );
+    return %konfig;
+}
+
+
+
+#------------------------------------------------------------------------------
 # Přečte konfigurační soubor.
 #------------------------------------------------------------------------------
 sub precist_konfig
@@ -47,6 +102,11 @@ sub precist_konfig
     # (Nemohlo se to udělat rovnou, protože samo zapisování do logu je konfigurací také ovlivněno.)
     # Založit hlavní záznam o parametrech výpočtu.
     vypsat("konfig", ""); # zajistit zalozeni cisla instance
+    vypsat("konfig", "Konfigurační soubor = $jmeno_souboru\n");
+    if(! -f $jmeno_souboru)
+    {
+        vypsat("konfig", "Varování: Konfigurační soubor neexistuje!\n");
+    }
     my $pocitac = exists($ENV{HOST}) ? $ENV{HOST} : $ENV{COMPUTERNAME}; # HOST je v Linuxu, COMPUTERNAME je ve Windows.
     vypsat("konfig", "Výpočet číslo $vystupy::cislo_instance byl spuštěn v ".cas($::starttime)." na počítači $pocitac jako proces číslo $$.\n");
     vypsat("konfig", "\n$konfig_log\n");

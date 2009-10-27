@@ -20,6 +20,8 @@ $starttime = time();
 my $inisoubor = "parser.ini"; # jméno souboru s konfigurací
 # train.pl --i parser2.ini
 GetOptions('ini=s' => \$inisoubor);
+# Výchozí nastavení parametrů.
+%konfig = parse::vychozi_konfig();
 parse::precist_konfig($inisoubor, \%konfig);
 # Nastavit, který výstup půjde na STDOUT. Ostatní půjdou na STDERR.
 $vystupy::vystupy{stat}{stdout} = 1;
@@ -46,7 +48,8 @@ $konfig{hook_zacatek_cteni} = sub
     vypsat("prubeh", "Maska pro jména souborů s daty: $maska\n");
     vypsat("prubeh", "Nalezeno ".($#{$soubory}+1)." souborů.\n");
 };
-csts::projit_data($konfig{train}, \%konfig, \&zpracovat_vetu);
+$tmpfile = zkopirovat_vstup_do_tmp($konfig{train});
+csts::projit_data($tmpfile, \%konfig, \&zpracovat_vetu);
 vypsat("prubeh", "Počet vět  = $veta\n");
 vypsat("prubeh", "Počet slov = $slovo\n");
 # Teď ještě natrénovat modely n-tic. Nemohli jsme to dělat všechno při jednom
@@ -58,9 +61,10 @@ if($konfig{ntice})
     $veta = 0;
     $slovo = 0;
     $ohlasena_veta = 0;
-    csts::projit_data($konfig{train}, \%konfig, \&zpracovat_vetu_ntice);
+    csts::projit_data($tmpfile, \%konfig, \&zpracovat_vetu_ntice);
     ntice::vypsat_do_stat();
 }
+unlink($tmpfile);
 # Poslat mi mail, že trénink je u konce. Musíme do mailu dát nějaký existující
 # soubor. Stačil by mi sice prázdný mail jen s předmětem zprávy, ale pokud bych
 # k tomu chtěl využít existující mechanismy, vznikl by mi tím na disku prázdný
@@ -727,7 +731,11 @@ sub ulozit
     $n = 1 if($n==0); # kvůli dělení při hlášení pokroku
     for(my $i = 0; $i<=$#stat; $i++)
     {
-        vypsat("stat", "$stat[$i]\t$statref->{$stat[$i]}\n");
+        # Popis události nesmí obsahovat tabulátor, jinak by statistika nešla opět načíst.
+        my $ud = $stat[$i];
+        $ud =~ s/&/&amp;/g;
+        $ud =~ s/\t/&tab;/g;
+        vypsat("stat", "$ud\t$statref->{$stat[$i]}\n");
     }
 }
 
@@ -750,4 +758,63 @@ sub ma_sourozence_stejneho_druhu
         }
     }
     return 0;
+}
+
+
+
+#------------------------------------------------------------------------------
+# Vybere složku pro pomocné soubory (je různá ve Windows a v Linuxu), zkopíruje
+# vstup do pomocného souboru a vrátí cestu k němu. Je to nutné, protože vstup
+# čteme dvakrát za sebou, nejdřív kvůli normálnímu trénování a pak kvůli učení
+# n-tic (obojí současně se nám totiž nevejde do paměti). Pokud bychom četli
+# vstup ze standardního vstupu, podruhé už by tam nic nebylo.
+#------------------------------------------------------------------------------
+sub zkopirovat_vstup_do_tmp
+{
+    my $vstup = shift;
+    # Jestliže existuje proměnná prostředí TEMP (bývá ve Windows), použít její
+    # obsah jako cestu k pomocné složce.
+    my $tmp;
+    if(exists($ENV{TEMP}) && -d $ENV{TEMP})
+    {
+        $tmp = $ENV{TEMP};
+    }
+    # Druhá varianta ve Windows je proměnná TMP.
+    elsif(exists($ENV{TMP}) && -d $ENV{TMP})
+    {
+        $tmp = $ENV{TMP};
+    }
+    # Pokud jsme na Linuxu na ÚFALu, měla by k těmto účelům existovat složka /mnt/h/tmp
+    elsif(-d "/mnt/h/tmp")
+    {
+        $tmp = "/mnt/h/tmp";
+    }
+    # Pokud jsme na Linuxu, měla by k těmto účelům existovat složka /tmp.
+    elsif(-d "/tmp")
+    {
+        $tmp = "/tmp";
+    }
+    # Pokud konfigurace definuje pracovní složku, mohlo by být dost místa a právo zápisu v ní.
+    elsif(exists($konfig{pracovni}) && -d $konfig{pracovni})
+    {
+        $tmp = $konfig{pracovni};
+    }
+    # Jinak nám nezbývá než zkusit aktuální složku.
+    else
+    {
+        $tmp = ".";
+    }
+    # Zkopírovat vstup do pomocné složky. Vstup známe jménem. Jestliže je to "-", jde o STDIN.
+    my $tmpfile = "$tmp/vstup-$$.csts";
+    open(ZDROJ, $vstup) or die("Nelze číst soubor $vstup: $!\n");
+    open(CIL, ">$tmpfile") or die("Nelze psát do souboru $tmpfile: $!\n");
+    binmode(ZDROJ, ":raw");
+    binmode(CIL, ":raw");
+    while(<ZDROJ>)
+    {
+        print CIL;
+    }
+    close(ZDROJ);
+    close(CIL);
+    return $tmpfile;
 }

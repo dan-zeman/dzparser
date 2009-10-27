@@ -63,6 +63,11 @@ sub vypsat
     }
     else # MOMENTALNE SE VUBEC NELOGUJE DO SOUBORU. VYRESIT CO KDYZ NASTAVIM LOGOVANI SOUBORU AZ PO JEHO OTEVRENI? (NECO JAKO OTVIRANI BYCH TOTIZ CHTEL I U STDOUT, NAPR. ABY SE ZAPNUL AUTOFLUSH)
     {
+        # Za výchozí kódování STDOUT i STDERR považuju UTF-8.
+        # Momentálně neumožňuju nastavit jiné.
+        # Zajistit, že se toto kódování použije i v případě, že mi ho někdo jiný někde změnil.
+        binmode(STDOUT, ":utf8");
+        binmode(STDERR, ":utf8");
         if($vystupy{$soubor}{stdout})
         {
             print(@_);

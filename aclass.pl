@@ -19,6 +19,7 @@ binmode(STDOUT, ":utf8");
 binmode(STDERR, ":utf8");
 use Getopt::Long;
 use csts;
+use lib '/home/zeman/projekty/parser';
 use strom;
 
 
@@ -48,6 +49,8 @@ $n_spravne = 0 if($n_spravne eq "");
 $n_spatne = $n_celkem-$n_spravne;
 $uspesnost = $n_celkem ? $n_spravne/$n_celkem : 0;
 print STDERR ("A $n_celkem - G $n_spravne - B $n_spatne - P $uspesnost\n");
+print STDERR ("Neznámá dvojice mznaček, ale známá mznačka dítěte: $n_neznama_dvojice        z toho chyb $n_chyb_neznama_dvojice\n");
+print STDERR ("Není známa ani mznačka dítěte:                     $n_neznama_dvojice_i_dite z toho chyb $n_chyb_neznama_dvojice_i_dite\n");
 
 
 
@@ -69,24 +72,41 @@ sub zpracovat_vetu
         # Odstranit z klíče případné tabulátory a konce řádků, protože totéž jsme dělali při tréninku.
         $klic =~ s/[\t\r\n]+/ /sg;
         my $hodnota = $stat{$klic};
+        my $neznama_dvojice = 0;
+        my $neznama_dvojice_i_dite = 0;
         # Jestliže jsme nenašli žádnou sznačku pro danou dvojici mznaček, zkusíme najít sznačku pro mznačku dítěte.
         if($hodnota eq "")
         {
             $klic = $slovo->{znacka};
             $klic =~ s/[\t\r\n]+/ /sg;
             $hodnota = $stat{$klic};
+            $n_neznama_dvojice++;
+            $neznama_dvojice = 1;
         }
         # Jestliže jsme ani teď nenašli žádnou sznačku, zkusíme najít nejčastější sznačku.
         if($hodnota eq "")
         {
             $klic = "";
             $hodnota = $stat{$klic};
+            $n_neznama_dvojice_i_dite++;
+            $neznama_dvojice_i_dite = 1;
         }
         # Zkontrolovat, zda hodnota z naší statistiky odpovídá skutečné syntaktické značce slova.
         $slovo->{afun} =~ s/[\t\r\n]+/ /sg;
         if($hodnota eq $slovo->{afun})
         {
             $n_spravne++;
+        }
+        else
+        {
+            if($neznama_dvojice)
+            {
+                $n_chyb_neznama_dvojice++;
+            }
+            elsif($neznama_dvojice_i_dite)
+            {
+                $n_chyb_neznama_dvojice_i_dite++;
+            }
         }
         $n_celkem++;
         # Vypsat slovo.
@@ -104,7 +124,7 @@ sub zpracovat_vetu
             $hodnota =~ s/&/&amp;/g;
             $hodnota =~ s/</&lt;/g;
             $hodnota =~ s/>/&gt;/g;
-            print("<f>$slovo->{form}<l>$slovo->{lemma}<t>$slovo->{znacka}<r>$slovo->{ord}<g>$slovo->{rodic_vzor}<MDg src=\"dz\">$slovo->{mdgdz}<MDA src=\"dz\">$hodnota\n");
+            print("<f>$slovo->{form}<l>$slovo->{lemma}<t>$slovo->{znacka}<r>$slovo->{ord}<g>$slovo->{rodic_vzor}<A>$slovo->{afun}<MDg src=\"dz\">$slovo->{mdgdz}<MDA src=\"dz\">$hodnota\n");
         }
     }
 }

@@ -38,6 +38,8 @@ $starttime = time();
 my $inisoubor = "parser.ini"; # jméno souboru s konfigurací
 # parse.pl --i parser2.ini
 GetOptions('model=s' => \$model, 'ini=s' => \$inisoubor);
+# Výchozí nastavení parametrů.
+%konfig = parse::vychozi_konfig();
 parse::precist_konfig($inisoubor, \%konfig);
 if($model ne "")
 {
@@ -270,6 +272,10 @@ sub cist_statistiku
         my $k = $1;
         my $c = $2;
         my $udalost = $k;
+        # Pokud původní popis události obsahoval tabulátor, byl tabulátor zakódován a musíme ho teď dekódovat.
+        # Kvůli kódování tabulátorů byly zakódovány i ampersandy.
+        $udalost =~ s/&tab;/\t/g;
+        $udalost =~ s/&amp;/&/g;
         $statref->{$udalost} = $c;
         # Přičíst i do celkového počtu všech událostí (jmenovatel).
         $celkem += $c;
