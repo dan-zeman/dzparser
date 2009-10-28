@@ -40,7 +40,7 @@
 \newcommand{\hi}[1]{{\hifont #1}}
 \newcommand{\bn}[1]{{\bnfont #1}}
 \newcommand{\te}[1]{{\tefont #1}}
-\newcommand{\translit}[1]{{\translitfont \textit{#1}}}
+\newcommand{\translit}[1]{{\translitfont \textit{(#1)}}}
 
 % natbib
 \usepackage{natbib}
@@ -114,14 +114,14 @@ Several good trainable dependency parsers have emerged during the past five year
 %\microsection{MST Parser}
 \subsection{MST Parser}
 \label{sec:mst}
-The Maximum Spanning Tree (MST) parser \citep{mst} views the sentence as an oriented complete graph with edges weighted by a feature scoring function. It finds for the graph a spanning tree that maximizes the weights of the edges. A multi-class classification algorithm called MIRA is used to compute the scoring function.
+The Maximum Spanning Tree (MST) parser \citep{mst} views the sentence as an directed complete graph with edges weighted by a feature scoring function. It finds for the graph the spanning tree that maximizes the weights of the edges. A multi-class classification algorithm called MIRA is used to compute the scoring function.
 
 MST Parser achieved the best unlabeled attachment scores (UAS) for 9 out of the 13 languages of CoNLL-X, and second best scores in two others. Parsing is fast but training the parser takes many hours on large treebanks. On small data however, multiple quick experiments with different settings are still doable. The parser is implemented in Java and freely available for download.\footnote{\url{http://sourceforge.net/projects/mstparser/}}
 
 %\microsection{Malt Parser}
 \subsection{Malt Parser}
 \label{sec:malt}
-The Malt Parser  \citep{malt} is a deterministic shift-reduce parser where input words can be either put to the stack or taken from the stack and combined to form a dependency. The decision, which operation to perform, is made by an oracle based on various features of the words in the input buffer and the stack. The default machine learning algorithm used to train the oracle is a sort of SVN (support vector machine) classifier \citep{svm}.
+The Malt Parser  \citep{malt} is a deterministic shift-reduce parser where input words can be either put to the stack or taken from the stack and combined to form a dependency. The decision which operation to perform is made by an oracle based on various features of the words in the input buffer and the stack. The default machine learning algorithm used to train the oracle is a sort of SVN (support vector machine) classifier \citep{svm}.
 
 Malt Parser has participated in both CoNLL-X and CoNLL 2007 shared tasks, and although it achieved the best UAS in three languages only, it usually scored among the five best parsers, sometimes with statistically insignificant difference from the winner. Malt Parser is really fast and its new Java implementation is open-source, freely available for download.\footnote{\url{http://maltparser.org/}}
 
@@ -136,7 +136,7 @@ DZ Parser builds a model of bigrams of words that occur together in a dependency
 \label{sec:voting}
 The three parsers are combined using a simple weighted-voting approach similar to \citet{biblio:ZeZaImprovingParsing2005}, except that the output is guaranteed to be cycle-free. We start by evaluating every parser separately on the development data. The UAS of each parser is subsequently used as the weight of that parser's vote. Dependencies are parent-child relations, and for every node there are up to three candidates for its parent (if all three parsers disagree). Candidates get weighted votes -- e.g., if parsers with weights $w_1 = 0.8$ and $w_2 = 0.7$ agree on the candidate, the candidate gets 1.5 votes. Since we have only three parsers, in practice this means that the candidate of the best parser looses only if 1. the other two parsers agree on someone else, or 2. if attaching the child to this candidate would create a cycle.
 
-The tree is constructed from the root down. We repeatedly add nodes whose winning parent candidates are already in the tree. If none of the remaining nodes meet this condition, we have to break a cycle. We do so by removing the candidate (for parentship of any remaining node) with least weighted votes. Then we go on with adding nodes until all nodes are attached or there is another cycle to break.
+The tree is constructed from the root down. We repeatedly add nodes whose winning parent candidates are already in the tree. If none of the remaining nodes meet this condition, we have to break a cycle. We do so by examining all unattached nodes. At each node we notice the votes of its current winning parent. Then we remove the least-scoring winner and go on with adding nodes until all nodes are attached or there is another cycle to break.
 
 \section{Experiments}
 \label{sec:experiments}
@@ -148,26 +148,27 @@ The final test data are blind, any error analysis is therefore impossible. That 
 \item \textit{morph} variety is augmented by automatically assigned lemmas, part of speech tags and values of morphological features (gender, number, person, case, postposition and tam -- tense+aspect+modality)
 \end{compactitem}
 
-\Tref{tab:baseline} shows baseline results on the \textit{nomorph} data.
+\subsection{Morphology}
+\label{sec:morphology}
+
+\Tref{tab:baseline} shows baseline results on the \textit{nomorph} data. Both MST and Malt parsers were invoked in projective mode, Malt with the default Nivre arc-eager algorithm.
 
 \begin{table}[ht]
 \begin{centering}
 %\small
-\begin{tabular}{l|l|l|l}
-& \textbf{MST} & \textbf{Malt} & \textbf{DZ} \\
+\begin{tabular}{l|l|l|l|l}
+& \textbf{MST} & \textbf{Malt} & \textbf{DZ} & \textbf{Vote} \\
 \hline
-hi & 80.32 & \textbf{81.84} & 62.00\\
-bn & 82.00 & \textbf{84.71} & 71.02\\
-te & 77.63 & \textbf{80.89} & 70.52\\
+hi & 80.32 & 81.84 & 62.00 & \textbf{82.48}\\
+bn & 82.00 & \textbf{84.71} & 71.02 & 83.11\\
+te & 77.63 & \textbf{80.89} & 70.52 & 80.59\\
 \end{tabular}
-\caption{Baseline UAS of the three parsers on \textit{nomorph} development data. Language codes follow ISO 639: hi = Hindi, bn = Bangla, te = Telugu.}
+\caption{Baseline UAS of the four parsers on \textit{nomorph} development data. Language codes follow ISO 639: hi = Hindi, bn = Bangla, te = Telugu.}
 \label{tab:baseline}
 \end{centering}
 \end{table}
 
-\XXX what configuration of MST and Malt led to the baseline results?
-
-Using the \textit{morph} data substantially deteriorates the accuracy. It could be caused by tagging errors (recall: morphological information has been disambiguated automatically) but data sparseness seems to be a more likely reason.
+There are several ways how to use the additional information from the \textit{morph} data. The easiest way, exploitable by all three parsers, is to combine the chunk label, the POS tag and the features into one tag string. The results (not presented here) are very poor. Although there may be tagging errors, the most likely cause is data sparseness. In \Tref{tab:corpus} we illustrate this by showing the numbers of unique values in the various attributes of treebank words.
 
 \begin{table}[ht]
 \begin{centering}
@@ -175,46 +176,51 @@ Using the \textit{morph} data substantially deteriorates the accuracy. It could 
 \begin{tabular}{l|r|r|r|r|r|r}
 & \textbf{occ} & \textbf{frm} & \textbf{lem} & \textbf{cl} & \textbf{pos} & \textbf{feat} \\
 \hline
-hi & 13779 & 3973 & 3134 & 10 & \XXX & 714\\
-bn & 6449 & 2997 & 2336 & 14 & \XXX & 367\\
-te & 5494 & 2462 & 1403 & 12 & \XXX & 453\\
+hi & 13779 & 3973 & 3134 & 10 & 33 & 714\\
+bn & 6449 & 2997 & 2336 & 14 & 30 & 367\\
+te & 5494 & 2462 & 1403 & 12 & 31 & 453\\
 \end{tabular}
 \caption{Size of the training corpora: occ -- word occurrences, frm -- distinct forms, lem -- lemmas, cl -- chunk labels, pos -- part of speech tags, feat -- feature value combinations.}
 \label{tab:corpus}
 \end{centering}
 \end{table}
 
-%\begin{table}[ht]
-%\begin{centering}
-%\small
-%\begin{tabular}{l|l|l|l}
-%& \textbf{MST} & \textbf{Malt} & \textbf{DZ} \\
-%\hline
-%hi & - & \textbf{-} & 44.32\\
-%bn & - & \textbf{-} & 50.31\\
-%te & - & \textbf{-} & 36.89\\
-%\end{tabular}
-%\caption{UAS on morph data (POS tag and features concatenated to one tag).}
-%\label{tab:baselinemorph}
-%\end{centering}
-%\end{table}
+To fight sparseness, we could either restrict the tag to selected information, or split the information into multiple features learnt separately, or both. We first restricted the tag string to selected information. Parsing on other treebanks showed that POS with case is especially useful \citep{dzparser}. The other feature we selected is called \textit{vibhakti}, which partially corresponds to case suffix and partially to postposition.\footnote{The Indian treebanks at hand are unusual in that nodes do not always map to words. They represent chunks, with function words such as postpositions hidden in node attributes.}
+
+\Tref{tab:poscasevib} presents the results of restricting the tag string to POS+case+vibhakti. This move especially improves the MST Parser, which now outperforms Malt on Hindi and Bangla. Malt improves on Hindi but drops behind on Bangla and Telugu. DZ Parser also improves on Hindi and deteriorates elsewhere but there is an interesting observation: even though its own scores are worse, the worsened output actually improves the voting results (provided the configurations of MST and Malt are fixed). So it seems that the newly introduced errors are less important (because taken care of by the more powerful parsers) while some difficult parts of the data are now covered better.
 
 \begin{table}[ht]
 \begin{centering}
 %\small
-\begin{tabular}{l|l|l|l}
-& \textbf{MST} & \textbf{Malt} & \textbf{DZ} \\
+\begin{tabular}{l|l|l|l|l}
+& \textbf{MST} & \textbf{Malt} & \textbf{DZ} & \textbf{Vote}\\
 \hline
-hi & - & \textbf{-} & 44.32\\
-bn & - & \textbf{-} & 50.31\\
-te & - & \textbf{-} & 36.89\\
+hi & 86.16 & 82.96 & 75.12 & \XXX 86.64\\
+bn & 85.70 & 80.02 & 54.38 & \XXX 78.79\\
+te & 79.85 & 78.37 & 45.78 & \XXX 78.81\\
 \end{tabular}
-\caption{UAS on morph data (POS tag and features concatenated to one tag).}
+\caption{UAS on refined \textit{morph} data (POS tag, case and vibhakti concatenated). \XXX voting se pocitalo, kdyz jeste MST pracoval jen s nomorph, takze to musime prepocitat}
 \label{tab:poscasevib}
 \end{centering}
+% Když se ke značce POS přilepí pád, ale ne vibhakti, a s tím se přetrénuje Malt parser (ostatní parsery jsme nechali beze změny, tj. MST byl natrénovaný na nomorph a DZ naopak i na vibhakti), tak Malt sám má na všech třech jazycích pořád stejné výsledky (jako v této tabulce), ale výsledky Vote se na hindštině zhorší a na zbývajících dvou jazycích zlepší: hi=85.36, bn=83.35, te=80.89.
 \end{table}
 
-\XXX Otevřít soubor eval.txt. Mám v něm další výsledky, zejména u všech parserů natrénování na pos+pád+vibhakti.
+Finally, ve returned to \textit{nomorph} with Malt on Bangla and Telugu, where the POS+case+vibhakti tags did not help. The results are given in \Tref{tab:posmix2}. This is also the configuration we used to parse the test set for the official evaluation round 1.
+
+\begin{table}[ht]
+\begin{centering}
+%\small
+\begin{tabular}{l|l|l|l|l}
+& \textbf{MST} & \textbf{Malt} & \textbf{DZ} & \textbf{Vote}\\
+\hline
+hi & 86.16 & 85.84 & 75.12 & \textbf{87.12}\\
+bn & 85.70 & 84.71 & 54.38 & \textbf{86.19}\\
+te & 79.85 & 80.89 & 45.78 & \textbf{82.37}\\
+\end{tabular}
+\caption{UAS on mixed data: MST and DZ use POS+case+vibhakti for all languages, Malt uses that for Hindi and POS only elsewhere. MST is now the best parser for hi and bn, which changes the voting weights.}
+\label{tab:posmix2}
+\end{centering}
+\end{table}
 
 %\begin{compactitem}
 %\item \hi{स्टैंडर्डज} \textit{(sṭaiṁḍarḍaja)} \translit{(sṭaiṁḍarḍaja)}
@@ -227,7 +233,7 @@ te & - & \textbf{-} & 36.89\\
 \subsection{Nonprojectivity}
 \label{sec:nonprojectivity}
 
-Nonprojectivity is a property of the dependency structure and the word order \citep{neproj} that makes parsing more difficult. All three parsers can produce nonprojective structures and all three treebanks are nonprojective. However, except for Hindi, the proportion of nonprojective dependencies is so small that one can hardly imagine that running the parsers in nonprojective mode would bring any improvement. A quick experiment with Malt Parser switched to the nonprojective Stack method revealed that it actually hurts the results even for Hindi.
+Nonprojectivity is a property of the dependency structure and the word order \citep{neproj} that makes parsing more difficult. All three parsers can produce nonprojective structures and all three treebanks are nonprojective. However, except for Hindi, the proportion of nonprojective dependencies is so small that one can hardly imagine that running the parsers in nonprojective mode would bring any improvement. A quick experiment with Malt Parser switched to the nonprojective Stack Eager algorithm revealed that it actually hurts the results even for Hindi.
 
 \begin{table}[ht]
 \begin{centering}
@@ -244,11 +250,25 @@ te & 00.45 & 01.31\\
 \end{centering}
 \end{table}
 
-\subsection{Parser Unique Errors (Oracle Accuracy)}
+\subsection{Error Patterns}
+\label{sec:errors}
 
-\subsection{How many times a candidate lost due to cycle prevention, and how many times this introduced an error?}
+The accuracy of the dependencies is relatively high and it is difficult to trace repetitive error patterns. In Hindi, many wrong attachments seem to be long-distance, and verbs, conjunctions, root and NULL nodes are frequently involved. Frequent words should perhaps be available to the parsers as parts of tag strings: for instance, Hindi \hi{कि} \translit{ki} ``that'' or \hi{तो} \translit{to} are wrongly attached because the parser only sees the general CC tag. On a similar note, problems with coordination, also observed e.g. by \citet{dzparser}, occur here, too: \hi{भाई और भाभी} \translit{bhāī aura bhābhī} ``brother and his wife'' is correctly recognized as coordination rooted by the conjunction \hi{और}, however, the conjunction node lacks the information about its noun children and fails to attach as the subject of the verb.
 
-\subsection{Learning Curve}
+The tag string should contain both the chunk label and the POS tag. So far we wrongly assumed that POS always determins the chunk label. It is often so but not always, as exemplified in the Bangla chunk sequence \bn{তবে সুদীপ ওকে একদিন আড়ালে ডেকে বলেছিল কৌতূহল দেখালে তুমি উঁচুতে উঠতে অনিমেষ} \translit{tabe sudīpa oke ekadina āṛāle ḍeke balechila kautūhala dekhāle tumi um̃cute uṭhate animeša}. The words \bn{ডেকে} and \bn{দেখালে} are tagged VGNF|VM while \bn{বলেছিল} and \bn{উঠতে} are VGF|VM. The parser gets them wrong and it could be caused by it seeing only VM in the tag.
+
+In Telugu, extraordinal number of sentences follow the SOV order so strongly that the last node (verb) is almost always attached to the root and most other nodes are attached directly to the last node. An example chunk sequence where this rule would lead to 100~\% accuracy follows: \te{రాష్ట్రంలొ రంగారెడ్డి మెదక్ నిజామాబాద్ జిల్లాలలొ పంటను గొప్పొ పండిస్తున్నారు} \translit{rāšṭraṁlo raṁgāreḍḍi medak nijāmābād jillālalo paṁṭanu goppo paṁḍistunnāru}. In the light of such examples it seems reasonable to provide the parsers with an additional feature telling whether a particular dependency observes the ``naïve Telugu'' structure. Note however that this will not help with the other two languages. While 73.75~\% of Telugu dependncies follow this rule, it is only 39.52~\% in Bangla and 35.71~\% in Hindi.
+
+\subsection{\XXX To Do}
+\begin{compactitem}
+\item \XXX Parser unique errors (oracle accuracy)
+\item \XXX How many times a candidate lost due to cycle prevention, and how many times this introduced an error?
+\item \XXX Learning curve
+\item \XXX Spočítat, kolik je ve kterém jazyce uzlů NULL.
+\item \XXX znacka chunku, priklad z bengalstiny
+\item \XXX casta slova, priklad z hindstiny
+\item \XXX koordinace, priklad z hindstiny
+\end{compactitem}
 
 \section{Official Evaluation}
 \label{sec:evaluation}
@@ -270,20 +290,27 @@ te & 80.27 (4:86.28) & 54.20 (4:61.58) & 49.91 (4:60.55)\\
 \end{centering}
 \end{table}
 
+\section{Related and Future Work}
+\label{sec:related}
+
+There is a large body of work on parser combination. A summary can be found in \citet{nivre-mcdonald:2008:ACLMain}, whose approach is also related to ours w.r.t. the selection of parsers. However, their feature-based integration of MST and Malt parsers is much more sophisticated than our lightweight voting. Further improvement of accuracy can be expected if MST-Malt integration is applied to the Indian treebanks.
+
+Future work, at the time of writing, includes experiments that can be run before the evaluation round 2, and thus their results will appear in the final version of this paper. We definitely intend to test other algorithms of the Malt parser, as well as to reconfigure its feature pool and let it work with POS, case and vibhakti separately.
+
+Labeling of the dependencies is another problem that deserves more attention. We have concentrated on the unlabeled attachment score so far and for the sake of the official evaluation, we simply pushed the MST labels through. A separate postprocessing classifier would probably produce better results.
+
 \section{Conclusion}
 \label{sec:concl}
 
-\XXX On the other hand, we have shown that our hand-crafted word classes and some
-additional data help Moses achieve significantly better results than reported
-previously. Hierarchical decoder Joshua can capture word order even better than
-Moses. Its results are always slightly better. And as far as we know, our
-current results are the best that have been reported on this dataset.
+We have described our system of voting parsers, as applied to the ICON 2009 NLP Tools Contest task. We showed that case and vibhakti are important features at least for parsing Hindi while their usability in Bangla and Telugu is limited by data sparseness. We also discussed several error patterns that could lead to further improvements of the parsing system in future.
 
 \section*{Acknowledgements}
 
-\XXX Acknowledgements: poděkovat Joakimovi a Ryanovi za zveřejnění parserů.
-The research has been supported by the grant 
-MSM0021620838 (Czech Ministry of Education).
+We are enormously grateful to the developers of MST and Malt parsers for making their software available to the research community.
+
+% Tohle nezapomenout odkomentovat, až budeme posílat finální verzi!
+%The research has been supported by the grant 
+%MSM0021620838 (Czech Ministry of Education).
 
 \begin{small}
 \bibliography{paper}
