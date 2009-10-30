@@ -67,11 +67,10 @@
 %MSM0021620838 (Czech Ministry of Education).}
 }
 
-% Tady je posuzování taky slepé? Až odtajním autora, nezapomenout odtajnit i acknowledgements!
-\author{%Daniel Zeman\\
-%Univerzita Karlova v Praze, Ústav formální a aplikované lingvistiky\\
-%Malostranské náměstí 25, CZ-11800, Praha, Czechia\\ 
-%\texttt{zeman@ufal.mff.cuni.cz}
+\author{Daniel Zeman\\
+Univerzita Karlova v Praze, Ústav formální a aplikované lingvistiky\\
+Malostranské náměstí 25, CZ-11800, Praha, Czechia\\ 
+\texttt{zeman@ufal.mff.cuni.cz}
 }
 
 %\title{Instructions for ACL-IJCNLP 2009 Proceedings}
@@ -195,11 +194,11 @@ To fight sparseness, we could either restrict the tag to selected information, o
 \begin{tabular}{l|l|l|l|l}
 & \textbf{MST} & \textbf{Malt} & \textbf{DZ} & \textbf{Vote}\\
 \hline
-hi & 86.16 & 82.96 & 75.12 & \XXX 86.64\\
-bn & 85.70 & 80.02 & 54.38 & \XXX 78.79\\
-te & 79.85 & 78.37 & 45.78 & \XXX 78.81\\
+hi & 86.16 & 85.84 & 75.12 & \textbf{87.12}\\
+bn & 85.70 & 77.31 & 54.38 & \textbf{85.82}\\
+te & \textbf{79.85} & 77.78 & 45.78 & 79.70\\
 \end{tabular}
-\caption{UAS on refined \textit{morph} data (POS tag, case and vibhakti concatenated). \XXX voting se pocitalo, kdyz jeste MST pracoval jen s nomorph, takze to musime prepocitat}
+\caption{UAS on refined \textit{morph} data (POS tag, case and vibhakti concatenated).}
 \label{tab:poscasevib}
 \end{centering}
 % Když se ke značce POS přilepí pád, ale ne vibhakti, a s tím se přetrénuje Malt parser (ostatní parsery jsme nechali beze změny, tj. MST byl natrénovaný na nomorph a DZ naopak i na vibhakti), tak Malt sám má na všech třech jazycích pořád stejné výsledky (jako v této tabulce), ale výsledky Vote se na hindštině zhorší a na zbývajících dvou jazycích zlepší: hi=85.36, bn=83.35, te=80.89.
@@ -221,14 +220,6 @@ te & 79.85 & 80.89 & 45.78 & \textbf{82.37}\\
 \label{tab:posmix2}
 \end{centering}
 \end{table}
-
-%\begin{compactitem}
-%\item \hi{स्टैंडर्डज} \textit{(sṭaiṁḍarḍaja)} \translit{(sṭaiṁḍarḍaja)}
-%\item \hi{स्टैंडर्डस} \textit{(sṭaiṁḍarḍasa)}
-%\item \hi{स्टैंडर्ड्स} \textit{(sṭaiṁḍarḍsa)}
-%\item \bn{সরিয়ে} Tohle je bengálsky.
-%\item \te{వాడుతున్నాం} Tohle je telugsky.
-%\end{compactitem}
 
 \subsection{Nonprojectivity}
 \label{sec:nonprojectivity}
@@ -259,16 +250,34 @@ The tag string should contain both the chunk label and the POS tag. So far we wr
 
 In Telugu, extraordinal number of sentences follow the SOV order so strongly that the last node (verb) is almost always attached to the root and most other nodes are attached directly to the last node. An example chunk sequence where this rule would lead to 100~\% accuracy follows: \te{రాష్ట్రంలొ రంగారెడ్డి మెదక్ నిజామాబాద్ జిల్లాలలొ పంటను గొప్పొ పండిస్తున్నారు} \translit{rāšṭraṁlo raṁgāreḍḍi medak nijāmābād jillālalo paṁṭanu goppo paṁḍistunnāru}. In the light of such examples it seems reasonable to provide the parsers with an additional feature telling whether a particular dependency observes the ``naïve Telugu'' structure. Note however that this will not help with the other two languages. While 73.75~\% of Telugu dependncies follow this rule, it is only 39.52~\% in Bangla and 35.71~\% in Hindi.
 
-\subsection{\XXX To Do}
-\begin{compactitem}
-\item \XXX Parser unique errors (oracle accuracy)
-\item \XXX How many times a candidate lost due to cycle prevention, and how many times this introduced an error?
-\item \XXX Learning curve
-\item \XXX Spočítat, kolik je ve kterém jazyce uzlů NULL.
-\item \XXX znacka chunku, priklad z bengalstiny
-\item \XXX casta slova, priklad z hindstiny
-\item \XXX koordinace, priklad z hindstiny
-\end{compactitem}
+\subsection{Voting Potential}
+\label{sec:votingpotential}
+
+In order to see how much can be potentially gained from parser combination, we summarized the attachments that at least one of the parsers got correct. This \textit{oracle accuracy} gives an upper limit for the real scores we can achieve. It corresponds to the case that for every word, an oracle correctly tells which parser to ask about the word's parent. \Tref{tab:oracle} presents the oracle accuracies together with percentage of unique correct attachments that only one parser delivered. These figures give some idea of how much similar are the errors of the respective parsers to each other. Malt parser has the most unique know-how in all three languages, which could be explained by its focus on local features. Both MST and DZ can reach for global, sentence-wide relations. Note however, that the development data set is small and the percentages correspond to 42 (Malt/Bangla) or less words.
+
+\begin{table}[ht]
+\begin{centering}
+%\small
+\begin{tabular}{l|l|l|l|l}
+& \textbf{Oracle} & \textbf{UqMST} & \textbf{UqMalt} & \textbf{UqDZ} \\
+\hline
+hi & 93.92 & 2.96 & \textbf{3.12} & 1.84\\
+bn & 94.20 & 4.32 & \textbf{5.18} & 1.97\\
+te & 88.00 & 2.37 & \textbf{5.48} & 2.07\\
+\end{tabular}
+\caption{Oracle accuracy for the three languages, and unique correct attachments (\%) proposed by a single parser.}
+\label{tab:oracle}
+\end{centering}
+\end{table}
+
+%\subsection{\XXX To Do}
+%\begin{compactitem}
+%\item \XXX How many times a candidate lost due to cycle prevention, and how many times this introduced an error?
+%\item \XXX Learning curve
+%\item \XXX Spočítat, kolik je ve kterém jazyce uzlů NULL.
+%\item \XXX casta slova, priklad z hindstiny
+%\item \XXX Změřit výkon kombinovaného parseru. K tomu je potřeba rozchodit skript zmeritvykon.pl, nechtěl mi fungovat.
+%\end{compactitem}
 
 \section{Official Evaluation}
 \label{sec:evaluation}
@@ -307,10 +316,8 @@ We have described our system of voting parsers, as applied to the ICON 2009 NLP 
 \section*{Acknowledgements}
 
 We are enormously grateful to the developers of MST and Malt parsers for making their software available to the research community.
-
-% Tohle nezapomenout odkomentovat, až budeme posílat finální verzi!
-%The research has been supported by the grant 
-%MSM0021620838 (Czech Ministry of Education).
+The research has been supported by the grant 
+MSM0021620838 (Czech Ministry of Education).
 
 \begin{small}
 \bibliography{paper}
