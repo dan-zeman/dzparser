@@ -120,7 +120,7 @@ MST Parser achieved the best unlabeled attachment scores (UAS) for 9 out of the 
 %\microsection{Malt Parser}
 \subsection{Malt Parser}
 \label{sec:malt}
-The Malt Parser  \citep{malt} is a deterministic shift-reduce parser where input words can be either put to the stack or taken from the stack and combined to form a dependency. The decision which operation to perform is made by an oracle based on various features of the words in the input buffer and the stack. The default machine learning algorithm used to train the oracle is a sort of SVN (support vector machine) classifier \citep{svm}.
+The Malt Parser  \citep{malt} is a deterministic shift-reduce parser where input words can be either put to the stack or taken from the stack and combined to form a dependency. The decision which operation to perform is made by an oracle based on various features of the words in the input buffer and the stack. The default machine learning algorithm used to train the oracle is a sort of SVM (support vector machine) classifier \citep{svm}.
 
 Malt Parser has participated in both CoNLL-X and CoNLL 2007 shared tasks, and although it achieved the best UAS in three languages only, it usually scored among the five best parsers, sometimes with statistically insignificant difference from the winner. Malt Parser is really fast and its new Java implementation is open-source, freely available for download.\footnote{\url{http://maltparser.org/}}
 
